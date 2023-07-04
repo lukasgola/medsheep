@@ -10,6 +10,7 @@ export default function BottomTabs() {
     <Tab.Navigator>
       <Tab.Screen name="Order" component={OrderStack} />
       <Tab.Screen name="Home" component={HomeStack} />
+      <Tab.Screen name="Pacjent" component={HomeStack} />
     </Tab.Navigator>
   );
 }
