@@ -2,6 +2,9 @@ import { StyleSheet, Text, View, SafeAreaView, FlatList } from 'react-native';
 
 import {useTheme} from '../theme/ThemeProvider';
 
+
+import { TouchableOpacity } from 'react-native-gesture-handler';
+
 export default function Main() {
 
   const DATA = [
@@ -28,7 +31,7 @@ export default function Main() {
 
   const Item = ({item}) => {
     return(
-      <View style={{
+      <TouchableOpacity style={{
         width: 180,
         height: 180,
         backgroundColor: colors.primary,
@@ -39,7 +42,7 @@ export default function Main() {
         marginHorizontal: 10
       }}>
         <Text style={{color: colors.background, fontWeight: 'bold', fontSize: 16}}>{item.title}</Text>
-      </View>
+      </TouchableOpacity>
     )
   }
 

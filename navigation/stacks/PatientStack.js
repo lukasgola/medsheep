@@ -1,13 +1,13 @@
 import { createStackNavigator } from '@react-navigation/stack';
 
-import Order from '../../screens/Order';
+import Patient from '../../screens/Patient';
 
 const Stack = createStackNavigator();
 
-export default function OrderStack() {
+export default function PatientStack() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Order" component={Order} />
+      <Stack.Screen name="Patient" component={Patient} />
     </Stack.Navigator>
   );
 }

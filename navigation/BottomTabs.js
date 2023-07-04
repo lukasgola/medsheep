@@ -1,16 +1,33 @@
-import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
 import HomeStack from './stacks/HomeStack';
 import OrderStack from './stacks/OrderStack';
+import PatientStack from './stacks/PatientStack';
 
-const Tab = createMaterialBottomTabNavigator();
+import {useTheme} from '../theme/ThemeProvider';
+
+const Tab = createMaterialTopTabNavigator();
 
 export default function BottomTabs() {
+
+  const {colors} = useTheme()
+
   return (
-    <Tab.Navigator>
-      <Tab.Screen name="Order" component={OrderStack} />
-      <Tab.Screen name="Home" component={HomeStack} />
-      <Tab.Screen name="Pacjent" component={HomeStack} />
+    <Tab.Navigator
+    initialRouteName='HomeStack'
+      tabBarPosition='bottom'
+      screenOptions={{
+        tabBarStyle: {
+          backgroundColor: colors.background,
+          height: 70,
+          borderTopColor: 'grey',
+          borderTopWidth: 1,
+        }
+      }}
+    >
+      <Tab.Screen name="OrderStack" component={OrderStack} />
+      <Tab.Screen name="HomeStack" component={HomeStack} />
+      <Tab.Screen name="PatientStack" component={PatientStack} />
     </Tab.Navigator>
   );
 }
