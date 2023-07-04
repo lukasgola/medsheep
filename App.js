@@ -1,12 +1,22 @@
+import 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 
+import { NavigationContainer } from '@react-navigation/native';
+import BottomTabs from './navigation/BottomTabs';
+
+//import { ThemeProvider, Button, createTheme } from '@rneui/themed';
+
+import {ThemeProvider} from './theme/ThemeProvider';
+
+
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <ThemeProvider>
+        <BottomTabs/>
+      </ThemeProvider>
+    </NavigationContainer>
   );
 }
 
