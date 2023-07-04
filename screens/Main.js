@@ -14,15 +14,15 @@ export default function Main() {
     },
     {
       id: 2,
-      title: 'Kalendarz'
+      title: 'Kontakt z lekarzem'
     },
     {
       id: 3,
-      title: 'Kalendarz'
+      title: 'Pomoc'
     },
     {
       id: 4,
-      title: 'Kalendarz'
+      title: 'Wyniki'
     }
   ]
 
