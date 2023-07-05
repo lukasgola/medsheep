@@ -1,28 +1,33 @@
-import { StyleSheet, Text, View, SafeAreaView, FlatList } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, FlatList, Image, TouchableOpacity, Dimensions } from 'react-native';
 
 import {useTheme} from '../theme/ThemeProvider';
 
-
-import { TouchableOpacity } from 'react-native-gesture-handler';
-
 export default function Main() {
+
+  const windowWidth = Dimensions.get('screen').width;
+
+  const boxWidth = windowWidth*0.42
 
   const DATA = [
     {
       id: 1,
-      title: 'Kalendarz'
+      title: 'Kalendarz',
+      img: require('../assets/calendar.png')
     },
     {
       id: 2,
-      title: 'Kontakt z lekarzem'
+      title: 'Kontakt z lekarzem',
+      img: require('../assets/contact.png')
     },
     {
       id: 3,
-      title: 'Pomoc'
+      title: 'Szukaj',
+      img: require('../assets/search.png')
     },
     {
       id: 4,
-      title: 'Wyniki'
+      title: 'Wyniki',
+      img: require('../assets/results.png')
     }
   ]
 
@@ -32,16 +37,31 @@ export default function Main() {
   const Item = ({item}) => {
     return(
       <TouchableOpacity style={{
-        width: 180,
-        height: 180,
-        backgroundColor: colors.primary,
-        borderRadius: 20,
+        width: boxWidth,
+        height: boxWidth,
+        backgroundColor: colors.background,
+        borderRadius: boxWidth/10,
         marginTop:20,
         justifyContent: 'center',
         alignItems: 'center',
-        marginHorizontal: 10
+        marginHorizontal: boxWidth*0.05
       }}>
-        <Text style={{color: colors.background, fontWeight: 'bold', fontSize: 16}}>{item.title}</Text>
+        <Image 
+          source={item.img}
+          style={{
+            width: 120,
+            height: 120
+          }}  
+        />
+        <Text style={{
+          color: colors.background,
+          fontWeight: 'bold',
+          fontSize: 16,
+          color: '#000',
+          marginTop: 10
+        }}>
+          {item.title}
+        </Text>
       </TouchableOpacity>
     )
   }
@@ -65,7 +85,6 @@ export default function Main() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
   },

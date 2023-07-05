@@ -1,5 +1,5 @@
 // Light theme colors
 export const lightColors = {
-    primary: 'red',
+    primary: '#f73434',
     background: '#FFFFFF'
   };
