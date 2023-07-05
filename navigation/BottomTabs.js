@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native'
+import { View, Text, Animated } from 'react-native'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -14,7 +14,8 @@ export default function BottomTabs() {
 
   const {colors} = useTheme()
 
-
+  const av = new Animated.Value(0);
+  av.addListener(() => {return});
 
   const Item = (props) => {
     return(
@@ -23,8 +24,8 @@ export default function BottomTabs() {
             alignItems: 'center',
             justifyContent: 'center',
         }}>
-            <MaterialCommunityIcons name={props.focused ? props.filled : props.icon} size={30} color={props.focused ? colors.primary : colors.grey} />
-            <Text size={10} color={props.focused ? colors.text : colors.grey}>{props.title}</Text>
+            <MaterialCommunityIcons name={props.focused ? props.filled : props.icon} size={25} color={props.focused ? colors.primary : colors.grey} />
+            <Text style={{color: props.focused ? colors.text : colors.grey, fontSize: 12}}>{props.title}</Text>
         </View>
     )
   }
@@ -37,19 +38,28 @@ export default function BottomTabs() {
       screenOptions={{
         tabBarStyle: {
           backgroundColor: colors.background,
-          height: 80,
+          height: 70,
         },
         tabBarShowLabel: false,
         tabBarIconStyle: {
-          height: 40,
           alignItems: 'center',
           justifyContent: 'center',
+          marginTop: 5
         },
         tabBarIndicatorStyle:{
           position: 'absolute',
           top: 0,
           backgroundColor: colors.primary
         }
+      }}
+      screenListeners={{
+        focus: () => {
+          Animated.timing(av, {
+            toValue: 1,
+            duration: 200,
+            useNativeDriver: true,
+          }).start();
+        },
       }}
     >
       <Tab.Screen 
