@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, SafeAreaView, FlatList, Image, TouchableOpacity
 
 import {useTheme} from '../theme/ThemeProvider';
 
-export default function Main() {
+export default function Main({navigation}) {
 
   const windowWidth = Dimensions.get('screen').width;
 
@@ -12,22 +12,26 @@ export default function Main() {
     {
       id: 1,
       title: 'Kalendarz',
-      img: require('../assets/calendar.png')
+      img: require('../assets/calendar.png'),
+      navigation: 'Calendar'
     },
     {
       id: 2,
       title: 'Kontakt z lekarzem',
-      img: require('../assets/contact.png')
+      img: require('../assets/contact.png'),
+      navigation: 'Calendar'
     },
     {
       id: 3,
       title: 'Szukaj',
-      img: require('../assets/search.png')
+      img: require('../assets/search.png'),
+      navigation: 'Calendar'
     },
     {
       id: 4,
       title: 'Wyniki',
-      img: require('../assets/results.png')
+      img: require('../assets/results.png'),
+      navigation: 'Calendar'
     }
   ]
 
@@ -36,16 +40,20 @@ export default function Main() {
 
   const Item = ({item}) => {
     return(
-      <TouchableOpacity style={{
-        width: boxWidth,
-        height: boxWidth,
-        backgroundColor: colors.background,
-        borderRadius: boxWidth/10,
-        marginTop:20,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginHorizontal: boxWidth*0.05
-      }}>
+      <TouchableOpacity 
+        style={{
+          width: boxWidth,
+          height: boxWidth,
+          backgroundColor: colors.background,
+          borderRadius: boxWidth/10,
+          marginTop:20,
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginHorizontal: boxWidth*0.05
+        }}
+        onPress={() => navigation.navigate(item.navigation)}
+      
+      >
         <Image 
           source={item.img}
           style={{

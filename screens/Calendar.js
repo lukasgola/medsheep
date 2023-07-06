@@ -1,9 +1,9 @@
 import { StyleSheet, Text, View } from 'react-native';
 
-export default function Order() {
+export default function Calendar() {
   return (
     <View style={styles.container}>
-        <Text>Order</Text>
+        <Text>Calendar</Text>
     </View>
   );
 }
