@@ -24,7 +24,7 @@ export default function HomeStack() {
       },
       }}
     >
-      <Stack.Screen name="Główna" component={Main} />
+      <Stack.Screen name="Medsheep" component={Main} />
       <Stack.Screen name="Kalendarz" component={Calendar} />
       <Stack.Screen name="Lekarz" component={Doctor} />
       <Stack.Screen name="Szukaj" component={Search} />

@@ -63,10 +63,9 @@ export default function Main({navigation}) {
           }}  
         />
         <Text style={{
-          color: colors.background,
           fontWeight: 'bold',
           fontSize: 16,
-          color: '#000',
+          color: colors.text,
           marginTop: 10
         }}>
           {item.title}
@@ -106,7 +105,8 @@ export default function Main({navigation}) {
             </View>
             <Text
             style={{
-              fontSize: 16
+              fontSize: 16,
+              color: colors.text
             }}>Miło Cię znów widzieć!</Text>
           </View>
         }

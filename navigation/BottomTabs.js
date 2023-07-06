@@ -1,4 +1,4 @@
-import { View, Text, Animated } from 'react-native'
+import { View, Text, Animated, Image } from 'react-native'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -20,7 +20,7 @@ export default function BottomTabs() {
   const Item = (props) => {
     return(
         <View style={{
-            width: 50,
+            width: 100,
             alignItems: 'center',
             justifyContent: 'center',
         }}>
@@ -76,7 +76,7 @@ export default function BottomTabs() {
         component={HomeStack} 
         options={{
           tabBarIcon: ({focused}) => (
-            <Item focused={focused} icon='home-outline' filled='home' title='Głowna' />
+            <Item focused={focused} icon='home-outline' filled='home' title='Główna' />
           ),
         }}
       />
