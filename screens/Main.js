@@ -5,6 +5,7 @@ import {useTheme} from '../theme/ThemeProvider';
 export default function Main({navigation}) {
 
   const windowWidth = Dimensions.get('screen').width;
+  const windowHeight = Dimensions.get('screen').height;
 
   const boxWidth = windowWidth*0.42
 
@@ -12,26 +13,26 @@ export default function Main({navigation}) {
     {
       id: 1,
       title: 'Kalendarz',
-      img: require('../assets/calendar.png'),
-      navigation: 'Calendar'
+      img: require('../assets/calendar2.png'),
+      navigation: 'Kalendarz'
     },
     {
       id: 2,
-      title: 'Kontakt z lekarzem',
+      title: 'Lekarz',
       img: require('../assets/contact.png'),
-      navigation: 'Calendar'
+      navigation: 'Lekarz'
     },
     {
       id: 3,
       title: 'Szukaj',
       img: require('../assets/search.png'),
-      navigation: 'Calendar'
+      navigation: 'Szukaj'
     },
     {
       id: 4,
       title: 'Wyniki',
       img: require('../assets/results.png'),
-      navigation: 'Calendar'
+      navigation: 'Wyniki'
     }
   ]
 
@@ -43,10 +44,10 @@ export default function Main({navigation}) {
       <TouchableOpacity 
         style={{
           width: boxWidth,
-          height: boxWidth,
+          height: windowHeight/3.05,
           backgroundColor: colors.background,
           borderRadius: boxWidth/10,
-          marginTop:20,
+          marginTop: 20,
           justifyContent: 'center',
           alignItems: 'center',
           marginHorizontal: boxWidth*0.05
@@ -82,9 +83,33 @@ export default function Main({navigation}) {
         keyExtractor={item => item.id}
         numColumns={2}
         scrollEnabled={false}
-        style={{
-          paddingTop: 100
-        }}
+        ListHeaderComponent={
+          <View style={{
+            marginHorizontal: boxWidth*0.05,
+            marginTop: 20,
+            marginBottom: 10
+            
+          }}>
+            <View style={{flexDirection: 'row'}}>
+              <Text
+              style={{
+                fontSize: 28,
+                fontWeight: 'bold',
+                color: colors.text
+              }}>Witaj </Text>
+              <Text
+              style={{
+                fontSize: 28,
+                fontWeight: 'bold',
+                color: colors.primary
+              }}>Łukasz</Text>
+            </View>
+            <Text
+            style={{
+              fontSize: 16
+            }}>Miło Cię znów widzieć!</Text>
+          </View>
+        }
       />
     </SafeAreaView>
   );
