@@ -39,7 +39,10 @@ export default function ForgotPassword({navigation}){
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center',  backgroundColor: colors.background }}>
             <View style={{ width: 0.9*width }}>
                 <View style={{ width: '100%', height: 60, justifyContent: 'center', alignItems: 'center' }}>
-                    <Text>Reset password</Text>
+                    <Text style={{
+                        fontSize: 24,
+                        fontWeight: 'bold'
+                    }}>Reset password</Text>
                 </View>
                 <View style={{ width: '100%', height: 50, justifyContent: 'center', alignItems: 'center', marginTop: 20 }}>
                     
@@ -67,13 +70,17 @@ export default function ForgotPassword({navigation}){
                         borderRadius: 10,
                         backgroundColor: colors.primary
                     }}>
-                    <Text>Send</Text>
+                    <Text style={{
+                        color: colors.background, 
+                        fontWeight: 'bold', 
+                        fontSize: 18
+                    }}>Send</Text>
                 </TouchableOpacity>
                 <TouchableOpacity 
                     onPress={onSignIn}
                     style={{ width: '100%', height: 50, justifyContent: 'center', alignItems: 'center', marginTop: 20, flexDirection: 'row' }}>
-                    <Text>Back to  </Text>
-                    <Text>Sign In</Text>
+                    <Text style={{color: colors.grey_d}}>Back to  </Text>
+                    <Text style={{color: colors.primary}}>Sign In</Text>
                 </TouchableOpacity>
             </View>
             

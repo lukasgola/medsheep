@@ -46,7 +46,10 @@ export default function SignUp(){
             style={{ flex: 1, justifyContent: 'center', alignItems: 'center',  backgroundColor: colors.background }}>
             <View style={{ width: 0.9*width }}>
                 <View style={{ width: '100%', height: 60, justifyContent: 'center', alignItems: 'center' }}>
-                    <Text>Create an account</Text>
+                    <Text style={{
+                        fontSize: 24,
+                        fontWeight: 'bold'
+                    }}>Create an account</Text>
                 </View>
                 
                 <View style={{ width: '100%', height: 50, justifyContent: 'center', alignItems: 'center', marginTop: 20 }}>
@@ -120,28 +123,32 @@ export default function SignUp(){
                         borderRadius: 10,
                         backgroundColor: colors.primary
                     }}>
-                    <Text>Register</Text>
+                    <Text style={{
+                        color: colors.background, 
+                        fontWeight: 'bold', 
+                        fontSize: 18
+                    }}>Register</Text>
                 </TouchableOpacity>
                 <View 
                     style={{ width: '100%', marginTop: 10, flexWrap:'wrap', justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
-                    <Text>By registering you confirm that you accept our </Text>
+                    <Text style={{color: colors.grey_d}}>By registering you confirm that you accept our </Text>
                     <TouchableOpacity
                         onPress={onTerms}
                     >
-                        <Text>Terms of Use </Text>
+                        <Text style={{color: colors.primary}}>Terms of Use </Text>
                     </TouchableOpacity>
-                    <Text>and </Text>
+                    <Text style={{color: colors.grey_d}}>and </Text>
                     <TouchableOpacity
                         onPress={onPolicy}
                     >
-                        <Text>Privacy Policy</Text>
+                        <Text style={{color: colors.primary}}>Privacy Policy</Text>
                     </TouchableOpacity>
                 </View>
                 <TouchableOpacity 
                     onPress={onSignIn}
                     style={{ width: '100%', height: 50, justifyContent: 'center', alignItems: 'center', marginTop: 20, flexDirection: 'row' }}>
-                    <Text>Have an account?</Text>
-                    <Text>  Sign in!</Text>
+                    <Text style={{color: colors.grey_d}}>Have an account?</Text>
+                    <Text style={{color: colors.primary}}>  Sign in!</Text>
                 </TouchableOpacity>
             </View>
         </KeyboardAvoidingView>

@@ -1,4 +1,4 @@
-import {View, Dimensions, TouchableOpacity, Alert, KeyboardAvoidingView, Text} from 'react-native';
+import {View, Dimensions, TouchableOpacity, Alert, KeyboardAvoidingView, Text, Image} from 'react-native';
 
 //Hooks
 import {useTheme} from '../theme/ThemeProvider';
@@ -34,10 +34,20 @@ export default function SignIn({navigation}){
     return (
         <KeyboardAvoidingView 
             behavior='padding'
-            style={{ flex: 1, justifyContent: 'center', alignItems: 'center',  backgroundColor: colors.background }}>
+            style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: colors.background }}>
             <View style={{ width: 0.9*width }}>
-                <View style={{ width: '100%', height: 60, justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
-                    <Text>Medsheep</Text>
+                <View style={{ width: '100%', height: 150, justifyContent: 'center', alignItems: 'center', marginBottom: 20 }}>
+                    <Image 
+                        source={require ('../assets/medsheep_small.jpeg')} 
+                        style={{
+                            width: 120,
+                            height: 120
+                        }}
+                    />
+                    <Text style={{
+                        fontSize: 24,
+                        fontWeight: 'bold'
+                    }}>Medsheep</Text>
                 </View>
                 <View style={{ width: '100%', height: 50, justifyContent: 'center', alignItems: 'center', marginTop: 20 }}>
                     
@@ -84,18 +94,22 @@ export default function SignIn({navigation}){
                         borderRadius: 10,
                         backgroundColor: colors.primary
                     }}>
-                    <Text>Sign in</Text>
+                    <Text style={{
+                        color: colors.background, 
+                        fontWeight: 'bold', 
+                        fontSize: 18
+                    }}>Sign in</Text>
                 </TouchableOpacity>
                 <TouchableOpacity 
                     onPress={onSignUp}
                     style={{ width: '100%', height: 50, justifyContent: 'center', alignItems: 'center', marginTop: 20, flexDirection: 'row' }}>
-                    <Text>Don't have account?</Text>
-                    <Text>  Sign up!</Text>
+                    <Text style={{color: colors.grey_d}}>Don't have account?</Text>
+                    <Text style={{color: colors.primary}}>  Sign up!</Text>
                 </TouchableOpacity>
                 <TouchableOpacity 
                     onPress={onForgotPassword}
                     style={{ width: '100%', height: 50, justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
-                    <Text>Forgot password?</Text>
+                    <Text style={{color: colors.grey_d}}>Forgot password?</Text>
                 </TouchableOpacity>
             </View>
         </KeyboardAvoidingView>
