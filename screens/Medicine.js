@@ -34,7 +34,7 @@ export default function Medicine({route, navigation}) {
             width: windowWidth, 
             height: 60, 
             justifyContent: 'space-between',
-            paddingHorizontal: 10
+            paddingHorizontal: windowWidth*0.05
         }}>
             <View style={{
                 width: '38%',
@@ -111,11 +111,11 @@ export default function Medicine({route, navigation}) {
                 showsHorizontalScrollIndicator={false}
                 ItemSeparatorComponent={
                     <View style={{
-                        width: 6,
-                        height: 6,
-                        borderRadius: 3,
+                        width: 4,
+                        height: 4,
+                        borderRadius: 2,
                         backgroundColor: colors.primary,
-                        marginVertical: 5,
+                        marginVertical: 7,
                         marginHorizontal: 10
                     }}>
 

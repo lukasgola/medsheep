@@ -21,18 +21,23 @@ export default function Order({navigation}) {
       amount: 30,
       symptoms: [
         {
+          id: 1,
           name: 'Ból głowy'
         },
         {
+          id: 2,
           name: 'Ból gardła'
         },
         {
+          id: 3,
           name: 'Gorączka'
         },
         {
+          id: 4,
           name: 'Ból mięśni'
         },
         {
+          id: 5,
           name: 'Bóle miesiączkowe'
         },
       ]
@@ -44,21 +49,26 @@ export default function Order({navigation}) {
       availability: true,
       price: 23.99,
       img: require('../assets/med/rutino.png'),
-      amount: 60,
+      amount: 90,
       symptoms: [
         {
+          id: 1,
           name: 'Ból głowy'
         },
         {
+          id: 2,
           name: 'Ból gardła'
         },
         {
+          id: 3,
           name: 'Gorączka'
         },
         {
+          id: 4,
           name: 'Ból mięśni'
         },
         {
+          id: 5,
           name: 'Bóle miesiączkowe'
         },
       ]
@@ -73,18 +83,23 @@ export default function Order({navigation}) {
       amount: 30,
       symptoms: [
         {
+          id: 1,
           name: 'Ból głowy'
         },
         {
+          id: 2,
           name: 'Ból gardła'
         },
         {
+          id: 3,
           name: 'Gorączka'
         },
         {
+          id: 4,
           name: 'Ból mięśni'
         },
         {
+          id: 5,
           name: 'Bóle miesiączkowe'
         },
       ]
@@ -99,18 +114,23 @@ export default function Order({navigation}) {
       amount: 30,
       symptoms: [
         {
+          id: 1,
           name: 'Ból głowy'
         },
         {
+          id: 2,
           name: 'Ból gardła'
         },
         {
+          id: 3,
           name: 'Gorączka'
         },
         {
+          id: 4,
           name: 'Ból mięśni'
         },
         {
+          id: 5,
           name: 'Bóle miesiączkowe'
         },
       ]
@@ -125,18 +145,23 @@ export default function Order({navigation}) {
       amount: 30,
       symptoms: [
         {
+          id: 1,
           name: 'Ból głowy'
         },
         {
+          id: 2,
           name: 'Ból gardła'
         },
         {
+          id: 3,
           name: 'Gorączka'
         },
         {
+          id: 4,
           name: 'Ból mięśni'
         },
         {
+          id: 5,
           name: 'Bóle miesiączkowe'
         },
       ]
@@ -148,21 +173,26 @@ export default function Order({navigation}) {
       availability: true,
       price: 23.99,
       img: require('../assets/med/rutino.png'),
-      amount: 60,
+      amount: 90,
       symptoms: [
         {
+          id: 1,
           name: 'Ból głowy'
         },
         {
+          id: 2,
           name: 'Ból gardła'
         },
         {
+          id: 3,
           name: 'Gorączka'
         },
         {
+          id: 4,
           name: 'Ból mięśni'
         },
         {
+          id: 5,
           name: 'Bóle miesiączkowe'
         },
       ]
@@ -177,18 +207,23 @@ export default function Order({navigation}) {
       amount: 30,
       symptoms: [
         {
+          id: 1,
           name: 'Ból głowy'
         },
         {
+          id: 2,
           name: 'Ból gardła'
         },
         {
+          id: 3,
           name: 'Gorączka'
         },
         {
+          id: 4,
           name: 'Ból mięśni'
         },
         {
+          id: 5,
           name: 'Bóle miesiączkowe'
         },
       ]
@@ -203,18 +238,23 @@ export default function Order({navigation}) {
       amount: 30,
       symptoms: [
         {
+          id: 1,
           name: 'Ból głowy'
         },
         {
+          id: 2,
           name: 'Ból gardła'
         },
         {
+          id: 3,
           name: 'Gorączka'
         },
         {
+          id: 4,
           name: 'Ból mięśni'
         },
         {
+          id: 5,
           name: 'Bóle miesiączkowe'
         },
       ]
