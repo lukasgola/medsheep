@@ -49,16 +49,28 @@ export default function SignUp(){
                     <Text style={{
                         fontSize: 24,
                         fontWeight: 'bold'
-                    }}>Create an account</Text>
+                    }}>Utwórz konto</Text>
                 </View>
                 
                 <View style={{ width: '100%', height: 50, justifyContent: 'center', alignItems: 'center', marginTop: 20 }}>
                     
                     <CustomInput
-                        name="username"
-                        placeholder="Username"
+                        name="name"
+                        placeholder="Imie"
                         control={control}
-                        rules={{required: 'Username is required'}}
+                        rules={{required: 'Imię jest wymagane'}}
+                        size={12} 
+                        color={colors.grey_l} 
+                        icon={'lock-closed-outline'}
+                    />
+                </View>
+                <View style={{ width: '100%', height: 50, justifyContent: 'center', alignItems: 'center', marginTop: 20 }}>
+                    
+                    <CustomInput
+                        name="surname"
+                        placeholder="Nazwisko"
+                        control={control}
+                        rules={{required: 'Nazwisko jest wymagane'}}
                         size={12} 
                         color={colors.grey_l} 
                         icon={'lock-closed-outline'}
@@ -70,8 +82,8 @@ export default function SignUp(){
                         control={control}
                         placeholder="Email"
                         rules={{
-                            required: 'Email is required',
-                            pattern: {value: EMAIL_REGEX, message: 'Email is invalid'},
+                            required: 'Email jest wymagany',
+                            pattern: {value: EMAIL_REGEX, message: 'Email jest nieprawidłowy'},
                         }}
                         size={12} 
                         color={colors.grey_l} 
@@ -82,14 +94,14 @@ export default function SignUp(){
                 <View style={{ width: '100%', height: 50, justifyContent: 'center', alignItems: 'center', marginTop: 20 }}>
                     <CustomInput
                         name="password"
-                        placeholder="Password"
+                        placeholder="Hasło"
                         secureTextEntry
                         control={control}
                         rules={{
-                            required: 'Password is required',
+                            required: 'Hasło jest wymagane',
                             minLength: {
-                            value: 3,
-                            message: 'Password should be minimum 3 characters long',
+                            value: 8,
+                            message: 'Hasło musi mieć przynajmniej 8 znaków',
                             },
                         }}
                         size={12} 
@@ -100,11 +112,11 @@ export default function SignUp(){
                 <View style={{ width: '100%', height: 50, justifyContent: 'center', alignItems: 'center', marginTop: 20 }}>
                     <CustomInput
                         name="password-repeat"
-                        placeholder="Repeat Password"
+                        placeholder="Powtórz hasło"
                         secureTextEntry
                         control={control}
                         rules={{
-                            validate: value => value === pwd || 'Password do not match',
+                            validate: value => value === pwd || 'Hasła nie są takie same',
                         }}
                         size={12} 
                         color={colors.grey_l} 
@@ -131,24 +143,24 @@ export default function SignUp(){
                 </TouchableOpacity>
                 <View 
                     style={{ width: '100%', marginTop: 10, flexWrap:'wrap', justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
-                    <Text style={{color: colors.grey_d}}>By registering you confirm that you accept our </Text>
+                    <Text style={{color: colors.grey_d}}>Rejestrując się akceptujesz </Text>
                     <TouchableOpacity
                         onPress={onTerms}
                     >
-                        <Text style={{color: colors.primary}}>Terms of Use </Text>
+                        <Text style={{color: colors.primary}}>Regulamin </Text>
                     </TouchableOpacity>
-                    <Text style={{color: colors.grey_d}}>and </Text>
+                    <Text style={{color: colors.grey_d}}>i </Text>
                     <TouchableOpacity
                         onPress={onPolicy}
                     >
-                        <Text style={{color: colors.primary}}>Privacy Policy</Text>
+                        <Text style={{color: colors.primary}}>Politykę Prywatności</Text>
                     </TouchableOpacity>
                 </View>
                 <TouchableOpacity 
                     onPress={onSignIn}
                     style={{ width: '100%', height: 50, justifyContent: 'center', alignItems: 'center', marginTop: 20, flexDirection: 'row' }}>
-                    <Text style={{color: colors.grey_d}}>Have an account?</Text>
-                    <Text style={{color: colors.primary}}>  Sign in!</Text>
+                    <Text style={{color: colors.grey_d}}>Masz ju konto?</Text>
+                    <Text style={{color: colors.primary}}>  Zaloguj się!</Text>
                 </TouchableOpacity>
             </View>
         </KeyboardAvoidingView>

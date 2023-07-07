@@ -56,7 +56,7 @@ export default function SignIn({navigation}){
                         control={control}
                         placeholder="Email"
                         rules={{
-                            required: 'Email is required',
+                            required: 'Email jest wymagany',
                             pattern: {value: EMAIL_REGEX, message: 'Email is invalid'},
                         }}
                         size={12} 
@@ -68,14 +68,14 @@ export default function SignIn({navigation}){
                 <View style={{ width: '100%', height: 50, justifyContent: 'center', alignItems: 'center', marginTop: 20 }}>
                     <CustomInput
                         name="password"
-                        placeholder="Password"
+                        placeholder="Hasło"
                         secureTextEntry
                         control={control}
                         rules={{
-                            required: 'Password is required',
+                            required: 'Hasło jest wymagane',
                             minLength: {
-                            value: 3,
-                            message: 'Password should be minimum 3 characters long',
+                            value: 8,
+                            message: 'Hasło musi mieć przynajmniej 8 znaków',
                             },
                         }}
                         size={12} 
@@ -98,18 +98,18 @@ export default function SignIn({navigation}){
                         color: colors.background, 
                         fontWeight: 'bold', 
                         fontSize: 18
-                    }}>Sign in</Text>
+                    }}>Zaloguj się</Text>
                 </TouchableOpacity>
                 <TouchableOpacity 
                     onPress={onSignUp}
                     style={{ width: '100%', height: 50, justifyContent: 'center', alignItems: 'center', marginTop: 20, flexDirection: 'row' }}>
-                    <Text style={{color: colors.grey_d}}>Don't have account?</Text>
-                    <Text style={{color: colors.primary}}>  Sign up!</Text>
+                    <Text style={{color: colors.grey_d}}>Nie masz konta?</Text>
+                    <Text style={{color: colors.primary}}>  Zarejestruj się!</Text>
                 </TouchableOpacity>
                 <TouchableOpacity 
                     onPress={onForgotPassword}
                     style={{ width: '100%', height: 50, justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
-                    <Text style={{color: colors.grey_d}}>Forgot password?</Text>
+                    <Text style={{color: colors.grey_d}}>Zapomniałeś hasła?</Text>
                 </TouchableOpacity>
             </View>
         </KeyboardAvoidingView>

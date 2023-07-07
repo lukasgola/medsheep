@@ -14,7 +14,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <ThemeProvider>
-         <BottomTabs/>
+         <LoginStack/>
       </ThemeProvider>
     </NavigationContainer>
   );

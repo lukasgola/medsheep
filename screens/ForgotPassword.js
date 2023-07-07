@@ -42,7 +42,7 @@ export default function ForgotPassword({navigation}){
                     <Text style={{
                         fontSize: 24,
                         fontWeight: 'bold'
-                    }}>Reset password</Text>
+                    }}>Zresetuj hasło</Text>
                 </View>
                 <View style={{ width: '100%', height: 50, justifyContent: 'center', alignItems: 'center', marginTop: 20 }}>
                     
@@ -52,7 +52,7 @@ export default function ForgotPassword({navigation}){
                         placeholder="Email"
                         rules={{
                             required: 'Email is required',
-                            pattern: {value: EMAIL_REGEX, message: 'Email is invalid'},
+                            pattern: {value: EMAIL_REGEX, message: 'Email jest nieprawidłowy'},
                         }}
                         size={12} 
                         color={colors.grey_l} 
@@ -79,8 +79,7 @@ export default function ForgotPassword({navigation}){
                 <TouchableOpacity 
                     onPress={onSignIn}
                     style={{ width: '100%', height: 50, justifyContent: 'center', alignItems: 'center', marginTop: 20, flexDirection: 'row' }}>
-                    <Text style={{color: colors.grey_d}}>Back to  </Text>
-                    <Text style={{color: colors.primary}}>Sign In</Text>
+                    <Text style={{color: colors.primary}}>Zaloguj się!</Text>
                 </TouchableOpacity>
             </View>
             
