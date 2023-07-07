@@ -18,7 +18,24 @@ export default function Order({navigation}) {
       availability: true,
       price: 12.99,
       img: require('../assets/med/apap_noc.jpg'),
-      amount: 30
+      amount: 30,
+      symptoms: [
+        {
+          name: 'Ból głowy'
+        },
+        {
+          name: 'Ból gardła'
+        },
+        {
+          name: 'Gorączka'
+        },
+        {
+          name: 'Ból mięśni'
+        },
+        {
+          name: 'Bóle miesiączkowe'
+        },
+      ]
     },
     {
       id: 2,
@@ -27,7 +44,24 @@ export default function Order({navigation}) {
       availability: true,
       price: 23.99,
       img: require('../assets/med/rutino.png'),
-      amount: 60
+      amount: 60,
+      symptoms: [
+        {
+          name: 'Ból głowy'
+        },
+        {
+          name: 'Ból gardła'
+        },
+        {
+          name: 'Gorączka'
+        },
+        {
+          name: 'Ból mięśni'
+        },
+        {
+          name: 'Bóle miesiączkowe'
+        },
+      ]
     },
     {
       id: 3,
@@ -36,7 +70,24 @@ export default function Order({navigation}) {
       availability: false,
       price: 19.99,
       img: require('../assets/med/eopiryna.jpg'),
-      amount: 30
+      amount: 30,
+      symptoms: [
+        {
+          name: 'Ból głowy'
+        },
+        {
+          name: 'Ból gardła'
+        },
+        {
+          name: 'Gorączka'
+        },
+        {
+          name: 'Ból mięśni'
+        },
+        {
+          name: 'Bóle miesiączkowe'
+        },
+      ]
     },
     {
       id: 4,
@@ -45,7 +96,24 @@ export default function Order({navigation}) {
       availability: true,
       price: 49.99,
       img: require('../assets/med/apap_noc.jpg'),
-      amount: 30
+      amount: 30,
+      symptoms: [
+        {
+          name: 'Ból głowy'
+        },
+        {
+          name: 'Ból gardła'
+        },
+        {
+          name: 'Gorączka'
+        },
+        {
+          name: 'Ból mięśni'
+        },
+        {
+          name: 'Bóle miesiączkowe'
+        },
+      ]
     },
     {
       id: 5,
@@ -54,7 +122,24 @@ export default function Order({navigation}) {
       availability: true,
       price: 12.99,
       img: require('../assets/med/apap_noc.jpg'),
-      amount: 30
+      amount: 30,
+      symptoms: [
+        {
+          name: 'Ból głowy'
+        },
+        {
+          name: 'Ból gardła'
+        },
+        {
+          name: 'Gorączka'
+        },
+        {
+          name: 'Ból mięśni'
+        },
+        {
+          name: 'Bóle miesiączkowe'
+        },
+      ]
     },
     {
       id: 6,
@@ -63,7 +148,24 @@ export default function Order({navigation}) {
       availability: true,
       price: 23.99,
       img: require('../assets/med/rutino.png'),
-      amount: 60
+      amount: 60,
+      symptoms: [
+        {
+          name: 'Ból głowy'
+        },
+        {
+          name: 'Ból gardła'
+        },
+        {
+          name: 'Gorączka'
+        },
+        {
+          name: 'Ból mięśni'
+        },
+        {
+          name: 'Bóle miesiączkowe'
+        },
+      ]
     },
     {
       id: 7,
@@ -72,7 +174,24 @@ export default function Order({navigation}) {
       availability: false,
       price: 19.99,
       img: require('../assets/med/eopiryna.jpg'),
-      amount: 30
+      amount: 30,
+      symptoms: [
+        {
+          name: 'Ból głowy'
+        },
+        {
+          name: 'Ból gardła'
+        },
+        {
+          name: 'Gorączka'
+        },
+        {
+          name: 'Ból mięśni'
+        },
+        {
+          name: 'Bóle miesiączkowe'
+        },
+      ]
     },
     {
       id: 8,
@@ -81,7 +200,24 @@ export default function Order({navigation}) {
       availability: true,
       price: 49.99,
       img: require('../assets/med/apap_noc.jpg'),
-      amount: 30
+      amount: 30,
+      symptoms: [
+        {
+          name: 'Ból głowy'
+        },
+        {
+          name: 'Ból gardła'
+        },
+        {
+          name: 'Gorączka'
+        },
+        {
+          name: 'Ból mięśni'
+        },
+        {
+          name: 'Bóle miesiączkowe'
+        },
+      ]
     }
   ]
 
@@ -118,7 +254,9 @@ export default function Order({navigation}) {
 
   const Item = ({item}) => {
     return(
-      <TouchableOpacity style={{
+      <TouchableOpacity 
+      onPress={() => navigation.navigate('Lek', {item: item})}
+      style={{
         backgroundColor: colors.background,
         width: '90%',
         height: 100,

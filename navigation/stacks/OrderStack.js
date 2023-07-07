@@ -1,6 +1,7 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import Order from '../../screens/Order';
+import Medicine from '../../screens/Medicine';
 
 import {useTheme} from '../../theme/ThemeProvider';
 
@@ -24,6 +25,10 @@ export default function OrderStack() {
       <Stack.Screen 
         name="Zamów" 
         component={Order}
+      />
+      <Stack.Screen 
+        name="Lek" 
+        component={Medicine}
       />
     </Stack.Navigator>
   );
