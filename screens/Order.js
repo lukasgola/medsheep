@@ -1,4 +1,4 @@
-import { useLayoutEffect } from 'react';
+import { useLayoutEffect, useState } from 'react';
 
 import { StyleSheet, Text, View, SafeAreaView, FlatList, TouchableOpacity, Image } from 'react-native';
 
@@ -7,15 +7,6 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import {useTheme} from '../theme/ThemeProvider';
 
 export default function Order({navigation}) {
-
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerSearchBarOptions: {
-        visible: true,
-        placeholder: 'Szukaj'
-      },
-    });
-  }, [navigation]);
 
   const {colors} = useTheme();
 
@@ -94,6 +85,37 @@ export default function Order({navigation}) {
     }
   ]
 
+
+  const [filteredData, setFilteredData] = useState(DATA);
+
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerSearchBarOptions: {
+        visible: true,
+        placeholder: 'Szukaj',
+        onChangeText: (event) => {
+          searchFilterFunction(event.nativeEvent.text);
+        },
+      },
+    });
+  }, [navigation]);
+
+  const searchFilterFunction = (text) => {
+    if(text){ 
+        const newData = DATA.filter(item => {
+            const itemData = item.name ? item.name.toUpperCase() : ''.toUpperCase();
+            const textData = text.toUpperCase();
+            return itemData.indexOf(textData) > -1;
+        })
+        
+        setFilteredData(newData);
+    } else {
+        setFilteredData(DATA);
+    }
+  }
+
+
   const Item = ({item}) => {
     return(
       <TouchableOpacity style={{
@@ -123,20 +145,19 @@ export default function Order({navigation}) {
         }}
           source={item.img}
         />
-        <View style={{marginLeft: 20}}>
+        <View style={{marginLeft: 20, justifyContent: 'center'}}>
           <Text style={{
             fontSize: 18,
             fontWeight: 'bold',
-            marginTop: 10,
             color: colors.text
           }}>{item.name}</Text>
           <Text style={{
-            fontSize: 16,
+            fontSize: 14,
             marginTop: 5,
             color: colors.grey_d
           }}>{item.amount} tab.</Text>
           <Text style={{
-            fontSize: 24,
+            fontSize: 20,
             marginTop: 5,
             color: colors.text
           }}>{item.price} zł</Text>
@@ -166,7 +187,7 @@ export default function Order({navigation}) {
       contentInsetAdjustmentBehavior="never"
     >
       <FlatList
-        data={DATA}
+        data={filteredData}
         renderItem={({item}) => <Item item={item} />}
         keyExtractor={item => item.id}
         style={{

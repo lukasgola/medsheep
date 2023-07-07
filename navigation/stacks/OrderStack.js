@@ -23,7 +23,7 @@ export default function OrderStack() {
     >
       <Stack.Screen 
         name="Zamów" 
-        component={Order} 
+        component={Order}
       />
     </Stack.Navigator>
   );
