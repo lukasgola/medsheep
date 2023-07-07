@@ -25,7 +25,7 @@ export default function BottomTabs() {
             justifyContent: 'center',
         }}>
             <MaterialCommunityIcons name={props.focused ? props.filled : props.icon} size={25} color={props.focused ? colors.primary : colors.grey} />
-            <Text style={{color: props.focused ? colors.text : colors.grey, fontSize: 12}}>{props.title}</Text>
+            <Text style={{color: props.focused ? colors.text : colors.grey_d, fontSize: 12}}>{props.title}</Text>
         </View>
     )
   }

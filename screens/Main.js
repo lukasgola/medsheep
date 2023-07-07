@@ -46,11 +46,19 @@ export default function Main({navigation}) {
           width: boxWidth,
           height: windowHeight/3.05,
           backgroundColor: colors.background,
-          borderRadius: boxWidth/10,
+          borderRadius: 20,
           marginTop: 20,
           justifyContent: 'center',
           alignItems: 'center',
-          marginHorizontal: boxWidth*0.05
+          marginHorizontal: boxWidth*0.05,
+          shadowColor: "#000",
+          shadowOffset: {
+            width: 0,
+            height: 2,
+          },
+          shadowOpacity: 0.13,
+          shadowRadius: 2.62,
+          elevation: 4,
         }}
         onPress={() => navigation.navigate(item.navigation)}
       
