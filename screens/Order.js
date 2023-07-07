@@ -261,8 +261,27 @@ export default function Order({navigation}) {
     }
   ]
 
+  const CATDATA = [
+    {
+      id: 1,
+      category: 'Ból głowy'
+    },
+    {
+      id: 2,
+      category: 'Gorączka'
+    },
+    {
+      id: 3,
+      category: 'Katar'
+    },
+    {
+      id: 4,
+      category: 'Przeziębienie'
+    },
+  ]
 
   const [filteredData, setFilteredData] = useState(DATA);
+  const [catSelected, setCatSelected] = useState(1);
 
 
   useLayoutEffect(() => {
@@ -292,7 +311,7 @@ export default function Order({navigation}) {
   }
 
 
-  const Item = ({item}) => {
+  const MedItem = ({item}) => {
     return(
       <TouchableOpacity 
       onPress={() => navigation.navigate('Lek', {item: item})}
@@ -314,13 +333,13 @@ export default function Order({navigation}) {
         elevation: 4,
       }}>
         <Image style={{
-          backgroundColor: colors.grey_l,
           width: 70,
           height: 70,
           borderRadius: 10,
           marginLeft: 15,
           marginTop: 15,
         }}
+        resizeMode='contain'
           source={item.img}
         />
         <View style={{marginLeft: 20, justifyContent: 'center'}}>
@@ -359,6 +378,27 @@ export default function Order({navigation}) {
     )
   }
 
+  const CatItem = ({item}) => {
+    return(
+      <TouchableOpacity style={{
+        height: 50,
+        paddingHorizontal: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: colors.background,
+        borderRadius: 10
+      }}
+        onPress={() => setCatSelected(item.id)}
+      >
+        <Text style={{
+          fontSize: 16,
+          fontWeight: item.id == catSelected ? 'bold' : 'regular',
+          color: item.id == catSelected ? colors.text : colors.grey_d
+        }}>{item.category}</Text>
+      </TouchableOpacity>
+    )
+  }
+
   return (
     <SafeAreaView 
       style={styles.container}
@@ -366,11 +406,31 @@ export default function Order({navigation}) {
     >
       <FlatList
         data={filteredData}
-        renderItem={({item}) => <Item item={item} />}
+        renderItem={({item}) => <MedItem item={item} />}
         keyExtractor={item => item.id}
         style={{
           width: '100%'
         }}
+        ListHeaderComponent={
+          <FlatList
+            data={CATDATA}
+            renderItem={({item}) => <CatItem item={item} />}
+            keyExtractor={item => item.id}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            ItemSeparatorComponent={
+              <View style={{
+                  width: 20,
+              }}>
+
+              </View>
+            }
+            style={{
+              marginTop: 10,
+              paddingHorizontal: 20
+            }}
+          />
+        }
       />
     </SafeAreaView>
   );
