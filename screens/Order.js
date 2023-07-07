@@ -1,10 +1,21 @@
+import { useLayoutEffect } from 'react';
+
 import { StyleSheet, Text, View, SafeAreaView, FlatList, TouchableOpacity, Image } from 'react-native';
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import {useTheme} from '../theme/ThemeProvider';
 
-export default function Order() {
+export default function Order({navigation}) {
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerSearchBarOptions: {
+        visible: true,
+        placeholder: 'Szukaj'
+      },
+    });
+  }, [navigation]);
 
   const {colors} = useTheme();
 
@@ -150,7 +161,10 @@ export default function Order() {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView 
+      style={styles.container}
+      contentInsetAdjustmentBehavior="never"
+    >
       <FlatList
         data={DATA}
         renderItem={({item}) => <Item item={item} />}

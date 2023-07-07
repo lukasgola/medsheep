@@ -74,7 +74,7 @@ export default function ForgotPassword({navigation}){
                         color: colors.background, 
                         fontWeight: 'bold', 
                         fontSize: 18
-                    }}>Send</Text>
+                    }}>Wyślij</Text>
                 </TouchableOpacity>
                 <TouchableOpacity 
                     onPress={onSignIn}

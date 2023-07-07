@@ -1,13 +1,30 @@
-import { createStackNavigator } from '@react-navigation/stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import Order from '../../screens/Order';
 
-const Stack = createStackNavigator();
+import {useTheme} from '../../theme/ThemeProvider';
+
+const Stack = createNativeStackNavigator();
 
 export default function OrderStack() {
+
+
+  const {colors} = useTheme();
+
   return (
-    <Stack.Navigator>
-      <Stack.Screen name="Order" component={Order} />
+    <Stack.Navigator
+      initialRouteName='Zamów'
+      screenOptions={{
+        headerTintColor: colors.primary,
+        headerTitleStyle: {
+          color: colors.text,
+      },
+      }}
+    >
+      <Stack.Screen 
+        name="Zamów" 
+        component={Order} 
+      />
     </Stack.Navigator>
   );
 }

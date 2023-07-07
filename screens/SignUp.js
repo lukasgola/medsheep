@@ -139,7 +139,7 @@ export default function SignUp(){
                         color: colors.background, 
                         fontWeight: 'bold', 
                         fontSize: 18
-                    }}>Register</Text>
+                    }}>Zarejestruj</Text>
                 </TouchableOpacity>
                 <View 
                     style={{ width: '100%', marginTop: 10, flexWrap:'wrap', justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
