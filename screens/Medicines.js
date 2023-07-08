@@ -6,7 +6,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 import {useTheme} from '../theme/ThemeProvider';
 
-export default function Order({navigation}) {
+export default function Medicines({navigation}) {
 
   const {colors} = useTheme();
 

@@ -50,6 +50,7 @@ export default function Medicine({route, navigation}) {
                 }}>{item.price} zł</Text>
             </View>
             <TouchableOpacity 
+                onPress={() => navigation.navigate('Dodaj do koszyka')}
                 style={{ 
                     width: '58%',
                     height: '100%',
