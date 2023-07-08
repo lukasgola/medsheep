@@ -2,7 +2,6 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import Medicines from '../../screens/Medicines';
 import Medicine from '../../screens/Medicine';
-import AddToCart from '../../screens/AddToCart';
 
 import {useTheme} from '../../theme/ThemeProvider';
 
@@ -20,7 +19,7 @@ export default function OrderStack() {
         headerTintColor: colors.primary,
         headerTitleStyle: {
           color: colors.text,
-      },
+        },
       }}
     >
       <Stack.Screen 
@@ -30,15 +29,6 @@ export default function OrderStack() {
       <Stack.Screen 
         name="Lek" 
         component={Medicine}
-      />
-      <Stack.Screen 
-        name="Dodaj do koszyka" 
-        component={AddToCart}
-        options={{
-          presentation: 'card',
-          headerShown: false,
-
-        }}
       />
     </Stack.Navigator>
   );

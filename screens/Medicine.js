@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity, Dimensions, FlatList } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, Dimensions, FlatList, Modal, TextInput } from 'react-native';
 
 import {useTheme} from '../theme/ThemeProvider';
 
@@ -13,8 +13,17 @@ export default function Medicine({route, navigation}) {
     const windowWidth = Dimensions.get('screen').width;
 
     const [liked, setLiked] = useState(false)
+    const [modalVisible, setModalVisible] = useState(false)
+    const [number, setNumber] = useState(1)
+    const [price, setPrice] = useState(item.price*number)
 
+    const goUp = () => {
+        setNumber(number+1)
+    }
 
+    const goDown = (value) => {
+        number == 0 ? console.log('You can not') : [setNumber(number-1), setPrice(item.price*(number-1))]
+    }
 
     const Item = ({item}) => {
         return(
@@ -27,6 +36,128 @@ export default function Medicine({route, navigation}) {
 
   return (
     <View style={styles.container}>
+        <Modal
+            animationType="fade"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => {
+                Alert.alert('Modal has been closed.');
+                setModalVisible(!modalVisible);
+            }}
+        >
+            <View style={{
+                flex: 1,
+                backgroundColor: 'black',
+                opacity: 0.3
+            }}>
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={modalVisible}
+                    onRequestClose={() => {
+                        Alert.alert('Modal has been closed.');
+                        setModalVisible(!modalVisible);
+                    }}
+                >
+                    <View style={{
+                        width: '100%',
+                        height: 300,
+                        backgroundColor: colors.background,
+                        position: 'absolute',
+                        bottom: 0,
+                        borderTopLeftRadius: 20,
+                        borderTopRightRadius: 20,
+                        paddingHorizontal: '5%',
+                        paddingVertical: 10,
+                        zIndex: 10
+                    }}>
+                        <View style={{
+                            flexDirection: 'row',
+                            width: '100%',
+                            height: 40,
+                            alignItems: 'center',
+                            justifyContent: 'space-between'
+                        }}>
+                            <Text style={{
+                                fontSize: 18,
+                                fontWeight: 'bold',
+                                color: colors.text
+                            }}>Dodaj do koszyka</Text>
+                            <TouchableOpacity onPress={() => setModalVisible(false)}>
+                                <MaterialCommunityIcons name={'close-circle-outline'} size={30} style={{marginLeft: 3}} color={colors.text} />
+                            </TouchableOpacity>
+                        </View>
+                        <View style={{
+                            width: '100%',
+                            height: 100,
+                            backgroundColor: colors.background,
+                            flexDirection: 'row',
+                            justifyContent: 'center',
+                            marginTop: 40
+                        }}>
+                            <TouchableOpacity 
+                                onPress={() => goDown()}
+                                style={{
+                                    width: 50,
+                                    height: 50,
+                                    borderBottomLeftRadius: 10,
+                                    borderTopLeftRadius: 10,
+                                    backgroundColor: colors.grey_l,
+                                    justifyContent: 'center',
+                                    alignItems: 'center'
+                                }}
+                            >
+                                <MaterialCommunityIcons name={'minus'} size={40} color={colors.text} />
+                            </TouchableOpacity>
+                            <TextInput
+                                onChangeText={(value) => value == '' ? setNumber(0) : setNumber(parseInt(value))}
+                                value={number.toString()}
+                                keyboardType="number-pad"
+                                selectionColor={colors.primary}
+                                enterKeyHint='done'
+                                textAlign='center'
+                                style={{
+                                    height: 50,
+                                    width: 50,
+                                    borderWidth: 0,
+                                    backgroundColor: colors.grey_l,
+                                    fontSize: 18,
+                                }}
+                            />
+                            
+                            <TouchableOpacity 
+                                onPress={() => goUp()}
+                                style={{
+                                    width: 50,
+                                    height: 50,
+                                    borderBottomRightRadius: 10,
+                                    borderTopRightRadius: 10,
+                                    backgroundColor: colors.grey_l,
+                                    justifyContent: 'center',
+                                    alignItems: 'center'
+                                }}
+                            >
+                                <MaterialCommunityIcons name={'plus'} size={40} color={colors.text} />
+                            </TouchableOpacity>
+                        </View>
+                        <TouchableOpacity style={{
+                            width: '40%',
+                            height: 50,
+                            borderRadius: 10,
+                            backgroundColor: colors.primary,
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }}>
+                            <Text style={{
+                                fontSize: 20,
+                                fontWeight: 'bold',
+                                color: colors.background
+                            }}>{price}</Text>
+                        </TouchableOpacity>
+                    </View>
+                </Modal>
+            </View>
+        </Modal>
         <View style={{
             flexDirection: 'row',
             position: 'absolute',
@@ -50,7 +181,7 @@ export default function Medicine({route, navigation}) {
                 }}>{item.price} zł</Text>
             </View>
             <TouchableOpacity 
-                onPress={() => navigation.navigate('Dodaj do koszyka')}
+                onPress={() => setModalVisible(true)}
                 style={{ 
                     width: '58%',
                     height: '100%',
