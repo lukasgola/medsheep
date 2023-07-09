@@ -19,10 +19,11 @@ export default function Medicine({route, navigation}) {
 
     const goUp = () => {
         setNumber(number+1)
+        setPrice((item.price*(number+1)).toFixed(2))
     }
 
-    const goDown = (value) => {
-        number == 0 ? console.log('You can not') : [setNumber(number-1), setPrice(item.price*(number-1))]
+    const goDown = () => {
+        number == 0 ? console.log('You can not') : [setNumber(number-1), setPrice((item.price*(number-1)).toFixed(2))]
     }
 
     const Item = ({item}) => {
@@ -146,13 +147,14 @@ export default function Medicine({route, navigation}) {
                             borderRadius: 10,
                             backgroundColor: colors.primary,
                             justifyContent: 'center',
-                            alignItems: 'center'
+                            alignItems: 'center',
+                            marginLeft: '30%'
                         }}>
                             <Text style={{
                                 fontSize: 20,
                                 fontWeight: 'bold',
                                 color: colors.background
-                            }}>{price}</Text>
+                            }}>{price} zł</Text>
                         </TouchableOpacity>
                     </View>
                 </Modal>
