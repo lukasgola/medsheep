@@ -343,17 +343,17 @@ export default function Medicines({navigation}) {
         />
         <View style={{marginLeft: 20, justifyContent: 'center'}}>
           <Text style={{
-            fontSize: 18,
+            fontSize: 16,
             fontWeight: 'bold',
             color: colors.text
           }}>{item.name}</Text>
           <Text style={{
-            fontSize: 14,
+            fontSize: 12,
             marginTop: 5,
             color: colors.grey_d
           }}>{item.amount} tab.</Text>
           <Text style={{
-            fontSize: 20,
+            fontSize: 18,
             marginTop: 5,
             color: colors.text
           }}>{item.price} zł</Text>
@@ -380,7 +380,7 @@ export default function Medicines({navigation}) {
   const CatItem = ({item}) => {
     return(
       <TouchableOpacity style={{
-        height: 50,
+        height: 40,
         paddingHorizontal: 20,
         justifyContent: 'center',
         alignItems: 'center',
@@ -390,7 +390,7 @@ export default function Medicines({navigation}) {
         onPress={() => setCatSelected(item.id)}
       >
         <Text style={{
-          fontSize: 16,
+          fontSize: 14,
           fontWeight: item.id == catSelected ? 'bold' : 'regular',
           color: item.id == catSelected ? colors.text : colors.grey_d
         }}>{item.category}</Text>
@@ -410,9 +410,6 @@ export default function Medicines({navigation}) {
         data={filteredData}
         renderItem={({item}) => <MedItem item={item} />}
         keyExtractor={item => item.id}
-        style={{
-          width: '100%'
-        }}
         ListHeaderComponent={
           <FlatList
             data={CATDATA}
@@ -428,7 +425,7 @@ export default function Medicines({navigation}) {
               </View>
             }
             style={{
-              marginTop: 10,
+              marginTop: 20,
               paddingHorizontal: 20
             }}
           />

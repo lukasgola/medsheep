@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Text, View, Image, TouchableOpacity, Dimensions, FlatList, Modal, TextInput } from 'react-native';
+import { Text, View, Image, TouchableOpacity, Dimensions, FlatList, Modal, TextInput, KeyboardAvoidingView } from 'react-native';
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -29,6 +29,7 @@ export default function Medicine({route, navigation}) {
         number == 0 ? console.log('You can not') : [setNumber(number-1), setPrice((item.price*(number-1)).toFixed(2))]
     }
 
+
     const Item = ({item}) => {
         return(
             <Text style={{
@@ -41,7 +42,7 @@ export default function Medicine({route, navigation}) {
   return (
     <View style={{
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: colors.background,
         padding: '5%'
     }}>
         <Modal
@@ -67,17 +68,20 @@ export default function Medicine({route, navigation}) {
                         setModalVisible(!modalVisible);
                     }}
                 >
-                    <View style={{
-                        width: '100%',
-                        height: 300,
-                        backgroundColor: colors.background,
-                        position: 'absolute',
-                        bottom: 0,
-                        borderTopLeftRadius: 20,
-                        borderTopRightRadius: 20,
-                        paddingHorizontal: '5%',
-                        paddingVertical: 10,
-                        zIndex: 10
+                    <KeyboardAvoidingView
+                        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                        keyboardVerticalOffset={300}
+                        style={{
+                            width: '100%',
+                            height: 300,
+                            backgroundColor: colors.background,
+                            position: 'absolute',
+                            bottom: 0,
+                            borderTopLeftRadius: 20,
+                            borderTopRightRadius: 20,
+                            paddingHorizontal: '5%',
+                            paddingVertical: 10,
+                            zIndex: 10
                     }}>
                         <View style={{
                             flexDirection: 'row',
@@ -118,7 +122,7 @@ export default function Medicine({route, navigation}) {
                                 <MaterialCommunityIcons name={'minus'} size={40} color={colors.text} />
                             </TouchableOpacity>
                             <TextInput
-                                onChangeText={(value) => value == '' ? setNumber(0) : setNumber(parseInt(value))}
+                                onChangeText={(value) => value == '' ? [setNumber(0), setPrice(0)] : [setNumber(parseInt(value)), setPrice((item.price*(value)).toFixed(2))]}
                                 value={number.toString()}
                                 keyboardType="number-pad"
                                 selectionColor={colors.primary}
@@ -163,7 +167,7 @@ export default function Medicine({route, navigation}) {
                                 color: colors.background
                             }}>{price} zł</Text>
                         </TouchableOpacity>
-                    </View>
+                    </KeyboardAvoidingView>
                 </Modal>
             </View>
         </Modal>
@@ -172,9 +176,10 @@ export default function Medicine({route, navigation}) {
             position: 'absolute',
             bottom: 20,
             width: windowWidth, 
-            height: 60, 
+            height: 50, 
             justifyContent: 'space-between',
-            paddingHorizontal: windowWidth*0.05
+            paddingHorizontal: windowWidth*0.05,
+            zIndex: 1
         }}>
             <View style={{
                 width: '38%',
@@ -202,7 +207,7 @@ export default function Medicine({route, navigation}) {
                 <Text style={{
                     color: colors.background, 
                     fontWeight: 'bold', 
-                    fontSize: 18
+                    fontSize: 16
                 }}>Dodaj do koszyka</Text>
             </TouchableOpacity>
         </View>
@@ -233,12 +238,12 @@ export default function Medicine({route, navigation}) {
         />
         <Text style={{
             color: colors.text,
-            fontSize: 26,
+            fontSize: 24,
             fontWeight: 'bold'
         }}>{item.name}</Text>
         <Text style={{
             color: colors.grey_d,
-            fontSize: 18,
+            fontSize: 16,
             marginTop: 5,
         }}>{item.amount} tabletek</Text>
         <View style={{
@@ -266,13 +271,13 @@ export default function Medicine({route, navigation}) {
         </View>
         <Text style={{
             color: colors.text,
-            fontSize: 24,
+            fontSize: 20,
             fontWeight: 'bold',
             marginTop: 20,
         }}>Opis</Text>
         <Text style={{
             color: colors.grey_d,
-            fontSize: 18,
+            fontSize: 16,
             marginTop: 5,
         }}>{item.desc}</Text>
     </View>
