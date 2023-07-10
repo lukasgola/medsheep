@@ -1,9 +1,12 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity, Dimensions, FlatList, Modal, TextInput } from 'react-native';
+import { useState } from 'react';
+import { Text, View, Image, TouchableOpacity, Dimensions, FlatList, Modal, TextInput } from 'react-native';
+
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import {useTheme} from '../theme/ThemeProvider';
 
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { useState } from 'react';
+
+
 
 export default function Medicine({route, navigation}) {
 
@@ -36,7 +39,11 @@ export default function Medicine({route, navigation}) {
     }
 
   return (
-    <View style={styles.container}>
+    <View style={{
+        flex: 1,
+        backgroundColor: '#fff',
+        padding: '5%'
+    }}>
         <Modal
             animationType="fade"
             transparent={true}
@@ -215,7 +222,7 @@ export default function Medicine({route, navigation}) {
             }}
             onPress={() => setLiked(!liked)}
         >
-            <MaterialCommunityIcons name={liked ? 'heart' : 'heart-outline'} size={25} style={{marginLeft: 3}} color={liked ? colors.primary : colors.text} />
+            <MaterialCommunityIcons name={liked ? 'heart' : 'heart-outline'} size={25} color={liked ? colors.primary : colors.text} />
         </TouchableOpacity>
         
 
@@ -271,13 +278,3 @@ export default function Medicine({route, navigation}) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    padding: '5%'
-    //alignItems: 'center',
-    //justifyContent: 'center',
-  },
-});

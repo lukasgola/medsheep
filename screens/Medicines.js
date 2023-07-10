@@ -1,6 +1,5 @@
 import { useLayoutEffect, useState } from 'react';
-
-import { StyleSheet, Text, View, SafeAreaView, FlatList, TouchableOpacity, Image } from 'react-native';
+import { Text, View, SafeAreaView, FlatList, TouchableOpacity, Image } from 'react-native';
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -401,8 +400,11 @@ export default function Medicines({navigation}) {
 
   return (
     <SafeAreaView 
-      style={styles.container}
-      contentInsetAdjustmentBehavior="never"
+      style={{
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
     >
       <FlatList
         data={filteredData}
@@ -435,11 +437,3 @@ export default function Medicines({navigation}) {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

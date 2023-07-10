@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, SafeAreaView, FlatList, Image, TouchableOpacity, Dimensions } from 'react-native';
+import { Text, View, SafeAreaView, FlatList, Image, TouchableOpacity, Dimensions } from 'react-native';
 
 import {useTheme} from '../theme/ThemeProvider';
 
@@ -83,7 +83,11 @@ export default function Main({navigation}) {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={{
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+    }}>
       <FlatList
         data={DATA}
         renderItem={({item}) => <Item item={item} />}
@@ -122,11 +126,3 @@ export default function Main({navigation}) {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

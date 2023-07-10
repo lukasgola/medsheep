@@ -1,12 +1,14 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+import {useTheme} from '../../theme/ThemeProvider';
+
+//Screens
 import Main from '../../screens/Main';
 import Calendar from '../../screens/Calendar';
 import Doctor from '../../screens/Doctor';
 import Search from '../../screens/Search';
 import Results from '../../screens/Results';
 
-import {useTheme} from '../../theme/ThemeProvider';
 
 const Stack = createNativeStackNavigator();
 

@@ -1,9 +1,12 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+import {useTheme} from '../../theme/ThemeProvider';
+
+//Screens
 import Medicines from '../../screens/Medicines';
 import Medicine from '../../screens/Medicine';
 
-import {useTheme} from '../../theme/ThemeProvider';
+
 
 const Stack = createNativeStackNavigator();
 
