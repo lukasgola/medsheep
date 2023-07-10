@@ -6,8 +6,6 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import {useTheme} from '../theme/ThemeProvider';
 
 
-
-
 export default function Medicine({route, navigation}) {
 
     const {item} = route.params;
@@ -40,10 +38,13 @@ export default function Medicine({route, navigation}) {
     }
 
   return (
-    <View style={{
-        flex: 1,
-        backgroundColor: colors.background,
-        padding: '5%'
+    <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        //keyboardVerticalOffset={300}
+        style={{
+            flex: 1,
+            backgroundColor: colors.background,
+            padding: '5%'
     }}>
         <Modal
             animationType="fade"
@@ -68,12 +69,10 @@ export default function Medicine({route, navigation}) {
                         setModalVisible(!modalVisible);
                     }}
                 >
-                    <KeyboardAvoidingView
-                        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                        keyboardVerticalOffset={300}
+                    <View
                         style={{
                             width: '100%',
-                            height: 300,
+                            //height: 250,
                             backgroundColor: colors.background,
                             position: 'absolute',
                             bottom: 0,
@@ -94,7 +93,7 @@ export default function Medicine({route, navigation}) {
                                 fontSize: 18,
                                 fontWeight: 'bold',
                                 color: colors.text
-                            }}>Dodaj do koszyka</Text>
+                            }}>Dodano do koszyka</Text>
                             <TouchableOpacity onPress={() => setModalVisible(false)}>
                                 <MaterialCommunityIcons name={'close-circle-outline'} size={30} style={{marginLeft: 3}} color={colors.text} />
                             </TouchableOpacity>
@@ -102,121 +101,91 @@ export default function Medicine({route, navigation}) {
                         <View style={{
                             width: '100%',
                             height: 100,
-                            backgroundColor: colors.background,
+                            paddingHorizontal: '5%',
                             flexDirection: 'row',
-                            justifyContent: 'center',
-                            marginTop: 40
-                        }}>
-                            <TouchableOpacity 
-                                onPress={() => goDown()}
-                                style={{
-                                    width: 50,
-                                    height: 50,
-                                    borderBottomLeftRadius: 10,
-                                    borderTopLeftRadius: 10,
-                                    backgroundColor: colors.grey_l,
-                                    justifyContent: 'center',
-                                    alignItems: 'center'
-                                }}
-                            >
-                                <MaterialCommunityIcons name={'minus'} size={40} color={colors.text} />
-                            </TouchableOpacity>
-                            <TextInput
-                                onChangeText={(value) => value == '' ? [setNumber(0), setPrice(0)] : [setNumber(parseInt(value)), setPrice((item.price*(value)).toFixed(2))]}
-                                value={number.toString()}
-                                keyboardType="number-pad"
-                                selectionColor={colors.primary}
-                                enterKeyHint='done'
-                                textAlign='center'
-                                style={{
-                                    height: 50,
-                                    width: 50,
-                                    borderWidth: 0,
-                                    backgroundColor: colors.grey_l,
-                                    fontSize: 18,
-                                }}
-                            />
-                            
-                            <TouchableOpacity 
-                                onPress={() => goUp()}
-                                style={{
-                                    width: 50,
-                                    height: 50,
-                                    borderBottomRightRadius: 10,
-                                    borderTopRightRadius: 10,
-                                    backgroundColor: colors.grey_l,
-                                    justifyContent: 'center',
-                                    alignItems: 'center'
-                                }}
-                            >
-                                <MaterialCommunityIcons name={'plus'} size={40} color={colors.text} />
-                            </TouchableOpacity>
-                        </View>
-                        <TouchableOpacity style={{
-                            width: '40%',
-                            height: 50,
-                            borderRadius: 10,
-                            backgroundColor: colors.primary,
-                            justifyContent: 'center',
                             alignItems: 'center',
-                            marginLeft: '30%'
+                            justifyContent: 'space-between',
                         }}>
+                            <Image style={{
+                                width: 80,
+                                height: 80,
+                            }} source={item.img} resizeMode='contain' />
+                            <Text style={{
+                                fontSize: 20,
+                            }}>x{number}</Text>
                             <Text style={{
                                 fontSize: 20,
                                 fontWeight: 'bold',
-                                color: colors.background
                             }}>{price} zł</Text>
-                        </TouchableOpacity>
-                    </KeyboardAvoidingView>
+                        </View>
+                        <View style={{
+                            width: '100%',
+                            height: 50,
+                            backgroundColor: colors.background,
+                            flexDirection: 'row',
+                            justifyContent: 'space-around',
+                            marginTop: 20,
+                            marginBottom: 40
+                        }}>
+                            <TouchableOpacity style={{
+                                width: '40%',
+                                height: 50,
+                                borderRadius: 10,
+                                backgroundColor: colors.grey_l,
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                            }}>
+                                <Text style={{
+                                    fontSize: 20,
+                                    fontWeight: 'bold',
+                                    color: colors.text
+                                }}>Cofnij</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={{
+                                width: '50%',
+                                height: 50,
+                                borderRadius: 10,
+                                backgroundColor: colors.primary,
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                            }}>
+                                <Text style={{
+                                    fontSize: 20,
+                                    fontWeight: 'bold',
+                                    color: colors.background
+                                }}>Kontynuuj</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
                 </Modal>
             </View>
         </Modal>
-        <View style={{
-            flexDirection: 'row',
-            position: 'absolute',
-            bottom: 20,
-            width: windowWidth, 
-            height: 50, 
-            justifyContent: 'space-between',
-            paddingHorizontal: windowWidth*0.05,
-            zIndex: 1
-        }}>
-            <View style={{
-                width: '38%',
-                height: '100%',
-                backgroundColor: colors.grey_l,
+        <TouchableOpacity 
+            onPress={() => setModalVisible(true)}
+            style={{ 
+                position: 'absolute',
+                left: '5%',
+                bottom: 20,
+                width: '100%',
+                height: 50,
+                justifyContent: 'center', 
+                alignItems: 'center', 
                 borderRadius: 10,
-                justifyContent: 'center',
-                alignItems: 'center'
+                backgroundColor: colors.primary,
+                zIndex: 1
             }}>
-                <Text style={{
-                    color: colors.text,  
-                    fontSize: 22
-                }}>{item.price} zł</Text>
-            </View>
-            <TouchableOpacity 
-                onPress={() => setModalVisible(true)}
-                style={{ 
-                    width: '58%',
-                    height: '100%',
-                    justifyContent: 'center', 
-                    alignItems: 'center', 
-                    borderRadius: 10,
-                    backgroundColor: colors.primary
-                }}>
-                <Text style={{
-                    color: colors.background, 
-                    fontWeight: 'bold', 
-                    fontSize: 16
-                }}>Dodaj do koszyka</Text>
-            </TouchableOpacity>
-        </View>
+            <Text style={{
+                color: colors.background, 
+                fontWeight: 'bold',
+                fontSize: 16
+            }}>Dodaj do koszyka</Text>
+        </TouchableOpacity>
 
         <TouchableOpacity 
             style={{
                 position: 'absolute',
                 top: 320,
-                right: 30,
+                right: '5%',
                 width: 50,
                 height: 50,
                 backgroundColor: colors.grey_l,
@@ -246,6 +215,68 @@ export default function Medicine({route, navigation}) {
             fontSize: 16,
             marginTop: 5,
         }}>{item.amount} tabletek</Text>
+
+        <View style={{
+            width: '100%',
+            height: 50,
+            backgroundColor: colors.background,
+            flexDirection: 'row',
+            justifyContent: 'center',
+            marginTop: 20,
+            alignItems: 'center',
+            justifyContent: 'space-between',
+        }}>
+            <Text style={{
+                fontSize: 30,
+            }}>{item.price} zł</Text>
+            <View style={{flexDirection: 'row'}}>
+            <TouchableOpacity 
+                onPress={() => goDown()}
+                style={{
+                    width: 50,
+                    height: 50,
+                    borderBottomLeftRadius: 10,
+                    borderTopLeftRadius: 10,
+                    backgroundColor: colors.grey_l,
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                }}
+            >
+                <MaterialCommunityIcons name={'minus'} size={40} color={colors.text} />
+            </TouchableOpacity>
+            <TextInput
+                onChangeText={(value) => value == '' ? [setNumber(0), setPrice(0)] : [setNumber(parseInt(value)), setPrice((item.price*(value)).toFixed(2))]}
+                value={number.toString()}
+                keyboardType="number-pad"
+                selectionColor={colors.primary}
+                enterKeyHint='done'
+                textAlign='center'
+                style={{
+                    height: 50,
+                    width: 50,
+                    borderWidth: 0,
+                    backgroundColor: colors.grey_l,
+                    fontSize: 18,
+                }}
+            />
+            
+            <TouchableOpacity 
+                onPress={() => goUp()}
+                style={{
+                    width: 50,
+                    height: 50,
+                    borderBottomRightRadius: 10,
+                    borderTopRightRadius: 10,
+                    backgroundColor: colors.grey_l,
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                }}
+            >
+                <MaterialCommunityIcons name={'plus'} size={40} color={colors.text} />
+            </TouchableOpacity>
+        </View>
+        </View>
+
         <View style={{
             marginTop: 20,
         }}>
@@ -280,6 +311,6 @@ export default function Medicine({route, navigation}) {
             fontSize: 16,
             marginTop: 5,
         }}>{item.desc}</Text>
-    </View>
+    </KeyboardAvoidingView>
   );
 }
