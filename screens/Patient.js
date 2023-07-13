@@ -152,9 +152,8 @@ export default function Patient() {
 
           <View style={{
             width: '100%',
-            height: 30,
             marginTop: 10,
-            borderTopColor: colors.text,
+            borderTopColor: colors.grey,
             borderTopWidth: 1,
             alignItems: 'flex-end',
             padding: 5
@@ -162,7 +161,8 @@ export default function Patient() {
             <Text style={{
               fontSize: 20,
               color: colors.text,
-              fontWeight: 'bold'
+              fontWeight: 'bold',
+              marginTop: 5
             }}>25.98 zł</Text>
           </View>
 
