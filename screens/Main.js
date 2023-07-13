@@ -44,7 +44,7 @@ export default function Main({navigation}) {
       <TouchableOpacity 
         style={{
           width: boxWidth,
-          height: windowHeight/3.05,
+          height: windowHeight/3.1,
           backgroundColor: colors.background,
           borderRadius: 20,
           marginTop: 20,

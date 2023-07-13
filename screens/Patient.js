@@ -14,12 +14,9 @@ export default function Patient() {
       paddingHorizontal: '5%'
     }}>
         <View
-          style={[styles.shadow,{
-            width: '100%',
-            height: 200,
+          style={[styles.block,{
             backgroundColor: colors.background,
-            borderRadius: 20,
-            marginTop: 20
+            flexDirection: 'row',
           }]}
         >
           <Image 
@@ -27,9 +24,36 @@ export default function Patient() {
             resizeMode='contain'
             style={{
               width: 100,
-              height: 100
+              height: 100,
+              borderRadius: 50,
             }}
           />
+          <View>
+            <Text style={{
+              fontSize: 20,
+              color: colors.text,
+              fontWeight: 'bold',
+              marginLeft: 20,
+            }}>Jan Kowalski</Text>
+            <Text style={{
+              fontSize: 14,
+              color: colors.grey_d,
+              marginLeft: 20,
+              marginTop: 5
+            }}>12.06.1971 (52 lata)</Text>
+            <Text style={{
+              fontSize: 14,
+              color: colors.grey_d,
+              marginLeft: 20,
+              marginTop: 5
+            }}>178 cm</Text>
+            <Text style={{
+              fontSize: 14,
+              color: colors.grey_d,
+              marginLeft: 20,
+              marginTop: 5
+            }}>85 kg</Text>
+          </View>
         </View>
     </View>
   );
@@ -37,7 +61,11 @@ export default function Patient() {
 
 
 const styles = StyleSheet.create({
-  shadow: {
+  block: {
+    width: '100%',
+    borderRadius: 20,
+    marginTop: 20,
+    padding: 15,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
