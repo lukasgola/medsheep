@@ -113,7 +113,7 @@ export default function Main({navigation}) {
                 fontSize: 28,
                 fontWeight: 'bold',
                 color: colors.primary
-              }}>Łukasz</Text>
+              }}>Jan</Text>
             </View>
             <Text
             style={{
