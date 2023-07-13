@@ -17,6 +17,7 @@ export default function Patient() {
           style={[styles.block,{
             backgroundColor: colors.background,
             flexDirection: 'row',
+            padding: 15,
           }]}
         >
           <Image 
@@ -55,6 +56,30 @@ export default function Patient() {
             }}>85 kg</Text>
           </View>
         </View>
+        <View style={[styles.block,{
+          backgroundColor: colors.background,
+          height: 150
+        }]}>
+          <Text style={{
+              fontSize: 20,
+              color: colors.text,
+              fontWeight: 'bold',
+              marginLeft: 20,
+              marginTop: 15
+          }}>Zamówienia</Text>
+        </View>
+        <View style={[styles.block,{
+          backgroundColor: colors.background,
+          height: 150
+        }]}>
+          <Text style={{
+              fontSize: 20,
+              color: colors.text,
+              fontWeight: 'bold',
+              marginLeft: 20,
+              marginTop: 15
+          }}>Wyniki</Text>
+        </View>
     </View>
   );
 }
@@ -65,7 +90,6 @@ const styles = StyleSheet.create({
     width: '100%',
     borderRadius: 20,
     marginTop: 20,
-    padding: 15,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
