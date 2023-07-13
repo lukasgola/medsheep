@@ -1,5 +1,7 @@
 import React from 'react';
-import { View, Modal } from 'react-native';
+import { View, Modal, KeyboardAvoidingView, Text, TouchableOpacity } from 'react-native';
+
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import {useTheme} from '../theme/ThemeProvider';
 
@@ -23,20 +25,37 @@ const BottomSheet = (props) => {
               transparent={true}
               visible={props.visible}
           >
-              <View
-                  style={{
-                      width: '100%',
-                      backgroundColor: colors.background,
-                      position: 'absolute',
-                      bottom: 0,
-                      borderTopLeftRadius: 20,
-                      borderTopRightRadius: 20,
-                      paddingHorizontal: '5%',
-                      paddingVertical: 10,
-                      zIndex: 10
+              <KeyboardAvoidingView
+                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                style={{
+                    width: '100%',
+                    backgroundColor: colors.background,
+                    position: 'absolute',
+                    bottom: 0,
+                    borderTopLeftRadius: 20,
+                    borderTopRightRadius: 20,
+                    paddingHorizontal: '5%',
+                    paddingVertical: 10,
+                    zIndex: 10
               }}>
+                    <View style={{
+                        flexDirection: 'row',
+                        width: '100%',
+                        height: 40,
+                        alignItems: 'center',
+                        justifyContent: 'space-between'
+                    }}>
+                        <Text style={{
+                            fontSize: 18,
+                            fontWeight: 'bold',
+                            color: colors.text
+                        }}>Dodano do koszyka</Text>
+                        <TouchableOpacity onPress={() => props.setModalVisible(false)}>
+                            <MaterialCommunityIcons name={'close-circle-outline'} size={30} style={{marginLeft: 3}} color={colors.text} />
+                        </TouchableOpacity>
+                    </View>
                   {props.children}
-              </View>
+              </KeyboardAvoidingView>
           </Modal>
       </View>
   </Modal>

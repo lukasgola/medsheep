@@ -5,6 +5,9 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 import {useTheme} from '../theme/ThemeProvider';
 
+import BottomSheet from '../components/BottomSheet';
+import Amounter from '../components/Amounter';
+
 export default function Medicines({navigation}) {
 
   const {colors} = useTheme();
@@ -281,6 +284,9 @@ export default function Medicines({navigation}) {
 
   const [filteredData, setFilteredData] = useState(DATA);
   const [catSelected, setCatSelected] = useState(1);
+  const [currentItem, setCurrentItem] = useState(null);
+
+  const [modalVisible, setModalVisible] = useState(false)
 
 
   useLayoutEffect(() => {
@@ -370,6 +376,7 @@ export default function Medicines({navigation}) {
           right: 10
         }}
           disabled={item.availability ? false : true}
+          onPress={() => [setCurrentItem(item),setModalVisible(true)]}
         >
           <MaterialCommunityIcons name={'cart-minus'} size={25} style={{marginLeft: 8}} color={item.availability ? colors.text : colors.grey} />
         </TouchableOpacity>
@@ -406,6 +413,9 @@ export default function Medicines({navigation}) {
         justifyContent: 'center',
       }}
     >
+      <BottomSheet visible={modalVisible} setModalVisible={setModalVisible}>
+        <Amounter item={currentItem} setModalVisible={setModalVisible} />
+      </BottomSheet>
       <FlatList
         data={filteredData}
         renderItem={({item}) => <MedItem item={item} />}
