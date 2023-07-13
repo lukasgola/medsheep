@@ -40,9 +40,7 @@ export default function Medicine({route, navigation}) {
     }
 
   return (
-    <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        //keyboardVerticalOffset={300}
+    <View
         style={{
             flex: 1,
             backgroundColor: colors.background,
@@ -188,7 +186,10 @@ export default function Medicine({route, navigation}) {
             textAlign: 'right',
         }}>{price} zł</Text>
 
-        <View style={{
+        <KeyboardAvoidingView
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            keyboardVerticalOffset={200} 
+            style={{
             width: '100%',
             height: 50,
             backgroundColor: colors.background,
@@ -198,9 +199,11 @@ export default function Medicine({route, navigation}) {
             alignItems: 'center',
             justifyContent: 'space-between',
         }}>
+
             <Text style={{
                 fontSize: 30,
             }}>{item.price} zł</Text>
+            
             <View style={{flexDirection: 'row'}}>
             <TouchableOpacity 
                 onPress={() => goDown()}
@@ -247,7 +250,7 @@ export default function Medicine({route, navigation}) {
                 <MaterialCommunityIcons name={'plus'} size={40} color={colors.text} />
             </TouchableOpacity>
         </View>
-        </View>
+        </KeyboardAvoidingView>
 
         <View style={{
             marginTop: 30,
@@ -283,6 +286,6 @@ export default function Medicine({route, navigation}) {
             fontSize: 16,
             marginTop: 5,
         }}>{item.desc}</Text>
-    </KeyboardAvoidingView>
+    </View>
   );
 }
