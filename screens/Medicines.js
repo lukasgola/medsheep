@@ -284,9 +284,25 @@ export default function Medicines({navigation}) {
 
   const [filteredData, setFilteredData] = useState(DATA);
   const [catSelected, setCatSelected] = useState(1);
-  const [currentItem, setCurrentItem] = useState(null);
+  const [item, setItem] = useState(null);
 
-  const [modalVisible, setModalVisible] = useState(false)
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const [number, setNumber] = useState(1);
+  const [price, setPrice] = useState(0)
+
+  const goUp = (amount) => {
+    setNumber(amount)
+    setPrice((item.price*(number+1)).toFixed(2))
+  }
+
+  const goDown = (amount) => {
+      number == 0 ? console.log('You can not') : [setNumber(amount), setPrice((item.price*amount).toFixed(2))]
+  }
+
+  const onChangeText = (amount) => {
+      setPrice((item.price*(amount)).toFixed(2))
+  }
 
 
   useLayoutEffect(() => {
@@ -376,7 +392,7 @@ export default function Medicines({navigation}) {
           right: 10
         }}
           disabled={item.availability ? false : true}
-          onPress={() => [setCurrentItem(item),setModalVisible(true)]}
+          onPress={() => [setItem(item),setModalVisible(true)]}
         >
           <MaterialCommunityIcons name={'cart-minus'} size={25} style={{marginLeft: 8}} color={item.availability ? colors.text : colors.grey} />
         </TouchableOpacity>
@@ -423,8 +439,11 @@ export default function Medicines({navigation}) {
           alignItems: 'center'
         }}>
           <Amounter 
-            item={currentItem} 
+            item={item} 
             setModalVisible={setModalVisible} 
+            goUp={goUp}
+            goDown={goDown}
+            onChangeText={onChangeText}
           />
           <View style={{
                 width: '100%',

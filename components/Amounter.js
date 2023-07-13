@@ -10,15 +10,14 @@ const Amounter = (props) => {
     const {colors} = useTheme();
 
     const [number, setNumber] = useState(1)
-    const [price, setPrice] = useState(0)
 
     const goUp = () => {
-        setNumber(number+1)
-        setPrice((props.item.price*(number+1)).toFixed(2))
+        setNumber(number+1);
+        props.goUp(number+1);
     }
 
     const goDown = () => {
-        number == 0 ? console.log('You can not') : [setNumber(number-1), setPrice((props.item.price*(number-1)).toFixed(2))]
+        number == 0 ? console.log('You can not') : [setNumber(number-1), props.goDown(number-1)]
     }
 
   return (
@@ -38,7 +37,7 @@ const Amounter = (props) => {
             <MaterialCommunityIcons name={'minus'} size={40} color={colors.text} />
         </TouchableOpacity>
         <TextInput
-            onChangeText={(value) => value == '' ? [setNumber(0), setPrice(0)] : [setNumber(parseInt(value)), setPrice((props.item.price*(value)).toFixed(2))]}
+            onChangeText={(value) => value == '' ? [setNumber(0), props.onChangeText(0)] : [setNumber(parseInt(value)), props.onChangeText(value)]}
             value={number.toString()}
             keyboardType="number-pad"
             selectionColor={colors.primary}
