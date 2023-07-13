@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Text, View, Image, TouchableOpacity, Dimensions, FlatList, Modal, TextInput, KeyboardAvoidingView } from 'react-native';
+import { Text, View, Image, TouchableOpacity, Dimensions, FlatList, Modal, TextInput, KeyboardAvoidingView, ScrollView } from 'react-native';
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -12,8 +12,6 @@ export default function Medicine({route, navigation}) {
 
     const {item} = route.params;
     const {colors} = useTheme();
-
-    const windowWidth = Dimensions.get('screen').width;
 
     const [liked, setLiked] = useState(false)
     const [modalVisible, setModalVisible] = useState(false)
@@ -43,8 +41,6 @@ export default function Medicine({route, navigation}) {
     <View
         style={{
             flex: 1,
-            backgroundColor: colors.background,
-            padding: '5%'
     }}>
         <BottomSheet visible={modalVisible}>
             <View style={{
@@ -128,7 +124,7 @@ export default function Medicine({route, navigation}) {
                 position: 'absolute',
                 left: '5%',
                 bottom: 20,
-                width: '100%',
+                width: '90%',
                 height: 50,
                 justifyContent: 'center', 
                 alignItems: 'center', 
@@ -142,150 +138,157 @@ export default function Medicine({route, navigation}) {
                 fontSize: 16
             }}>Dodaj do koszyka</Text>
         </TouchableOpacity>
-
-        <TouchableOpacity 
-            style={{
-                position: 'absolute',
-                top: 320,
-                right: '5%',
-                width: 50,
-                height: 50,
-                backgroundColor: colors.grey_l,
-                borderRadius: 25,
-                justifyContent: 'center',
-                alignItems: 'center',
-                zIndex: 1
-            }}
-            onPress={() => setLiked(!liked)}
-        >
-            <MaterialCommunityIcons name={liked ? 'heart' : 'heart-outline'} size={25} color={liked ? colors.primary : colors.text} />
-        </TouchableOpacity>
         
-
-        <Image 
-            source={item.img} 
-            resizeMode='contain' 
-            style={{width: '60%', height: 300, marginLeft: '20%'}} 
-        />
-        <Text style={{
-            color: colors.text,
-            fontSize: 24,
-            fontWeight: 'bold'
-        }}>{item.name}</Text>
-        <Text style={{
-            color: colors.grey_d,
-            fontSize: 16,
-            marginTop: 10,
-        }}>{item.amount} tabletek</Text>
-
-        <Text style={{
-            color: colors.grey_d,
-            fontSize: 16,
-            marginTop: 5,
-            width: '100%',
-            textAlign: 'right',
-        }}>{price} zł</Text>
-
-        <KeyboardAvoidingView
-            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-            keyboardVerticalOffset={200} 
+        <ScrollView
+            showsVerticalScrollIndicator={false}
             style={{
-            width: '100%',
-            height: 50,
-            backgroundColor: colors.background,
-            flexDirection: 'row',
-            justifyContent: 'center',
-            marginTop: 10,
-            alignItems: 'center',
-            justifyContent: 'space-between',
-        }}>
+                backgroundColor: colors.background,
+                padding: '5%',
+            }}
+        >
+            <TouchableOpacity 
+                style={{
+                    position: 'absolute',
+                    top: 300,
+                    right: 0,
+                    width: 50,
+                    height: 50,
+                    backgroundColor: colors.grey_l,
+                    borderRadius: 25,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    zIndex: 1
+                }}
+                onPress={() => setLiked(!liked)}
+            >
+                <MaterialCommunityIcons name={liked ? 'heart' : 'heart-outline'} size={25} color={liked ? colors.primary : colors.text} />
+            </TouchableOpacity>
+            <Image 
+                source={item.img} 
+                resizeMode='contain' 
+                style={{width: '60%', height: 300, marginLeft: '20%'}} 
+            />
+            <Text style={{
+                color: colors.text,
+                fontSize: 24,
+                fontWeight: 'bold'
+            }}>{item.name}</Text>
+            <Text style={{
+                color: colors.grey_d,
+                fontSize: 16,
+                marginTop: 10,
+            }}>{item.amount} tabletek</Text>
 
             <Text style={{
-                fontSize: 30,
-            }}>{item.price} zł</Text>
-            
-            <View style={{flexDirection: 'row'}}>
-            <TouchableOpacity 
-                onPress={() => goDown()}
-                style={{
-                    width: 50,
-                    height: 50,
-                    borderBottomLeftRadius: 10,
-                    borderTopLeftRadius: 10,
-                    backgroundColor: colors.grey_l,
-                    justifyContent: 'center',
-                    alignItems: 'center'
-                }}
-            >
-                <MaterialCommunityIcons name={'minus'} size={40} color={colors.text} />
-            </TouchableOpacity>
-            <TextInput
-                onChangeText={(value) => value == '' ? [setNumber(0), setPrice(0)] : [setNumber(parseInt(value)), setPrice((item.price*(value)).toFixed(2))]}
-                value={number.toString()}
-                keyboardType="number-pad"
-                selectionColor={colors.primary}
-                enterKeyHint='done'
-                textAlign='center'
-                style={{
-                    height: 50,
-                    width: 50,
-                    borderWidth: 0,
-                    backgroundColor: colors.grey_l,
-                    fontSize: 18,
-                }}
-            />
-            
-            <TouchableOpacity 
-                onPress={() => goUp()}
-                style={{
-                    width: 50,
-                    height: 50,
-                    borderBottomRightRadius: 10,
-                    borderTopRightRadius: 10,
-                    backgroundColor: colors.grey_l,
-                    justifyContent: 'center',
-                    alignItems: 'center'
-                }}
-            >
-                <MaterialCommunityIcons name={'plus'} size={40} color={colors.text} />
-            </TouchableOpacity>
-        </View>
-        </KeyboardAvoidingView>
+                color: colors.grey_d,
+                fontSize: 16,
+                marginTop: 5,
+                width: '100%',
+                textAlign: 'right',
+            }}>{price} zł</Text>
 
-        <View style={{
-            marginTop: 30,
-        }}>
-            <FlatList
-                data={item.symptoms}
-                renderItem={({item}) => <Item item={item} />}
-                keyExtractor={item => item.id}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                ItemSeparatorComponent={
-                    <View style={{
-                        width: 4,
-                        height: 4,
-                        borderRadius: 2,
-                        backgroundColor: colors.primary,
-                        marginVertical: 7,
-                        marginHorizontal: 10
-                    }}>
+            <KeyboardAvoidingView
+                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                keyboardVerticalOffset={200} 
+                style={{
+                width: '100%',
+                height: 50,
+                backgroundColor: colors.background,
+                flexDirection: 'row',
+                justifyContent: 'center',
+                marginTop: 10,
+                alignItems: 'center',
+                justifyContent: 'space-between',
+            }}>
 
-                    </View>
-                }
-            />
-        </View>
-        <Text style={{
-            color: colors.text,
-            fontSize: 20,
-            fontWeight: 'bold',
-            marginTop: 20,
-        }}>Opis</Text>
-        <Text style={{
-            color: colors.grey_d,
-            fontSize: 16,
-            marginTop: 5,
-        }}>{item.desc}</Text>
+                <Text style={{
+                    fontSize: 30,
+                }}>{item.price} zł</Text>
+                
+                <View style={{flexDirection: 'row'}}>
+                <TouchableOpacity 
+                    onPress={() => goDown()}
+                    style={{
+                        width: 50,
+                        height: 50,
+                        borderBottomLeftRadius: 10,
+                        borderTopLeftRadius: 10,
+                        backgroundColor: colors.grey_l,
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                    }}
+                >
+                    <MaterialCommunityIcons name={'minus'} size={40} color={colors.text} />
+                </TouchableOpacity>
+                <TextInput
+                    onChangeText={(value) => value == '' ? [setNumber(0), setPrice(0)] : [setNumber(parseInt(value)), setPrice((item.price*(value)).toFixed(2))]}
+                    value={number.toString()}
+                    keyboardType="number-pad"
+                    selectionColor={colors.primary}
+                    enterKeyHint='done'
+                    textAlign='center'
+                    style={{
+                        height: 50,
+                        width: 50,
+                        borderWidth: 0,
+                        backgroundColor: colors.grey_l,
+                        fontSize: 18,
+                    }}
+                />
+                
+                <TouchableOpacity 
+                    onPress={() => goUp()}
+                    style={{
+                        width: 50,
+                        height: 50,
+                        borderBottomRightRadius: 10,
+                        borderTopRightRadius: 10,
+                        backgroundColor: colors.grey_l,
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                    }}
+                >
+                    <MaterialCommunityIcons name={'plus'} size={40} color={colors.text} />
+                </TouchableOpacity>
+            </View>
+            </KeyboardAvoidingView>
+
+            <View style={{
+                marginTop: 30,
+            }}>
+                <FlatList
+                    data={item.symptoms}
+                    renderItem={({item}) => <Item item={item} />}
+                    keyExtractor={item => item.id}
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    ItemSeparatorComponent={
+                        <View style={{
+                            width: 4,
+                            height: 4,
+                            borderRadius: 2,
+                            backgroundColor: colors.primary,
+                            marginVertical: 7,
+                            marginHorizontal: 10
+                        }}>
+
+                        </View>
+                    }
+                />
+            </View>
+            <Text style={{
+                color: colors.text,
+                fontSize: 20,
+                fontWeight: 'bold',
+                marginTop: 20,
+            }}>Opis</Text>
+            <Text style={{
+                color: colors.grey_d,
+                fontSize: 16,
+                marginTop: 5,
+                marginBottom: 150
+            }}>{item.desc}</Text>
+        </ScrollView>
     </View>
   );
 }
