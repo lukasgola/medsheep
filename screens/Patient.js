@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView } from 'react-native';
 
 import {useTheme} from '../theme/ThemeProvider';
 
@@ -88,9 +88,8 @@ export default function Patient() {
   }
 
   return (
-    <View style={{
+    <ScrollView style={{
       flex: 1,
-      alignItems: 'center',
       paddingHorizontal: '5%'
     }}>
         <View
@@ -195,7 +194,7 @@ export default function Patient() {
             }}>Zobacz więcej...</Text>
           </TouchableOpacity>
         </View>
-    </View>
+    </ScrollView>
   );
 }
 
