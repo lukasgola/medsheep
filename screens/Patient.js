@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 
 import {useTheme} from '../theme/ThemeProvider';
 
@@ -6,6 +6,86 @@ export default function Patient() {
 
 
   const {colors} = useTheme();
+
+
+  const CartItem = ({item}) => {
+    return(
+      <View style={{
+        width: '100%',
+        height: 50,
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingHorizontal: '5%',
+      }}>
+        <Image 
+          source={require('../assets/med/apap_noc.jpg')} 
+          resizeMode='contain' 
+          style={{
+            width: 50,
+            height: 50
+          }}
+        />
+        <View style={{
+          paddingLeft: 10,
+          width: 90,
+        }}>
+          <Text style={{
+            fontSize: 14,
+            color: colors.text,
+            fontWeight: 'bold'
+          }}>Apap Noc</Text>
+          <Text style={{
+            fontSize: 14,
+            color: colors.text
+          }}>30 tab.</Text>
+        </View>
+        <Text style={{
+            fontSize: 14,
+            color: colors.text,
+            marginLeft: '10%',
+        }}>x2</Text>
+        <Text style={{
+            fontSize: 14,
+            color: colors.text,
+            marginLeft: '15%'
+        }}>25.98 zł</Text>
+      </View>
+    )
+  }
+
+
+  const OrderItem = ({item}) => {
+    return(
+      <View style={{
+        width: '100%',
+        backgroundColor: colors.grey_l,
+        borderRadius: 10,
+        paddingVertical: 10,
+        marginTop: 10
+      }}>
+        <View style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          marginLeft: 10,
+          marginBottom: 5,
+        }}>
+          <View style={{
+            width: 6,
+            height: 6,
+            backgroundColor: colors.primary,
+            borderRadius: 3
+          }}></View>
+          <Text style={{
+            fontSize: 16,
+            color: colors.text,
+            fontWeight: 'bold',
+            marginLeft: 5
+          }}>12.06.2023</Text>
+        </View>
+        <CartItem />
+      </View>
+    )
+  }
 
   return (
     <View style={{
@@ -56,29 +136,64 @@ export default function Patient() {
             }}>85 kg</Text>
           </View>
         </View>
+        
         <View style={[styles.block,{
           backgroundColor: colors.background,
-          height: 150
         }]}>
           <Text style={{
               fontSize: 20,
               color: colors.text,
               fontWeight: 'bold',
-              marginLeft: 20,
-              marginTop: 15
-          }}>Zamówienia</Text>
+              marginTop: 15,
+              marginBottom: 10
+          }}>Koszyk</Text>
+
+          <CartItem />
+
+          <View style={{
+            width: '100%',
+            height: 30,
+            marginTop: 10,
+            borderTopColor: colors.text,
+            borderTopWidth: 1,
+            alignItems: 'flex-end',
+            padding: 5
+          }}>
+            <Text style={{
+              fontSize: 20,
+              color: colors.text,
+              fontWeight: 'bold'
+            }}>25.98 zł</Text>
+          </View>
+
+          <TouchableOpacity style={styles.viewMore}>
+            <Text style={{
+              fontSize: 14,
+              color: colors.text,
+              fontWeight: 'bold',
+            }}>Zobacz więcej...</Text>
+          </TouchableOpacity>
         </View>
+
+
         <View style={[styles.block,{
           backgroundColor: colors.background,
-          height: 150
         }]}>
           <Text style={{
               fontSize: 20,
               color: colors.text,
               fontWeight: 'bold',
-              marginLeft: 20,
               marginTop: 15
-          }}>Wyniki</Text>
+          }}>Ostatnie zamówienia</Text>
+            <OrderItem />
+            <OrderItem />
+          <TouchableOpacity style={styles.viewMore}>
+            <Text style={{
+              fontSize: 14,
+              color: colors.text,
+              fontWeight: 'bold',
+            }}>Zobacz więcej...</Text>
+          </TouchableOpacity>
         </View>
     </View>
   );
@@ -90,6 +205,7 @@ const styles = StyleSheet.create({
     width: '100%',
     borderRadius: 20,
     marginTop: 20,
+    paddingHorizontal: 20,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -99,4 +215,10 @@ const styles = StyleSheet.create({
     shadowRadius: 2.62,
     elevation: 4,
   },
+  viewMore:{
+    width: '50%',
+    alignItems: 'flex-end',
+    marginLeft: '50%',
+    marginVertical: 10,
+  }
 });

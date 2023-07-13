@@ -7,7 +7,7 @@ const Stack = createStackNavigator();
 export default function PatientStack() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Patient" component={Patient} />
+      <Stack.Screen name="Pacjent" component={Patient} />
     </Stack.Navigator>
   );
 }

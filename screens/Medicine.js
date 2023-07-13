@@ -97,7 +97,7 @@ export default function Medicine({route, navigation}) {
                     alignItems: 'center',
                 }}>
                     <Text style={{
-                        fontSize: 20,
+                        fontSize: 16,
                         fontWeight: 'bold',
                         color: colors.text
                     }}>Cofnij</Text>
@@ -111,7 +111,7 @@ export default function Medicine({route, navigation}) {
                     alignItems: 'center',
                 }}>
                     <Text style={{
-                        fontSize: 20,
+                        fontSize: 16,
                         fontWeight: 'bold',
                         color: colors.background
                     }}>Kontynuuj</Text>
