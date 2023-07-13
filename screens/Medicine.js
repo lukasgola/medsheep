@@ -5,6 +5,8 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 import {useTheme} from '../theme/ThemeProvider';
 
+import BottomSheet from '../components/BottomSheet';
+
 
 export default function Medicine({route, navigation}) {
 
@@ -46,120 +48,82 @@ export default function Medicine({route, navigation}) {
             backgroundColor: colors.background,
             padding: '5%'
     }}>
-        <Modal
-            animationType="fade"
-            transparent={true}
-            visible={modalVisible}
-            onRequestClose={() => {
-                Alert.alert('Modal has been closed.');
-                setModalVisible(!modalVisible);
-            }}
-        >
+        <BottomSheet visible={modalVisible}>
             <View style={{
-                flex: 1,
-                backgroundColor: 'black',
-                opacity: 0.3
+                flexDirection: 'row',
+                width: '100%',
+                height: 40,
+                alignItems: 'center',
+                justifyContent: 'space-between'
             }}>
-                <Modal
-                    animationType="slide"
-                    transparent={true}
-                    visible={modalVisible}
-                    onRequestClose={() => {
-                        Alert.alert('Modal has been closed.');
-                        setModalVisible(!modalVisible);
-                    }}
-                >
-                    <View
-                        style={{
-                            width: '100%',
-                            //height: 250,
-                            backgroundColor: colors.background,
-                            position: 'absolute',
-                            bottom: 0,
-                            borderTopLeftRadius: 20,
-                            borderTopRightRadius: 20,
-                            paddingHorizontal: '5%',
-                            paddingVertical: 10,
-                            zIndex: 10
-                    }}>
-                        <View style={{
-                            flexDirection: 'row',
-                            width: '100%',
-                            height: 40,
-                            alignItems: 'center',
-                            justifyContent: 'space-between'
-                        }}>
-                            <Text style={{
-                                fontSize: 18,
-                                fontWeight: 'bold',
-                                color: colors.text
-                            }}>Dodano do koszyka</Text>
-                            <TouchableOpacity onPress={() => setModalVisible(false)}>
-                                <MaterialCommunityIcons name={'close-circle-outline'} size={30} style={{marginLeft: 3}} color={colors.text} />
-                            </TouchableOpacity>
-                        </View>
-                        <View style={{
-                            width: '100%',
-                            height: 100,
-                            paddingHorizontal: '5%',
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            justifyContent: 'space-between',
-                        }}>
-                            <Image style={{
-                                width: 80,
-                                height: 80,
-                            }} source={item.img} resizeMode='contain' />
-                            <Text style={{
-                                fontSize: 20,
-                            }}>x{number}</Text>
-                            <Text style={{
-                                fontSize: 20,
-                                fontWeight: 'bold',
-                            }}>{price} zł</Text>
-                        </View>
-                        <View style={{
-                            width: '100%',
-                            height: 50,
-                            backgroundColor: colors.background,
-                            flexDirection: 'row',
-                            justifyContent: 'space-around',
-                            marginTop: 20,
-                            marginBottom: 40
-                        }}>
-                            <TouchableOpacity style={{
-                                width: '40%',
-                                height: 50,
-                                borderRadius: 10,
-                                backgroundColor: colors.grey_l,
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                            }}>
-                                <Text style={{
-                                    fontSize: 20,
-                                    fontWeight: 'bold',
-                                    color: colors.text
-                                }}>Cofnij</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={{
-                                width: '50%',
-                                height: 50,
-                                borderRadius: 10,
-                                backgroundColor: colors.primary,
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                            }}>
-                                <Text style={{
-                                    fontSize: 20,
-                                    fontWeight: 'bold',
-                                    color: colors.background
-                                }}>Kontynuuj</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                </Modal>
+                <Text style={{
+                    fontSize: 18,
+                    fontWeight: 'bold',
+                    color: colors.text
+                }}>Dodano do koszyka</Text>
+                <TouchableOpacity onPress={() => setModalVisible(false)}>
+                    <MaterialCommunityIcons name={'close-circle-outline'} size={30} style={{marginLeft: 3}} color={colors.text} />
+                </TouchableOpacity>
             </View>
-        </Modal>
+            <View style={{
+                width: '100%',
+                height: 100,
+                paddingHorizontal: '5%',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+            }}>
+                <Image style={{
+                    width: 80,
+                    height: 80,
+                }} source={item.img} resizeMode='contain' />
+                <Text style={{
+                    fontSize: 20,
+                }}>x{number}</Text>
+                <Text style={{
+                    fontSize: 20,
+                    fontWeight: 'bold',
+                }}>{price} zł</Text>
+            </View>
+            <View style={{
+                width: '100%',
+                height: 50,
+                backgroundColor: colors.background,
+                flexDirection: 'row',
+                justifyContent: 'space-around',
+                marginTop: 20,
+                marginBottom: 40
+            }}>
+                <TouchableOpacity style={{
+                    width: '40%',
+                    height: 50,
+                    borderRadius: 10,
+                    backgroundColor: colors.grey_l,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}>
+                    <Text style={{
+                        fontSize: 20,
+                        fontWeight: 'bold',
+                        color: colors.text
+                    }}>Cofnij</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={{
+                    width: '50%',
+                    height: 50,
+                    borderRadius: 10,
+                    backgroundColor: colors.primary,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}>
+                    <Text style={{
+                        fontSize: 20,
+                        fontWeight: 'bold',
+                        color: colors.background
+                    }}>Kontynuuj</Text>
+                </TouchableOpacity>
+            </View>
+        </BottomSheet>
         <TouchableOpacity 
             onPress={() => setModalVisible(true)}
             style={{ 
@@ -213,8 +177,16 @@ export default function Medicine({route, navigation}) {
         <Text style={{
             color: colors.grey_d,
             fontSize: 16,
-            marginTop: 5,
+            marginTop: 10,
         }}>{item.amount} tabletek</Text>
+
+        <Text style={{
+            color: colors.grey_d,
+            fontSize: 16,
+            marginTop: 5,
+            width: '100%',
+            textAlign: 'right',
+        }}>{price} zł</Text>
 
         <View style={{
             width: '100%',
@@ -222,7 +194,7 @@ export default function Medicine({route, navigation}) {
             backgroundColor: colors.background,
             flexDirection: 'row',
             justifyContent: 'center',
-            marginTop: 20,
+            marginTop: 10,
             alignItems: 'center',
             justifyContent: 'space-between',
         }}>
@@ -278,7 +250,7 @@ export default function Medicine({route, navigation}) {
         </View>
 
         <View style={{
-            marginTop: 20,
+            marginTop: 30,
         }}>
             <FlatList
                 data={item.symptoms}
