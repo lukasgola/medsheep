@@ -43,13 +43,14 @@ const BottomSheet = (props) => {
                         width: '100%',
                         height: 40,
                         alignItems: 'center',
-                        justifyContent: 'space-between'
+                        justifyContent: 'space-between',
+                        marginBottom: 20,
                     }}>
                         <Text style={{
                             fontSize: 18,
                             fontWeight: 'bold',
-                            color: colors.text
-                        }}>Dodano do koszyka</Text>
+                            color: colors.text,
+                        }}>{props.text}</Text>
                         <TouchableOpacity onPress={() => props.setModalVisible(false)}>
                             <MaterialCommunityIcons name={'close-circle-outline'} size={30} style={{marginLeft: 3}} color={colors.text} />
                         </TouchableOpacity>

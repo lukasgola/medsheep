@@ -22,56 +22,51 @@ const Amounter = (props) => {
     }
 
   return (
-    <View style={{width: '100%'}}>
+    <View style={{flexDirection: 'row'}}>
+        <TouchableOpacity 
+            onPress={() => goDown()}
+            style={{
+                width: 50,
+                height: 50,
+                borderBottomLeftRadius: 10,
+                borderTopLeftRadius: 10,
+                backgroundColor: colors.grey_l,
+                justifyContent: 'center',
+                alignItems: 'center'
+            }}
+        >
+            <MaterialCommunityIcons name={'minus'} size={40} color={colors.text} />
+        </TouchableOpacity>
+        <TextInput
+            onChangeText={(value) => value == '' ? [setNumber(0), setPrice(0)] : [setNumber(parseInt(value)), setPrice((props.item.price*(value)).toFixed(2))]}
+            value={number.toString()}
+            keyboardType="number-pad"
+            selectionColor={colors.primary}
+            enterKeyHint='done'
+            textAlign='center'
+            style={{
+                height: 50,
+                width: 50,
+                borderWidth: 0,
+                backgroundColor: colors.grey_l,
+                fontSize: 18,
+            }}
+        />
         
-        <View>
-            <View style={{flexDirection: 'row'}}>
-                <TouchableOpacity 
-                    onPress={() => goDown()}
-                    style={{
-                        width: 50,
-                        height: 50,
-                        borderBottomLeftRadius: 10,
-                        borderTopLeftRadius: 10,
-                        backgroundColor: colors.grey_l,
-                        justifyContent: 'center',
-                        alignItems: 'center'
-                    }}
-                >
-                    <MaterialCommunityIcons name={'minus'} size={40} color={colors.text} />
-                </TouchableOpacity>
-                <TextInput
-                    onChangeText={(value) => value == '' ? [setNumber(0), setPrice(0)] : [setNumber(parseInt(value)), setPrice((props.item.price*(value)).toFixed(2))]}
-                    value={number.toString()}
-                    keyboardType="number-pad"
-                    selectionColor={colors.primary}
-                    enterKeyHint='done'
-                    textAlign='center'
-                    style={{
-                        height: 50,
-                        width: 50,
-                        borderWidth: 0,
-                        backgroundColor: colors.grey_l,
-                        fontSize: 18,
-                    }}
-                />
-                
-                <TouchableOpacity 
-                    onPress={() => goUp()}
-                    style={{
-                        width: 50,
-                        height: 50,
-                        borderBottomRightRadius: 10,
-                        borderTopRightRadius: 10,
-                        backgroundColor: colors.grey_l,
-                        justifyContent: 'center',
-                        alignItems: 'center'
-                    }}
-                >
-                    <MaterialCommunityIcons name={'plus'} size={40} color={colors.text} />
-                </TouchableOpacity>
-            </View>
-        </View>
+        <TouchableOpacity 
+            onPress={() => goUp()}
+            style={{
+                width: 50,
+                height: 50,
+                borderBottomRightRadius: 10,
+                borderTopRightRadius: 10,
+                backgroundColor: colors.grey_l,
+                justifyContent: 'center',
+                alignItems: 'center'
+            }}
+        >
+            <MaterialCommunityIcons name={'plus'} size={40} color={colors.text} />
+        </TouchableOpacity>
     </View>
   );
 }

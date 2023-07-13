@@ -42,26 +42,13 @@ export default function Medicine({route, navigation}) {
         style={{
             flex: 1,
     }}>
-        <BottomSheet visible={modalVisible}>
-            <View style={{
-                flexDirection: 'row',
-                width: '100%',
-                height: 40,
-                alignItems: 'center',
-                justifyContent: 'space-between'
-            }}>
-                <Text style={{
-                    fontSize: 18,
-                    fontWeight: 'bold',
-                    color: colors.text
-                }}>Dodano do koszyka</Text>
-                <TouchableOpacity onPress={() => setModalVisible(false)}>
-                    <MaterialCommunityIcons name={'close-circle-outline'} size={30} style={{marginLeft: 3}} color={colors.text} />
-                </TouchableOpacity>
-            </View>
+        <BottomSheet 
+            visible={modalVisible} 
+            setModalVisible={setModalVisible}
+            text={'Dodaj do koszyka'}
+        >
             <View style={{
                 width: '100%',
-                height: 100,
                 paddingHorizontal: '5%',
                 flexDirection: 'row',
                 alignItems: 'center',

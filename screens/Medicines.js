@@ -413,8 +413,59 @@ export default function Medicines({navigation}) {
         justifyContent: 'center',
       }}
     >
-      <BottomSheet visible={modalVisible} setModalVisible={setModalVisible}>
-        <Amounter item={currentItem} setModalVisible={setModalVisible} />
+      <BottomSheet 
+        visible={modalVisible} 
+        setModalVisible={setModalVisible}
+        text={'Dodaj do koszyka'}
+      >
+        <View style={{
+          width: '100%',
+          alignItems: 'center'
+        }}>
+          <Amounter 
+            item={currentItem} 
+            setModalVisible={setModalVisible} 
+          />
+          <View style={{
+                width: '100%',
+                height: 50,
+                backgroundColor: colors.background,
+                flexDirection: 'row',
+                justifyContent: 'space-around',
+                marginTop: 20,
+                marginBottom: 40
+            }}>
+                <TouchableOpacity style={{
+                    width: '40%',
+                    height: 50,
+                    borderRadius: 10,
+                    backgroundColor: colors.grey_l,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}>
+                    <Text style={{
+                        fontSize: 16,
+                        fontWeight: 'bold',
+                        color: colors.text
+                    }}>Cofnij</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={{
+                    width: '50%',
+                    height: 50,
+                    borderRadius: 10,
+                    backgroundColor: colors.primary,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}>
+                    <Text style={{
+                        fontSize: 16,
+                        fontWeight: 'bold',
+                        color: colors.background
+                    }}>Kontynuuj</Text>
+                </TouchableOpacity>
+            </View>
+        </View>
+        
       </BottomSheet>
       <FlatList
         data={filteredData}
