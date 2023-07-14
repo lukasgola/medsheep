@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Modal, KeyboardAvoidingView, Text, TouchableOpacity, TextInput } from 'react-native';
+import { View, TouchableOpacity, TextInput } from 'react-native';
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 

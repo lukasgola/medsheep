@@ -7,6 +7,8 @@ import {useTheme} from '../theme/ThemeProvider';
 
 import BottomSheet from '../components/BottomSheet';
 import Amounter from '../components/Amounter';
+import { Card } from 'react-native-paper';
+import CartItem from '../components/CartItem';
 
 export default function Medicines({navigation}) {
 
@@ -438,6 +440,7 @@ export default function Medicines({navigation}) {
           width: '100%',
           alignItems: 'center'
         }}>
+          <CartItem />
           <Amounter 
             item={item} 
             setModalVisible={setModalVisible} 

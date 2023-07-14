@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, TextInput, StyleSheet, Text} from 'react-native';
+import {View, TextInput, Text} from 'react-native';
 import {Controller} from 'react-hook-form';
 
 
