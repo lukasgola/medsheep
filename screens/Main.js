@@ -1,6 +1,7 @@
 import { Text, View, SafeAreaView, FlatList, Image, TouchableOpacity, Dimensions } from 'react-native';
 
 import {useTheme} from '../theme/ThemeProvider';
+import { useCurrentUser } from '../providers/CurrentUserProvider';
 
 export default function Main({navigation}) {
 
@@ -37,6 +38,7 @@ export default function Main({navigation}) {
   ]
 
   const { colors } = useTheme();
+  const { currentUser } = useCurrentUser();
 
 
   const Item = ({item}) => {
@@ -113,7 +115,7 @@ export default function Main({navigation}) {
                 fontSize: 28,
                 fontWeight: 'bold',
                 color: colors.primary
-              }}>Jan</Text>
+              }}>{currentUser.name}</Text>
             </View>
             <Text
             style={{

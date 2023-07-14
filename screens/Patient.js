@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView } from 'react-native';
 
 import {useTheme} from '../theme/ThemeProvider';
+import { useCurrentUser } from '../providers/CurrentUserProvider';
 
 import CartItem from '../components/CartItem';
 
@@ -8,9 +9,12 @@ import CartItem from '../components/CartItem';
 //Firebase
 import { auth } from '../firebase/firebase-config';
 
+
+
 export default function Patient() {
 
   const {colors} = useTheme();
+  const { currentUser } = useCurrentUser();
 
   const OrderItem = ({item}) => {
     return(
@@ -72,7 +76,7 @@ export default function Patient() {
               color: colors.text,
               fontWeight: 'bold',
               marginLeft: 20,
-            }}>Jan Kowalski</Text>
+            }}>{currentUser.name} {currentUser.lastName}</Text>
             <Text style={{
               fontSize: 14,
               color: colors.grey_d,
