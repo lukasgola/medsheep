@@ -10,6 +10,9 @@ import { useNavigation } from '@react-navigation/native';
 import CustomInput from '../components/CustomInput';
 
 
+//Firebase
+import { createUser } from '../firebase/firebase-config';
+
 export default function SignUp(){
 
     const width = Dimensions.get('window').width;
@@ -24,7 +27,8 @@ export default function SignUp(){
 
 
     const onRegister = async data => {
-        const {username, email, password} = data;  
+        const {email, password} = data;  
+        createUser(email, password);
     };
 
     const onTerms = () => {

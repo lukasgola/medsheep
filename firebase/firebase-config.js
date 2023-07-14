@@ -23,7 +23,7 @@ export const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 
 
-export async function createUser(username, email, password) {
+export async function createUser(email, password) {
     return (
         createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
@@ -39,7 +39,7 @@ export async function createUser(username, email, password) {
     )
 }
 
-export async function signIn(username, email, password) {
+export async function signIn(email, password) {
     return (
         signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {

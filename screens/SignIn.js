@@ -7,6 +7,9 @@ import {useForm, Controller} from 'react-hook-form';
 //Components
 import CustomInput from '../components/CustomInput';
 
+//Firebase
+import { signIn } from '../firebase/firebase-config';
+
 
 
 export default function SignIn({navigation}){
@@ -19,7 +22,8 @@ export default function SignIn({navigation}){
     const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
     const onSignIn = async data => {
-        const { email, password} = data;
+        const { email, password } = data;
+        signIn(email, password);
     };
 
     const onSignUp = () => {
@@ -58,7 +62,7 @@ export default function SignIn({navigation}){
                         placeholder="Email"
                         rules={{
                             required: 'Email jest wymagany',
-                            pattern: {value: EMAIL_REGEX, message: 'Email is invalid'},
+                            pattern: {value: EMAIL_REGEX, message: 'Email jest nieprawidłowy'},
                         }}
                         size={12} 
                         color={colors.grey_l} 
