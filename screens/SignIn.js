@@ -1,4 +1,4 @@
-import {View, Dimensions, TouchableOpacity, Alert, KeyboardAvoidingView, Text, Image} from 'react-native';
+import {View, Dimensions, TouchableOpacity, ActivityIndicator, KeyboardAvoidingView, Text, Image} from 'react-native';
 
 //Hooks
 import {useTheme} from '../theme/ThemeProvider';
@@ -9,6 +9,9 @@ import CustomInput from '../components/CustomInput';
 
 //Firebase
 import { signIn } from '../firebase/firebase-config';
+import { useSafeAreaFrame } from 'react-native-safe-area-context';
+import { useState } from 'react';
+import { setLogLevel } from 'firebase/app';
 
 
 
@@ -21,9 +24,13 @@ export default function SignIn({navigation}){
 
     const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
+
+    const [ isLogging, setIsLogging ] = useState();
+
     const onSignIn = async data => {
+        setIsLogging(true);
         const { email, password } = data;
-        signIn(email, password);
+        signIn(email, password).then(() => setIsLogging(false));
     };
 
     const onSignUp = () => {
@@ -90,6 +97,7 @@ export default function SignIn({navigation}){
                 </View>
                 <TouchableOpacity 
                     onPress={handleSubmit(onSignIn)}
+                    disabled={isLogging}
                     style={{ 
                         width: '100%', 
                         height: 50, 
@@ -99,11 +107,13 @@ export default function SignIn({navigation}){
                         borderRadius: 10,
                         backgroundColor: colors.primary
                     }}>
-                    <Text style={{
-                        color: colors.background, 
-                        fontWeight: 'bold', 
-                        fontSize: 18
-                    }}>Zaloguj się</Text>
+                        {isLogging ? <ActivityIndicator color={colors.background} /> : 
+                            <Text style={{
+                                color: colors.background, 
+                                fontWeight: 'bold', 
+                                fontSize: 18
+                            }}>Zaloguj się</Text>
+                        }
                 </TouchableOpacity>
                 <TouchableOpacity 
                     onPress={onSignUp}

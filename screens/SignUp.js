@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {View, Dimensions, TouchableOpacity, Image, KeyboardAvoidingView, Text} from 'react-native';
+import {View, Dimensions, TouchableOpacity, ActivityIndicator, KeyboardAvoidingView, Text} from 'react-native';
 
 //Hooks
 import {useTheme} from '../theme/ThemeProvider';
@@ -8,7 +8,6 @@ import { useNavigation } from '@react-navigation/native';
 
 //Components
 import CustomInput from '../components/CustomInput';
-
 
 //Firebase
 import { createUser } from '../firebase/firebase-config';
@@ -26,9 +25,13 @@ export default function SignUp(){
     const pwd = watch('password');
 
 
+    const [isRegistering, setIsRegistering] = useState(false);
+
+
     const onRegister = async data => {
+        setIsRegistering(true)
         const {name, lastName, email, password} = data;  
-        createUser(name, lastName, email, password);
+        createUser(name, lastName, email, password).then(() => setIsRegistering(false))
     };
 
     const onTerms = () => {
@@ -42,7 +45,6 @@ export default function SignUp(){
     const onSignIn = () => {
         navigation.navigate('SignIn')
     }
-
 
     return (
         <KeyboardAvoidingView 
@@ -130,6 +132,7 @@ export default function SignUp(){
 
                 <TouchableOpacity 
                     onPress={handleSubmit(onRegister)}
+                    disabled={isRegistering}
                     style={{ 
                         width: '100%', 
                         height: 50, 
@@ -139,11 +142,13 @@ export default function SignUp(){
                         borderRadius: 10,
                         backgroundColor: colors.primary
                     }}>
-                    <Text style={{
-                        color: colors.background, 
-                        fontWeight: 'bold', 
-                        fontSize: 18
-                    }}>Zarejestruj</Text>
+                        {isRegistering ? <ActivityIndicator color={colors.background}/> : 
+                            <Text style={{
+                                color: colors.background, 
+                                fontWeight: 'bold', 
+                                fontSize: 18
+                            }}>Zarejestruj</Text>
+                        }
                 </TouchableOpacity>
                 <View 
                     style={{ width: '100%', marginTop: 10, flexWrap:'wrap', justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
