@@ -2,8 +2,12 @@ import 'react-native-gesture-handler';
 import { useState } from 'react';
 import { View, Image, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
+
+//Providers
 import {ThemeProvider} from './theme/ThemeProvider';
 import { useTheme } from './theme/ThemeProvider';
+
+import { CurrentUserProvider } from './providers/CurrentUserProvider';
 
 
 //Stacks
@@ -61,7 +65,9 @@ export default function App() {
   return (
     <NavigationContainer>
       <ThemeProvider>
-         {isUser == 2 ? <BottomTabs/> : isUser == 0  ? <Loading /> : <LoginStack/> }
+        <CurrentUserProvider>
+          {isUser == 2 ? <BottomTabs/> : isUser == 0  ? <Loading /> : <LoginStack/> }
+        </CurrentUserProvider>
       </ThemeProvider>
     </NavigationContainer>
   );

@@ -27,8 +27,8 @@ export default function SignUp(){
 
 
     const onRegister = async data => {
-        const {email, password} = data;  
-        createUser(email, password);
+        const {name, lastName, email, password} = data;  
+        createUser(name, lastName, email, password);
     };
 
     const onTerms = () => {
@@ -71,7 +71,7 @@ export default function SignUp(){
                 <View style={{ width: '100%', height: 50, justifyContent: 'center', alignItems: 'center', marginTop: 20 }}>
                     
                     <CustomInput
-                        name="surname"
+                        name="lastName"
                         placeholder="Nazwisko"
                         control={control}
                         rules={{required: 'Nazwisko jest wymagane'}}

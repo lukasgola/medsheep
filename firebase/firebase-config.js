@@ -5,8 +5,9 @@ import {
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword
 } from "firebase/auth";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+
+import { getFirestore } from "firebase/firestore";
+import { collection, setDoc, getDoc, addDoc, doc, updateDoc } from "firebase/firestore"; 
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -21,23 +22,26 @@ const firebaseConfig = {
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
+export const db = getFirestore(app);
 
 
-export async function createUser(email, password) {
+export async function createUser(name, lastName, email, password) {
     return (
         createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
             // Signed in 
-            const user = userCredential.user;
+            adduser(userCredential.user.uid, name, lastName, email, null)
             // ...
         })
         .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
+            console.log(errorMessage)
             // ..
         })
     )
 }
+
 
 export async function signIn(email, password) {
     return (
@@ -50,6 +54,20 @@ export async function signIn(email, password) {
         .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
+            console.log(errorMessage)
         })
     )
 }
+
+export async function adduser(uid, name, lastName, email, avatar){
+    try {
+      await setDoc(doc(db, "users", uid), {
+        name: name,
+        lastName: lastName,
+        email: email,
+        avatar: avatar,
+      });
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
+  }
