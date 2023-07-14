@@ -46,7 +46,8 @@ export default function SignIn({navigation}){
                     />
                     <Text style={{
                         fontSize: 24,
-                        fontWeight: 'bold'
+                        fontWeight: 'bold',
+                        color: colors.text
                     }}>Medsheep</Text>
                 </View>
                 <View style={{ width: '100%', height: 50, justifyContent: 'center', alignItems: 'center', marginTop: 20 }}>
