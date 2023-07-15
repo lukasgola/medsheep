@@ -68,11 +68,9 @@ export default function App() {
     <NavigationContainer>
       <ThemeProvider>
         <CurrentUserProvider>
-          <PersonalData />
+          {isUser == 2 ? <BottomTabs/> : isUser == 0  ? <Loading /> : <LoginStack/> }
         </CurrentUserProvider>
       </ThemeProvider>
     </NavigationContainer>
   );
 }
-
-//{isUser == 2 ? <BottomTabs/> : isUser == 0  ? <Loading /> : <LoginStack/> }

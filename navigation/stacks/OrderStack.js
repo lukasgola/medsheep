@@ -5,6 +5,7 @@ import {useTheme} from '../../theme/ThemeProvider';
 //Screens
 import Medicines from '../../screens/Medicines';
 import Medicine from '../../screens/Medicine';
+import PersonalData from '../../screens/PersonalData';
 
 
 
@@ -32,6 +33,10 @@ export default function OrderStack() {
       <Stack.Screen 
         name="Lek" 
         component={Medicine}
+      />
+      <Stack.Screen 
+        name="Dane osobiste" 
+        component={PersonalData}
       />
     </Stack.Navigator>
   );
