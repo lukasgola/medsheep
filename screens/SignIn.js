@@ -1,17 +1,16 @@
+import { useState } from 'react';
 import {View, Dimensions, TouchableOpacity, ActivityIndicator, KeyboardAvoidingView, Text, Image} from 'react-native';
 
 //Hooks
 import {useTheme} from '../theme/ThemeProvider';
 import {useForm, Controller} from 'react-hook-form';
 
+
 //Components
 import CustomInput from '../components/CustomInput';
 
 //Firebase
 import { signIn } from '../firebase/firebase-config';
-import { useSafeAreaFrame } from 'react-native-safe-area-context';
-import { useState } from 'react';
-import { setLogLevel } from 'firebase/app';
 
 
 
@@ -44,7 +43,7 @@ export default function SignIn({navigation}){
     
     return (
         <KeyboardAvoidingView 
-            behavior='padding'
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
             style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: colors.background }}>
             <View style={{ width: 0.9*width }}>
                 <View style={{ width: '100%', height: 150, justifyContent: 'center', alignItems: 'center', marginBottom: 20 }}>

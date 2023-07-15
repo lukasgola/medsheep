@@ -48,7 +48,7 @@ export default function SignUp(){
 
     return (
         <KeyboardAvoidingView 
-            behavior='padding'
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
             style={{ flex: 1, justifyContent: 'center', alignItems: 'center',  backgroundColor: colors.background }}>
             <View style={{ width: 0.9*width }}>
                 <View style={{ width: '100%', height: 60, justifyContent: 'center', alignItems: 'center' }}>
