@@ -453,44 +453,6 @@ export default function Medicines({navigation}) {
               onChangeText={onChangeText}
             />
           </View>
-          <View style={{
-                width: '100%',
-                height: 50,
-                backgroundColor: colors.background,
-                flexDirection: 'row',
-                justifyContent: 'space-around',
-                marginTop: 20,
-                marginBottom: 40
-            }}>
-                <TouchableOpacity style={{
-                    width: '40%',
-                    height: 50,
-                    borderRadius: 10,
-                    backgroundColor: colors.grey_l,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                }}>
-                    <Text style={{
-                        fontSize: 16,
-                        fontWeight: 'bold',
-                        color: colors.text
-                    }}>Cofnij</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={{
-                    width: '50%',
-                    height: 50,
-                    borderRadius: 10,
-                    backgroundColor: colors.primary,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                }}>
-                    <Text style={{
-                        fontSize: 16,
-                        fontWeight: 'bold',
-                        color: colors.background
-                    }}>Kontynuuj</Text>
-                </TouchableOpacity>
-            </View>
         </View>
         
       </BottomSheet>

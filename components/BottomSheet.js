@@ -84,8 +84,8 @@ const BottomSheet = (props) => {
                             alignItems: 'center',
                     }}>
                         <Text style={{
-                            fontSize: 18,
-                            color: colors.text
+                            fontSize: 20,
+                            color: colors.primary
                         }}>Wybierz</Text>
                     </TouchableOpacity>
                 </View>
@@ -100,6 +100,7 @@ const BottomSheet = (props) => {
                     }}
                 >
                     <TouchableOpacity 
+                        onPress={() => props.setModalVisible(false)}
                         activeOpacity={0.2}
                         style={{
                             width: '100%',
@@ -108,8 +109,8 @@ const BottomSheet = (props) => {
                             alignItems: 'center',
                     }}>
                         <Text style={{
-                            fontSize: 18,
-                            color: colors.text,
+                            fontSize: 20,
+                            color: colors.primary,
                             fontWeight: 'bold'
                         }}>Anuluj</Text>
                     </TouchableOpacity>
