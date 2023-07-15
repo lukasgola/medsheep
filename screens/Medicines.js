@@ -336,7 +336,7 @@ export default function Medicines({navigation}) {
   const MedItem = ({item}) => {
     return(
       <TouchableOpacity 
-      onPress={() => navigation.navigate('Dane osobiste', {item: item})}
+      onPress={() => navigation.navigate('Lek', {item: item})}
       style={{
         backgroundColor: colors.background,
         width: '90%',

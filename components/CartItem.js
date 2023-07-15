@@ -45,7 +45,7 @@ const CartItem = (props) => {
         <Text style={{
             fontSize: 14,
             color: colors.text,
-            marginLeft: '15%'
+            marginLeft: '18%'
         }}>25.98 zł</Text>
       </View>
     )
