@@ -26,9 +26,7 @@ const BottomSheet = (props) => {
               animationType="slide"
               transparent={true}
               visible={props.visible}
-              style={{
-                alignItems: 'center'
-              }}
+              
           >
               <KeyboardAvoidingView
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
