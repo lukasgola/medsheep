@@ -15,7 +15,9 @@ const BottomSheet = (props) => {
       transparent={true}
       visible={props.visible}
     >
-      <View style={{
+      <TouchableOpacity 
+        onPress={() => props.setModalVisible(false)}
+        style={{
           flex: 1,
           backgroundColor: 'black',
           opacity: 0.3,
@@ -117,7 +119,7 @@ const BottomSheet = (props) => {
                 </View>
               </KeyboardAvoidingView>
           </Modal>
-      </View>
+      </TouchableOpacity>
   </Modal>
   );
 }
