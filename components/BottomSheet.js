@@ -48,6 +48,7 @@ const BottomSheet = (props) => {
 
 
     const onConfirm = () => {
+        props.onConfirm();
         slideOut();
    }
 

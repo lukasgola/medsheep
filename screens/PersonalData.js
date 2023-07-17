@@ -8,12 +8,13 @@ import { useNavigation } from '@react-navigation/native';
 
 //Components
 import CustomInput from '../components/CustomInput';
-import DateTimePickerModal from "react-native-modal-datetime-picker";
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 //Firebase
 import { createUser } from '../firebase/firebase-config';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import BottomSheet from '../components/BottomSheet';
 
 export default function PersonalData(){
 
@@ -26,10 +27,15 @@ export default function PersonalData(){
 
     const [isConfirming, setIsConfirming] = useState(false);
 
-    const [date, setDate] = useState(new Date());
+    const [date, setDate] = useState(new Date(1598051730000));
     const [dateString, setDateString] = useState('Data urodzenia');
-    const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+    const [isDatePickerVisible, setDatePickerVisibile] = useState(false);
 
+    const onChangeDate = (event, selectedDate) => {
+        const currentDate = selectedDate || date;
+        setDate(currentDate);
+        console.log(date)
+    };
 
     const onConfirm = async data => {
         setIsRegistering(true)
@@ -38,17 +44,17 @@ export default function PersonalData(){
     };
 
     const showDatePicker = () => {
-        setDatePickerVisibility(true);
+        setDatePickerVisibile(true);
     };
 
     const hideDatePicker = () => {
-        setDatePickerVisibility(false);
+        setDatePickerVisibile(false);
     };
 
-    const handleDateConfirm = (date) => {
-        setDate(date)
+    const handleDateConfirm = () => {
+        //setDate(date)
         let month = date.getMonth()+1;
-        setDateString(date.getDate() + ' / ' + month + ' / ' + date.getFullYear())
+        setDateString((date.getDate()-1) + ' / ' + month + ' / ' + date.getFullYear())
         hideDatePicker();
     };
 
@@ -100,21 +106,24 @@ export default function PersonalData(){
                                         style={{
                                             color: dateString !== 'Data urodzenia' ? colors.text : colors.grey_d,
                                             fontSize: 12,
-                                            
                                         }}>{dateString}</Text>
-                                    <DateTimePickerModal
-                                        isVisible={isDatePickerVisible}
-                                        mode="date"
-                                        onConfirm={(date) => [onChange(date), handleDateConfirm(date)]}
-                                        onCancel={hideDatePicker}
-                                        themeVariant='light'
-                                        isDarkModeEnabled={false}
-                                        buttonTextColorIOS={colors.primary}
-                                        selected={value}
-                                        onBlur={onBlur}
-                                        confirmTextIOS='Wybierz'
-                                        cancelTextIOS='Cofnij'
-                                    /> 
+                                    <BottomSheet 
+                                        visible={isDatePickerVisible} 
+                                        setModalVisible={setDatePickerVisibile}
+                                        text={'Podaj date urodzenia'}
+                                        onConfirm={handleDateConfirm}
+                                    >
+                                        <DateTimePicker
+                                            testID="dateTimePicker"
+                                            timeZoneOffsetInMinutes={0}
+                                            value={date}
+                                            mode={'date'}
+                                            is24Hour={true}
+                                            display="spinner"
+                                            onChange={onChangeDate}
+                                            textColor={colors.text}
+                                        />
+                                    </BottomSheet>
                                 </TouchableOpacity>
                             {error && (
                                 <View style={{width: '100%'}}>
