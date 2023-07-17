@@ -11,7 +11,7 @@ import { auth } from '../firebase/firebase-config';
 
 
 
-export default function Patient() {
+export default function Patient({navigation}) {
 
   const {colors} = useTheme();
   const { currentUser } = useCurrentUser();
@@ -54,7 +54,8 @@ export default function Patient() {
       flex: 1,
       paddingHorizontal: '5%'
     }}>
-        <View
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Dane osobiste')}
           style={[styles.block,{
             backgroundColor: colors.background,
             flexDirection: 'row',
@@ -96,7 +97,7 @@ export default function Patient() {
               marginTop: 5
             }}>85 kg</Text>
           </View>
-        </View>
+        </TouchableOpacity>
         
         <View style={[styles.block,{
           backgroundColor: colors.background,
