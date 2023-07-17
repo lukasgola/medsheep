@@ -13,7 +13,7 @@ const BottomSheet = (props) => {
     const {colors} = useTheme();
 
     function slideIn(){
-        Animated.timing(leftValue,{
+        Animated.spring(leftValue,{
             toValue: 20,
             duration: 400,
             useNativeDriver: false
@@ -23,15 +23,15 @@ const BottomSheet = (props) => {
     const firstUpdate = useRef(false);
 
     function slideOut(){
-        Animated.timing(leftValue,{
+        Animated.spring(leftValue,{
             toValue: -1000,
-            duration: 400,
+            duration: 500,
             useNativeDriver: false
         }).start()
 
         setTimeout(() => {
             props.setModalVisible(false)
-        }, 200)
+        }, 100)
     }
 
     
