@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
+import React, { useState, useRef, useLayoutEffect } from 'react';
 import { View, Modal, KeyboardAvoidingView, Text, TouchableOpacity, Animated, Pressable } from 'react-native';
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -42,10 +42,6 @@ const BottomSheet = (props) => {
         else {
             if(props.visible){
                 slideIn();
-                console.log("componentDidUpdateFunction");
-            }
-            else{
-                slideOut();
             }
         }
     });
