@@ -408,7 +408,7 @@ export default function Medicines({navigation}) {
         paddingHorizontal: 20,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: colors.background,
+        backgroundColor: item.id == catSelected ? colors.primary : colors.background,
         borderRadius: 10
       }}
         onPress={() => setCatSelected(item.id)}
@@ -416,7 +416,7 @@ export default function Medicines({navigation}) {
         <Text style={{
           fontSize: 14,
           fontWeight: item.id == catSelected ? 'bold' : 'regular',
-          color: item.id == catSelected ? colors.text : colors.grey_d
+          color: item.id == catSelected ? colors.background : colors.grey_d
         }}>{item.category}</Text>
       </TouchableOpacity>
     )
