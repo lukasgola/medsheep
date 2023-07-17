@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Modal, KeyboardAvoidingView, Text, TouchableOpacity, Touchable } from 'react-native';
+import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
+import { View, Modal, KeyboardAvoidingView, Text, TouchableOpacity, Animated, Pressable } from 'react-native';
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -7,7 +7,58 @@ import {useTheme} from '../theme/ThemeProvider';
 
 const BottomSheet = (props) => {
 
+
+    const leftValue = useState(new Animated.Value(-500))[0]
+
     const {colors} = useTheme();
+
+    function slideIn(){
+        Animated.timing(leftValue,{
+            toValue: 20,
+            duration: 400,
+            useNativeDriver: false
+        }).start()
+    }
+
+    const firstUpdate = useRef(false);
+
+    function slideOut(){
+        Animated.timing(leftValue,{
+            toValue: -1000,
+            duration: 400,
+            useNativeDriver: false
+        }).start()
+
+        setTimeout(() => {
+            props.setModalVisible(false)
+        }, 200)
+    }
+
+    
+    useLayoutEffect(() => {
+        if (firstUpdate.current) {
+            firstUpdate.current = true;
+        }
+        else {
+            if(props.visible){
+                slideIn();
+                console.log("componentDidUpdateFunction");
+            }
+            else{
+                slideOut();
+            }
+        }
+    });
+
+
+    const onConfirm = () => {
+        slideOut();
+   }
+
+    const onCancel = () => {
+        slideOut();
+    }
+
 
   return (
     <Modal
@@ -15,109 +66,115 @@ const BottomSheet = (props) => {
       transparent={true}
       visible={props.visible}
     >
-      <TouchableOpacity 
-        onPress={() => props.setModalVisible(false)}
+      <Pressable 
+        onPress={() => slideOut()}
         style={{
           flex: 1,
           backgroundColor: 'black',
           opacity: 0.3,
       }}>
-          <Modal
-              animationType="slide"
-              transparent={true}
-              visible={props.visible}
-              
-          >
-              <KeyboardAvoidingView
-                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                style={{
-                    width: '95%',
-                    position: 'absolute',
-                    left: '2.5%',
-                    bottom: 20,
-                    zIndex: 10
-              }}>
-                    <View style={{
-                        backgroundColor: colors.background,
-                        flex: 1,
-                        borderTopLeftRadius: 15,
-                        borderTopRightRadius: 15,
-                        paddingHorizontal: '5%',
-                        paddingVertical: 10,
-                    }}>
-                        <View style={{
-                            flexDirection: 'row',
-                            width: '100%',
-                            height: 40,
-                            alignItems: 'center',
-                            justifyContent: 'space-between',
-                            marginBottom: 20,
-                        }}>
-                            <Text style={{
-                                fontSize: 18,
-                                fontWeight: 'bold',
-                                color: colors.text,
-                            }}>{props.text}</Text>
-                            <TouchableOpacity onPress={() => props.setModalVisible(false)}>
-                                <MaterialCommunityIcons name={'close-circle-outline'} size={30} style={{marginLeft: 3}} color={colors.text} />
-                            </TouchableOpacity>
-                        </View>
-                    {props.children}
-                </View>
-                <View
-                    style={{
-                        backgroundColor: colors.background,
-                        width: '100%',
-                        height: 60,
-                        borderBottomLeftRadius: 15,
-                        borderBottomRightRadius: 15,
-                        borderTopWidth: 1,
-                        borderTopColor: colors.grey_l
-                    }}
-                >
-                    <TouchableOpacity 
-                        activeOpacity={0.2}
-                        style={{
-                            width: '100%',
-                            height: '100%',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                    }}>
-                        <Text style={{
-                            fontSize: 20,
-                            color: colors.primary
-                        }}>Wybierz</Text>
+        </Pressable>
+
+        <Animated.View style={{
+            width: '95%',
+            position: 'absolute',
+            bottom: leftValue,
+            left: '2.5%',
+            zIndex: 10,
+        }}>
+
+
+        <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{
+            
+        }}>
+            
+            <View style={{
+                backgroundColor: colors.background,
+                flex: 1,
+                borderTopLeftRadius: 15,
+                borderTopRightRadius: 15,
+                paddingHorizontal: '5%',
+                paddingVertical: 10,
+            }}>
+                <View style={{
+                    flexDirection: 'row',
+                    width: '100%',
+                    height: 40,
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    marginBottom: 20,
+                }}>
+                    <Text style={{
+                        fontSize: 18,
+                        fontWeight: 'bold',
+                        color: colors.text,
+                    }}>{props.text}</Text>
+                    <TouchableOpacity onPress={() => slideOut()}>
+                        <MaterialCommunityIcons name={'close-circle-outline'} size={30} style={{marginLeft: 3}} color={colors.text} />
                     </TouchableOpacity>
                 </View>
                 
-                <View
+                    {props.children}
+                
+            </View>
+
+            <View
+                style={{
+                    backgroundColor: colors.background,
+                    width: '100%',
+                    height: 60,
+                    borderBottomLeftRadius: 15,
+                    borderBottomRightRadius: 15,
+                    borderTopWidth: 1,
+                    borderTopColor: colors.grey_l
+                }}
+            >
+                <TouchableOpacity 
+                    onPress={() => onConfirm()}
+                    activeOpacity={0.2}
                     style={{
-                        backgroundColor: colors.background,
                         width: '100%',
-                        height: 60,
-                        borderRadius: 15,
-                        marginTop: 5
-                    }}
-                >
-                    <TouchableOpacity 
-                        onPress={() => props.setModalVisible(false)}
-                        activeOpacity={0.2}
-                        style={{
-                            width: '100%',
-                            height: '100%',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                    }}>
-                        <Text style={{
-                            fontSize: 20,
-                            color: colors.primary,
-                            fontWeight: 'bold'
-                        }}>Anuluj</Text>
-                    </TouchableOpacity>
-                </View>
-              </KeyboardAvoidingView>
-          </Modal>
-      </TouchableOpacity>
+                        height: '100%',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                }}>
+                    <Text style={{
+                        fontSize: 20,
+                        color: colors.primary
+                    }}>Wybierz</Text>
+                </TouchableOpacity>
+            </View>
+            
+            <View
+                style={{
+                    backgroundColor: colors.background,
+                    width: '100%',
+                    height: 60,
+                    borderRadius: 15,
+                    marginTop: 5
+                }}
+            >
+                <TouchableOpacity 
+                    onPress={() => onCancel()}
+                    activeOpacity={0.2}
+                    style={{
+                        width: '100%',
+                        height: '100%',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                }}>
+                    <Text style={{
+                        fontSize: 20,
+                        color: colors.primary,
+                        fontWeight: 'bold'
+                    }}>Anuluj</Text>
+                </TouchableOpacity>
+            </View>
+        
+        </KeyboardAvoidingView>
+        </Animated.View>
   </Modal>
   );
 }
