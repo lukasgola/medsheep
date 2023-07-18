@@ -3,6 +3,7 @@ import {View, Dimensions, TouchableOpacity, ActivityIndicator, KeyboardAvoidingV
 
 //Hooks
 import {useTheme} from '../theme/ThemeProvider';
+import { useCurrentUser } from '../providers/CurrentUserProvider'; 
 
 //Components
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -21,6 +22,7 @@ export default function PersonalData({navigation}){
     const width = Dimensions.get('window').width;
 
     const {colors} = useTheme();
+    const {currentUser, setCurrentUser} = useCurrentUser();
 
 
     const [isConfirming, setIsConfirming] = useState(false);
@@ -70,6 +72,13 @@ export default function PersonalData({navigation}){
     const onConfirm = () => {
         setIsConfirming(true)
         setPersonalData(auth.currentUser.uid, dateString, heightString, weightString, bloodString).then(() => setIsConfirming(false))
+        setCurrentUser(existingValues => ({
+            ...existingValues,
+            birthdate: dateString,
+            height: height,
+            weight: weight,
+            blood: blood
+        }))
         navigation.goBack();
     };
 
@@ -77,6 +86,23 @@ export default function PersonalData({navigation}){
     const [metric, setMetric] = useState([]);
     
     useEffect(() => {
+
+        if (currentUser.birthdate !== null){
+            setDateString(currentUser.birthdate)
+        }
+        if (currentUser.height !== null){
+            setHeight(currentUser.height)
+            setHeightString(currentUser.height)
+        }
+        if (currentUser.weight !== null){
+            setWeight(currentUser.weight)
+            setWeightString(currentUser.weight)
+        }
+        if (currentUser.blood !== null){
+            setBlood(currentUser.blood)
+            setBloodString(currentUser.blood)
+        }
+        
         for(let i = 1; i < 250; i++){
             setMetric(oldArray => [...oldArray, i]);
         }
@@ -84,10 +110,6 @@ export default function PersonalData({navigation}){
     }, [])
 
     
-	
-
-
-
 
     const InputPicker = (props) => {
         return(
