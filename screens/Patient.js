@@ -1,4 +1,5 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { useEffect, useState } from 'react';
+import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, FlatList } from 'react-native';
 
 import {useTheme} from '../theme/ThemeProvider';
 import { useCurrentUser } from '../providers/CurrentUserProvider';
@@ -7,7 +8,8 @@ import CartItem from '../components/CartItem';
 
 
 //Firebase
-import { auth } from '../firebase/firebase-config';
+import { auth, db } from '../firebase/firebase-config';
+import { collection, getDocs } from 'firebase/firestore';
 
 
 
@@ -15,6 +17,25 @@ export default function Patient({navigation}) {
 
   const {colors} = useTheme();
   const { currentUser } = useCurrentUser();
+
+  const [basket, setBasket] = useState([]);
+
+  const getBasket = async () => {
+    const querySnapshot = await getDocs(collection(db, "users", auth.currentUser.uid, "basket"));
+    querySnapshot.forEach((doc) => {
+      // doc.data() is never undefined for query doc snapshots
+      console.log(doc.id, " => ", doc.data());
+      const data = {
+        ...doc.data(),
+        id: doc.id,
+    }
+      setBasket(old => [...old, data])
+    });
+    } 
+
+  useEffect(() =>{
+    getBasket();
+  },[])
 
   const OrderItem = ({item}) => {
     return(
@@ -117,7 +138,13 @@ export default function Patient({navigation}) {
               marginBottom: 10
           }}>Koszyk</Text>
 
-          <CartItem />
+          <FlatList
+            data={basket.slice(0,3)}
+            renderItem={({item}) => <CartItem item={item.product} number={item.number} price={item.price} />}
+            keyExtractor={item => item.id}
+            scrollEnabled={false}
+
+          />
 
           <View style={{
             width: '100%',
