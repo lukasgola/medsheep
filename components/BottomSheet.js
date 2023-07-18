@@ -83,9 +83,7 @@ const BottomSheet = (props) => {
 
         <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={{
-            
-        }}>
+        >
             
             <View style={{
                 backgroundColor: colors.background,

@@ -89,3 +89,14 @@ export async function setPersonalData(uid, birth, height, weight, blood){
     }
 }
 
+export async function addToBasket(product, number, price){
+    try {
+      await addDoc(collection(db, `users/${auth.currentUser.uid}/basket`), {
+        product: product,
+        number: number,
+        price: price
+      });
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
+  }

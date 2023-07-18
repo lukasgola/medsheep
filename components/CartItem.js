@@ -31,22 +31,22 @@ const CartItem = (props) => {
             fontSize: 14,
             color: colors.text,
             fontWeight: 'bold'
-          }}>Apap Noc</Text>
+          }}>{props.item ? props.item.name : 'None'}</Text>
           <Text style={{
             fontSize: 14,
             color: colors.text
-          }}>30 tab.</Text>
+          }}>{props.item ? props.item.amount : 'None'} tab.</Text>
         </View>
         <Text style={{
             fontSize: 14,
             color: colors.text,
             marginLeft: '10%',
-        }}>x2</Text>
+        }}>x{props.number ? props.number : 0 }</Text>
         <Text style={{
             fontSize: 14,
             color: colors.text,
             marginLeft: '18%'
-        }}>25.98 zł</Text>
+        }}>{props.price ? props.price : 0} zł</Text>
       </View>
     )
   }

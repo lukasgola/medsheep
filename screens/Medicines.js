@@ -9,6 +9,10 @@ import BottomSheet from '../components/BottomSheet';
 import Amounter from '../components/Amounter';
 import CartItem from '../components/CartItem';
 
+
+//Firebase
+import { addToBasket } from '../firebase/firebase-config';
+
 export default function Medicines({navigation}) {
 
   const {colors} = useTheme();
@@ -285,7 +289,7 @@ export default function Medicines({navigation}) {
 
   const [filteredData, setFilteredData] = useState(DATA);
   const [catSelected, setCatSelected] = useState(1);
-  const [item, setItem] = useState(null);
+  const [selectedItem, setSelectedItem] = useState({name: 'None'});
 
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -294,15 +298,15 @@ export default function Medicines({navigation}) {
 
   const goUp = (amount) => {
     setNumber(amount)
-    setPrice((item.price*(number+1)).toFixed(2))
+    setPrice((selectedItem.price*(number+1)).toFixed(2))
   }
 
   const goDown = (amount) => {
-      number == 0 ? console.log('You can not') : [setNumber(amount), setPrice((item.price*amount).toFixed(2))]
+      number == 0 ? console.log('You can not') : [setNumber(amount), setPrice((selectedItem.price*amount).toFixed(2))]
   }
 
   const onChangeText = (amount) => {
-      setPrice((item.price*(amount)).toFixed(2))
+      setPrice((selectedItem.price*(amount)).toFixed(2))
   }
 
 
@@ -332,6 +336,16 @@ export default function Medicines({navigation}) {
     }
   }
 
+  const onItemChoice = (item) => {
+    setSelectedItem(item)
+    setPrice(item.price)
+    setNumber(1)
+    setModalVisible(true)
+  }
+
+  const onAddToBasket = () => {
+      addToBasket(selectedItem, number, price);
+  }
 
   const MedItem = ({item}) => {
     return(
@@ -393,7 +407,7 @@ export default function Medicines({navigation}) {
           right: 10
         }}
           disabled={item.availability ? false : true}
-          onPress={() => [setItem(item),setModalVisible(true)]}
+          onPress={() => onItemChoice(item)}
         >
           <MaterialCommunityIcons name={'cart-minus'} size={25} style={{marginLeft: 8}} color={item.availability ? colors.text : colors.grey} />
         </TouchableOpacity>
@@ -434,19 +448,20 @@ export default function Medicines({navigation}) {
         visible={modalVisible} 
         setModalVisible={setModalVisible}
         text={'Dodaj do koszyka'}
+        onConfirm={onAddToBasket}
       >
         <View style={{
           width: '100%',
           alignItems: 'center'
         }}>
           
-          <CartItem />
+          <CartItem item={selectedItem} number={number} price={price} />
           
           <View style={{
             marginVertical: 20,
           }}>
             <Amounter 
-              item={item} 
+              item={selectedItem} 
               setModalVisible={setModalVisible} 
               goUp={goUp}
               goDown={goDown}

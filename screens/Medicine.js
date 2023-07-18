@@ -9,6 +9,8 @@ import BottomSheet from '../components/BottomSheet';
 import Amounter from '../components/Amounter';
 import CartItem from '../components/CartItem';
 
+//Firebase
+import { addToBasket } from '../firebase/firebase-config';
 
 export default function Medicine({route, navigation}) {
 
@@ -33,6 +35,10 @@ export default function Medicine({route, navigation}) {
         setPrice((item.price*(amount)).toFixed(2))
     }
 
+    const onAddToBasket = () => {
+        addToBasket(item, number, price);
+    }
+
 
     const Item = ({item}) => {
         return(
@@ -52,8 +58,9 @@ export default function Medicine({route, navigation}) {
             visible={modalVisible} 
             setModalVisible={setModalVisible}
             text={'Dodaj do koszyka'}
+            onConfirm={onAddToBasket}
         >
-            <CartItem />
+            <CartItem item={item} number={number} price={price} />
         </BottomSheet>
         <TouchableOpacity 
             onPress={() => setModalVisible(true)}
