@@ -28,14 +28,9 @@ export default function App() {
 
   onAuthStateChanged(auth, (user) => {
     if (user) {
-      // User is signed in, see docs for a list of available properties
-      // https://firebase.google.com/docs/reference/js/auth.user
       setIsUser(2);
-      // ...
     } else {
       setIsUser(1);
-      // User is signed out
-      // ...
     }
   });
 
