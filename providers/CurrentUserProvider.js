@@ -10,6 +10,10 @@ export const CurrentUserContext = React.createContext({
         name: 'none',
         lastName: 'none',
         avatar: 'https://i.picsum.photos/id/520/200/300.jpg?hmac=wYOWhYQGp5efB1HNroao-yTysVtEt5osptkdHJIsc0g',
+        birthdate: 'none',
+        height: 'none',
+        weight: 'none',
+        blood: 'none'
     },
     setCurrentUser: () => {}
 });

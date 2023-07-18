@@ -14,7 +14,6 @@ import { CurrentUserProvider } from './providers/CurrentUserProvider';
 import BottomTabs from './navigation/BottomTabs';
 import LoginStack from './navigation/stacks/LoginStack';
 
-import PersonalData from './screens/PersonalData';
 
 //Firebase
 import { onAuthStateChanged } from "firebase/auth";

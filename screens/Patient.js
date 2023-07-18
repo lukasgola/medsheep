@@ -60,6 +60,7 @@ export default function Patient({navigation}) {
             backgroundColor: colors.background,
             flexDirection: 'row',
             padding: 15,
+            alignItems: 'center'
           }]}
         >
           <Image 
@@ -83,19 +84,25 @@ export default function Patient({navigation}) {
               color: colors.grey_d,
               marginLeft: 20,
               marginTop: 5
-            }}>12.06.1971 (52 lata)</Text>
+            }}>{currentUser.birthdate}</Text>
             <Text style={{
               fontSize: 14,
               color: colors.grey_d,
               marginLeft: 20,
               marginTop: 5
-            }}>178 cm</Text>
+            }}>{currentUser.height} cm</Text>
             <Text style={{
               fontSize: 14,
               color: colors.grey_d,
               marginLeft: 20,
               marginTop: 5
-            }}>85 kg</Text>
+            }}>{currentUser.weight} kg</Text>
+            <Text style={{
+              fontSize: 14,
+              color: colors.grey_d,
+              marginLeft: 20,
+              marginTop: 5
+            }}>{currentUser.blood}</Text>
           </View>
         </TouchableOpacity>
         

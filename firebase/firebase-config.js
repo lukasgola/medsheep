@@ -61,13 +61,31 @@ export async function signIn(email, password) {
 
 export async function adduser(uid, name, lastName, email, avatar){
     try {
-      await setDoc(doc(db, "users", uid), {
+        await setDoc(doc(db, "users", uid), {
         name: name,
         lastName: lastName,
         email: email,
         avatar: avatar,
-      });
+        birthdate: null,
+        height: null,
+        weight: null,
+        blood: null
+        });
     } catch (e) {
-      console.error("Error adding document: ", e);
+        console.error("Error adding document: ", e);
     }
-  }
+}
+
+export async function setPersonalData(uid, birth, height, weight, blood){
+    try {
+        await updateDoc(doc(db, "users", uid), {
+            birthdate: birth,
+            height: height,
+            weight: weight,
+            blood: blood
+        });
+    } catch (e) {
+        console.error("Error adding document: ", e);
+    }
+}
+

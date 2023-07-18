@@ -3,21 +3,20 @@ import {View, Dimensions, TouchableOpacity, ActivityIndicator, KeyboardAvoidingV
 
 //Hooks
 import {useTheme} from '../theme/ThemeProvider';
-import {useForm, Controller} from 'react-hook-form';
-import { useNavigation } from '@react-navigation/native';
 
 //Components
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 //Firebase
-import { createUser } from '../firebase/firebase-config';
+import { auth, setPersonalData } from '../firebase/firebase-config';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import BottomSheet from '../components/BottomSheet';
 
 import {Picker} from '@react-native-picker/picker';
 
-export default function PersonalData(){
+
+export default function PersonalData({navigation}){
 
     const width = Dimensions.get('window').width;
 
@@ -38,19 +37,13 @@ export default function PersonalData(){
     const [heightString, setHeightString] = useState('Wzrost');
     const [weight, setWeight] = useState(70);
     const [weightString, setWeightString] = useState('Waga');
-    const [blood, setBlood] = useState();
+    const [blood, setBlood] = useState('A Rh+');
     const [bloodString, setBloodString] = useState('Grupa krwi');
 
     const onChangeDate = (event, selectedDate) => {
         const currentDate = selectedDate || date;
         setDate(currentDate);
         console.log(date)
-    };
-
-    const onConfirm = async data => {
-        setIsRegistering(true)
-        const {name, lastName, email, password} = data;  
-        createUser(name, lastName, email, password).then(() => setIsRegistering(false))
     };
 
     const handleDateConfirm = () => {
@@ -73,6 +66,12 @@ export default function PersonalData(){
         setBloodString(blood);
         setBloodPickerVisible(false);
     }
+
+    const onConfirm = () => {
+        setIsConfirming(true)
+        setPersonalData(auth.currentUser.uid, dateString, heightString, weightString, bloodString).then(() => setIsConfirming(false))
+        navigation.goBack();
+    };
 
     
     const [metric, setMetric] = useState([]);
@@ -204,7 +203,7 @@ export default function PersonalData(){
                     <Picker
                         selectedValue={weight}
                         onValueChange={(itemValue, itemIndex) =>
-                            setHeight(itemValue)
+                            setWeight(itemValue)
                         }>
                         {metric.map((item) => (
                             <Picker.Item label={item.toString()} value={item} key={item} />
