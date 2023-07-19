@@ -16,5 +16,5 @@
   <img src='https://github.com/lukasgola/myportfolio/blob/main/src/assets/m-s3.png?raw=true' width=200 />
   <img src='https://github.com/lukasgola/myportfolio/blob/main/src/assets/m-s4.png?raw=true' width=200 />
   <img src='https://github.com/lukasgola/myportfolio/blob/main/src/assets/m-s5.png?raw=true' width=200 />
-  <img src='https://github.com/lukasgola/myportfolio/blob/main/src/assets/m-s6.png?raw=true' width=200 />
+  <img src='https://github.com/lukasgola/myportfolio/blob/main/src/assets/m-s7.png?raw=true' width=200 />
 </div>
