@@ -8,6 +8,7 @@ import {ThemeProvider} from './theme/ThemeProvider';
 import { useTheme } from './theme/ThemeProvider';
 
 import { CurrentUserProvider } from './providers/CurrentUserProvider';
+import { BasketProvider } from './providers/BasketProvider';
 
 
 //Stacks
@@ -61,7 +62,9 @@ export default function App() {
     <NavigationContainer>
       <ThemeProvider>
         <CurrentUserProvider>
-          {isUser == 2 ? <BottomTabs/> : isUser == 0  ? <Loading /> : <LoginStack/> }
+          
+            {isUser == 2 ? <BasketProvider><BottomTabs/></BasketProvider> : isUser == 0  ? <Loading /> : <LoginStack/> }
+          
         </CurrentUserProvider>
       </ThemeProvider>
     </NavigationContainer>

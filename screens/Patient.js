@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, FlatList }
 
 import {useTheme} from '../theme/ThemeProvider';
 import { useCurrentUser } from '../providers/CurrentUserProvider';
+import { useBasket } from '../providers/BasketProvider';
 
 import CartItem from '../components/CartItem';
 
@@ -10,37 +11,24 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 
 //Firebase
-import { auth, db } from '../firebase/firebase-config';
-import { collection, getDocs } from 'firebase/firestore';
+import { auth } from '../firebase/firebase-config';
 
 
 export default function Patient({navigation}) {
 
   const {colors} = useTheme();
   const { currentUser } = useCurrentUser();
-
-  const [basket, setBasket] = useState([]);
+  const { basket } = useBasket();
 
   const [ cumulation, setCumulation] = useState(0);
 
-  const getBasket = async () => {
-    let tempCum = 0;
-    const querySnapshot = await getDocs(collection(db, "users", auth.currentUser.uid, "basket"));
-    querySnapshot.forEach((doc) => {
-      // doc.data() is never undefined for query doc snapshots
-      const data = {
-        ...doc.data(),
-        id: doc.id,
-      }
-      setBasket(old => [...old, data])
-      tempCum = tempCum + parseFloat(data.price);
-    });
-    setCumulation(tempCum)
-    } 
 
   useEffect(() =>{
-    getBasket();
-  },[])
+    setCumulation(0);
+    basket.map(item => (
+      setCumulation((cumulation) => (parseFloat(cumulation) + parseFloat(item.price)).toFixed(2))
+    ))
+  },[basket])
 
   const OrderItem = ({item}) => {
     return(

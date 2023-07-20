@@ -4,7 +4,8 @@ import { Text, View, SafeAreaView, FlatList, TouchableOpacity, Image } from 'rea
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 
-import {useTheme} from '../theme/ThemeProvider';
+import { useTheme } from '../theme/ThemeProvider';
+import { useBasket } from '../providers/BasketProvider';
 
 import BottomSheet from '../components/BottomSheet';
 import Amounter from '../components/Amounter';
@@ -17,6 +18,7 @@ import { addToBasket } from '../firebase/firebase-config';
 export default function Medicines({navigation}) {
 
   const {colors} = useTheme();
+  const {basket, setBasket} = useBasket();
 
   const DATA = [
     {
@@ -345,7 +347,8 @@ export default function Medicines({navigation}) {
   }
 
   const onAddToBasket = () => {
-      addToBasket(selectedItem, number, price);
+    setBasket({product: selectedItem, number: number,price: price});
+    addToBasket(selectedItem, number, price);
   }
 
   const MedItem = ({item}) => {
