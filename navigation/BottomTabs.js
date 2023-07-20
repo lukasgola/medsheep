@@ -1,6 +1,7 @@
 import { View, Text, Animated, Image } from 'react-native'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
 
 import HomeStack from './stacks/HomeStack';
 import OrderStack from './stacks/OrderStack';
@@ -24,7 +25,7 @@ export default function BottomTabs() {
             alignItems: 'center',
             justifyContent: 'center',
         }}>
-            <MaterialCommunityIcons name={props.focused ? props.filled : props.icon} size={25} color={props.focused ? colors.primary : colors.grey} />
+            <Ionicons name={props.focused ? props.filled : props.icon} size={25} color={props.focused ? colors.primary : colors.grey} />
             <Text style={{color: props.focused ? colors.text : colors.grey_d, fontSize: 12}}>{props.title}</Text>
         </View>
     )
@@ -67,7 +68,7 @@ export default function BottomTabs() {
         component={OrderStack} 
         options={{
           tabBarIcon: ({focused}) => (
-            <Item focused={focused} icon='cart-minus' filled='cart' title='Zamów' />
+            <Item focused={focused} icon='cart-outline' filled='cart' title='Zamów' />
           ),
         }}
       />
@@ -85,7 +86,7 @@ export default function BottomTabs() {
         component={PatientStack} 
         options={{
           tabBarIcon: ({focused}) => (
-            <Item focused={focused} icon='account-outline' filled='account' title='Pacjent' />
+            <Item focused={focused} icon='person-outline' filled='person' title='Pacjent' />
           ),
         }}
       />

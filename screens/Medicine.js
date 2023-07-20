@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Text, View, Image, TouchableOpacity, Dimensions, FlatList, Modal, TextInput, KeyboardAvoidingView, ScrollView } from 'react-native';
 
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import {useTheme} from '../theme/ThemeProvider';
 
@@ -105,7 +105,7 @@ export default function Medicine({route, navigation}) {
                 }}
                 onPress={() => setLiked(!liked)}
             >
-                <MaterialCommunityIcons name={liked ? 'heart' : 'heart-outline'} size={25} color={liked ? colors.primary : colors.text} />
+                <Ionicons name={liked ? 'heart' : 'heart-outline'} size={25} color={liked ? colors.primary : colors.text} />
             </TouchableOpacity>
             <Image 
                 source={item.img} 

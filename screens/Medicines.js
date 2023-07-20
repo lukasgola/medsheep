@@ -1,7 +1,8 @@
 import { useLayoutEffect, useState } from 'react';
 import { Text, View, SafeAreaView, FlatList, TouchableOpacity, Image } from 'react-native';
 
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
 
 import {useTheme} from '../theme/ThemeProvider';
 
@@ -409,7 +410,7 @@ export default function Medicines({navigation}) {
           disabled={item.availability ? false : true}
           onPress={() => onItemChoice(item)}
         >
-          <MaterialCommunityIcons name={'cart-minus'} size={25} style={{marginLeft: 8}} color={item.availability ? colors.text : colors.grey} />
+          <Ionicons name={'cart-outline'} size={25} style={{marginLeft: 8}} color={item.availability ? colors.text : colors.grey} />
         </TouchableOpacity>
       </TouchableOpacity>
     )

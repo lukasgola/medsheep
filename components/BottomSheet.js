@@ -1,7 +1,8 @@
 import React, { useState, useRef, useLayoutEffect } from 'react';
 import { View, Modal, KeyboardAvoidingView, Text, TouchableOpacity, Animated, Pressable } from 'react-native';
 
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
 
 import {useTheme} from '../theme/ThemeProvider';
 
@@ -107,7 +108,7 @@ const BottomSheet = (props) => {
                         color: colors.text,
                     }}>{props.text}</Text>
                     <TouchableOpacity onPress={() => slideOut()}>
-                        <MaterialCommunityIcons name={'close-circle-outline'} size={30} style={{marginLeft: 3}} color={colors.text} />
+                        <Ionicons name={'close-circle-outline'} size={30} style={{marginLeft: 3}} color={colors.text} />
                     </TouchableOpacity>
                 </View>
                 

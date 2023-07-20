@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { View, TouchableOpacity, TextInput } from 'react-native';
 
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
 
 import {useTheme} from '../theme/ThemeProvider';
 
@@ -34,7 +35,7 @@ const Amounter = (props) => {
                 alignItems: 'center'
             }}
         >
-            <MaterialCommunityIcons name={'minus'} size={40} color={colors.text} />
+            <Ionicons name={'remove-outline'} size={40} color={colors.text} />
         </TouchableOpacity>
         <TextInput
             onChangeText={(value) => value == '' ? [setNumber(0), props.onChangeText(0)] : [setNumber(parseInt(value)), props.onChangeText(value)]}
@@ -64,7 +65,7 @@ const Amounter = (props) => {
                 alignItems: 'center'
             }}
         >
-            <MaterialCommunityIcons name={'plus'} size={40} color={colors.text} />
+            <Ionicons name={'add-outline'} size={40} color={colors.text} />
         </TouchableOpacity>
     </View>
   );
