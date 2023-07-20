@@ -6,11 +6,12 @@ import { useCurrentUser } from '../providers/CurrentUserProvider';
 
 import CartItem from '../components/CartItem';
 
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
 
 //Firebase
 import { auth, db } from '../firebase/firebase-config';
 import { collection, getDocs } from 'firebase/firestore';
-
 
 
 export default function Patient({navigation}) {
@@ -20,16 +21,21 @@ export default function Patient({navigation}) {
 
   const [basket, setBasket] = useState([]);
 
+  const [ cumulation, setCumulation] = useState(0);
+
   const getBasket = async () => {
+    let tempCum = 0;
     const querySnapshot = await getDocs(collection(db, "users", auth.currentUser.uid, "basket"));
     querySnapshot.forEach((doc) => {
       // doc.data() is never undefined for query doc snapshots
       const data = {
         ...doc.data(),
         id: doc.id,
-    }
+      }
       setBasket(old => [...old, data])
+      tempCum = tempCum + parseFloat(data.price);
     });
+    setCumulation(tempCum)
     } 
 
   useEffect(() =>{
@@ -99,30 +105,43 @@ export default function Patient({navigation}) {
               fontWeight: 'bold',
               marginLeft: 20,
             }}>{currentUser.name} {currentUser.lastName}</Text>
-            <Text style={{
-              fontSize: 14,
-              color: colors.grey_d,
-              marginLeft: 20,
-              marginTop: 5
-            }}>{currentUser.birthdate}</Text>
-            <Text style={{
-              fontSize: 14,
-              color: colors.grey_d,
-              marginLeft: 20,
-              marginTop: 5
-            }}>{currentUser.height} cm</Text>
-            <Text style={{
-              fontSize: 14,
-              color: colors.grey_d,
-              marginLeft: 20,
-              marginTop: 5
-            }}>{currentUser.weight} kg</Text>
-            <Text style={{
-              fontSize: 14,
-              color: colors.grey_d,
-              marginLeft: 20,
-              marginTop: 5
-            }}>{currentUser.blood}</Text>
+            <View style={{flexDirection: 'row', marginLeft: 20,}}>
+              <Ionicons name={'calendar-outline'} size={16} color={colors.text} style={{marginTop: 4}} />
+              <Text style={{
+                fontSize: 14,
+                color: colors.grey_d,
+                marginLeft: 10,
+                marginTop: 5
+              }}>{currentUser.birthdate}</Text>
+            </View>
+            
+            <View style={{flexDirection: 'row', marginLeft: 20,}}>
+              <Ionicons name={'man-outline'} size={16} color={colors.text} style={{marginTop: 4}} />
+              <Text style={{
+                fontSize: 14,
+                color: colors.grey_d,
+                marginLeft: 10,
+                marginTop: 5
+              }}>{currentUser.height} cm</Text>
+            </View>
+            <View style={{flexDirection: 'row', marginLeft: 20,}}>
+              <Ionicons name={'barbell-outline'} size={16} color={colors.text} style={{marginTop: 4}} />
+              <Text style={{
+                fontSize: 14,
+                color: colors.grey_d,
+                marginLeft: 10,
+                marginTop: 5
+              }}>{currentUser.weight} kg</Text>
+            </View>
+            <View style={{flexDirection: 'row', marginLeft: 20,}}>
+              <Ionicons name={'water-outline'} size={16} color={colors.text} style={{marginTop: 4}} />
+              <Text style={{
+                fontSize: 14,
+                color: colors.grey_d,
+                marginLeft: 10,
+                marginTop: 5
+              }}>{currentUser.blood}</Text>
+            </View>
           </View>
         </TouchableOpacity>
         
@@ -158,7 +177,7 @@ export default function Patient({navigation}) {
               color: colors.text,
               fontWeight: 'bold',
               marginTop: 5
-            }}>25.98 zł</Text>
+            }}>{cumulation}</Text>
           </View>
 
           <TouchableOpacity style={styles.viewMore}>
