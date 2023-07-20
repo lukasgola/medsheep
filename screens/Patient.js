@@ -24,7 +24,6 @@ export default function Patient({navigation}) {
     const querySnapshot = await getDocs(collection(db, "users", auth.currentUser.uid, "basket"));
     querySnapshot.forEach((doc) => {
       // doc.data() is never undefined for query doc snapshots
-      console.log(doc.id, " => ", doc.data());
       const data = {
         ...doc.data(),
         id: doc.id,
@@ -221,7 +220,7 @@ const styles = StyleSheet.create({
       width: 0,
       height: 2,
     },
-    shadowOpacity: 0.13,
+    //shadowOpacity: 0.13,
     shadowRadius: 2.62,
     elevation: 4,
   },

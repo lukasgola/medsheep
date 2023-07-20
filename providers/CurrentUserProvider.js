@@ -30,7 +30,6 @@ export const CurrentUserProvider = (props) => {
             const user = {
                 ...docSnap.data()
             }
-            console.log(JSON.stringify(user))
             setCurrentUser(user)
         } else {
         // doc.data() will be undefined in this case
