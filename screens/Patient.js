@@ -199,13 +199,6 @@ export default function Patient({navigation}) {
         </View>
         <View style={[styles.block, { marginBottom: 20}]}>
           <TouchableOpacity
-            onPress={() => console.log(auth.currentUser)}
-          >
-            <Text>CurrentUser</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={[styles.block, { marginBottom: 20}]}>
-          <TouchableOpacity
             onPress={() => auth.signOut().then(() => console.log('User signed out!'))}
           >
             <Text>Wyloguj</Text>

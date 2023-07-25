@@ -45,7 +45,6 @@ export default function PersonalData({navigation}){
     const onChangeDate = (event, selectedDate) => {
         const currentDate = selectedDate || date;
         setDate(currentDate);
-        console.log(date)
     };
 
     const handleDateConfirm = () => {
@@ -106,7 +105,6 @@ export default function PersonalData({navigation}){
         for(let i = 1; i < 250; i++){
             setMetric(oldArray => [...oldArray, i]);
         }
-        console.log('update')
     }, [])
 
     

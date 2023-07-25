@@ -23,7 +23,7 @@ export const BasketProvider = (props) => {
             }
             setBasket(old => [...old, data])
         });
-    } 
+    }
     
 
     // Listening to changes of device appearance while in run-time
