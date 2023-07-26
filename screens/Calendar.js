@@ -1,26 +1,29 @@
-import { useState } from 'react';
-import { SafeAreaView, StyleSheet, Text, View, Dimensions, TouchableOpacity } from 'react-native';
+import { useState, useEffect } from 'react';
+import { SafeAreaView, StyleSheet, Text, View, Dimensions, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native';
 
 import { Calendar, CalendarProvider, LocaleConfig, AgendaList, ExpandableCalendar, Agenda} from 'react-native-calendars';
 
 import { useTheme } from '../theme/ThemeProvider';
 
 
+const months = [
+  'Styczeń',
+  'Luty',
+  'Marzec',
+  'Kwiecień',
+  'Maj',
+  'Czerwiec',
+  'Lipiec',
+  'Sierpień',
+  'Wrzesień',
+  'Październik',
+  'Listopad',
+  'Grudzień'
+]
+
+
 LocaleConfig.locales['pl'] = {
-  monthNames: [
-    'Styczeń',
-    'Luty',
-    'Marzec',
-    'Kwiecień',
-    'Maj',
-    'Czerwiec',
-    'Lipiec',
-    'Sierpień',
-    'Wrzesień',
-    'Październik',
-    'Listopad',
-    'Grudzień'
-  ],
+  monthNames: months,
   monthNamesShort: ['St.', 'Lut', 'Mrz', 'Kw', 'Maj', 'Cz', 'Lip', 'Sier', 'Wrz', 'Paź', 'Lis', 'Gr'],
   dayNames: ['Niedziela', 'Poniedziałek', 'Wtorek', 'Środa', 'Czwaterk', 'Piątek', 'Sobota'],
   dayNamesShort: ['Ndz','Pon', 'Wt', 'Śr', 'Czw', 'Pt', 'Sob'],
@@ -31,80 +34,134 @@ LocaleConfig.defaultLocale = 'pl';
 
 export default function MainCalendar() {
 
-
   const width = Dimensions.get('screen').width;
 
   const {colors} = useTheme();
 
 
-  const AgendaItem = () => {
+  const [ selected, setSelected ] = useState();
+  const [ day, setDay ] = useState();
+
+
+  const events = [
+    {
+      id: 1,
+      hour: 9,
+      minutes: 0,
+      name: 'Apap'
+    },
+    {
+      id: 2,
+      hour: 9,
+      minutes: 0,
+      name: 'Apap'
+    },
+    {
+      id: 3,
+      hour: 9,
+      minutes: 0,
+      name: 'Apap'
+    },
+    {
+      id: 4,
+      hour: 9,
+      minutes: 0,
+      name: 'Apap'
+    },
+  ]
+
+
+  const Event = ({item}) => {
     return(
-      <TouchableOpacity>
-        <Text>Siema</Text>
-      </TouchableOpacity>
+      <View style={{
+        width: 0.9*width,
+        height: 80,
+        borderRadius: 20,
+        marginLeft: width*0.05,
+        backgroundColor: colors.background,
+        marginTop: 10,
+        flexDirection: 'row',
+      }}>
+        <View style={{
+          width: 60,
+          height: 60,
+          alignItems: 'center',
+          justifyContent: 'center',
+          margin: 10
+        }}>
+          <Text style={{
+            fontSize: 20,
+            fontWeight: 'bold'
+          }}>{item.hour + ':' + (item.minutes < 10 ? '0'+item.minutes : item.minutes)}</Text>
+        </View>
+
+      </View>
     )
   }
+
+  useEffect(() => {
+    const date = new Date();
+    console.log(date);
+    setDay({
+      dateString: date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate(),
+      day: date.getDate(),
+      month: date.getMonth() + 1,
+      year: date.getFullYear(),
+      timestamp: date
+    })
+  }, [])
+
 
   return (
     <SafeAreaView style={{
       flex: 1,
       alignItems: 'center',
     }}>
-        <Agenda
-          // The list of items that have to be displayed in agenda. If you want to render item as empty date
-          // the value of date key has to be an empty array []. If there exists no value for date key it is
-          // considered that the date in question is not yet loaded
-          items={{
-            '2012-05-22': [{name: 'item 1 - any js object'}],
-            '2012-05-23': [{name: 'item 2 - any js object', height: 80}],
-            '2012-05-24': [],
-            '2012-05-25': [{name: 'item 3 - any js object'}, {name: 'any js object'}]
-          }}
-          // Callback that gets called when items for a certain month should be loaded (month became visible)
-          //loadItemsForMonth={month => {
-          //  console.log('trigger items loading');
-          //}}
-          // Callback that fires when the calendar is opened or closed
-          onCalendarToggled={calendarOpened => {
-            console.log(calendarOpened);
-          }}
-          // Callback that gets called on day press
+        <Calendar
           onDayPress={day => {
-            console.log('day pressed');
+            [setSelected(day.dateString), setDay(day), console.log(day)];
           }}
-          // Callback that gets called when day changes while scrolling agenda list
-          onDayChange={day => {
-            console.log('day changed');
+          markedDates={{
+            [selected]: {selected: true, disableTouchEvent: true, selectedDotColor: 'orange'}
           }}
-          // Initially selected day
-          selected={'2012-05-22'}
-          // Minimum date that can be selected, dates before minDate will be grayed out. Default = undefined
-          minDate={'2012-05-10'}
-          // Maximum date that can be selected, dates after maxDate will be grayed out. Default = undefined
-          maxDate={'2012-05-30'}
-          // Max amount of months allowed to scroll to the past. Default = 50
-          pastScrollRange={50}
-          // Max amount of months allowed to scroll to the future. Default = 50
-          futureScrollRange={50}
-          // Specify how each item should be rendered in agenda
-          renderItem={(item) => <AgendaItem />}
-          // Specify how each date should be rendered. day can be undefined if the item is not first in that day
-          renderDay={(day, item) => {
-            return <View />;
-          }}
-          // Specify how empty date content with no items should be rendered
-          renderEmptyDate={(item) => <AgendaItem />}
-
           theme={{
-            agendaDayTextColor: colors.primary,
-            agendaDayNumColor: colors.primary,
-            agendaTodayColor: colors.primary,
-            agendaKnobColor: colors.primary
+            backgroundColor: '#ffffff',
+            calendarBackground: '#ffffff',
+            textSectionTitleColor: '#b6c1cd',
+            selectedDayBackgroundColor: 'black',
+            selectedDayTextColor: '#ffffff',
+            todayTextColor: colors.primary,
+            dayTextColor: '#2d4150',
+            textDisabledColor: colors.grey,
+            arrowColor: colors.primary,
           }}
           style={{
             width: width
           }}
+          enableSwipeMonths={true}
         />
+        {day ? 
+        <View style={{
+          width: '100%',
+        }}>
+          <Text style={{
+            fontSize: 20,
+            fontWeight: 'bold',
+            padding: 20
+          }}>{day.day + ' ' + months[day.month-1]}</Text>
+          <FlatList style={{
+            width: '100%',
+            height: 300
+          }}
+            data={events}
+            renderItem={({item}) => <Event item={item} />}
+            keyExtractor={item => item.id}
+          />
+            
+        </View>
+        
+        : <ActivityIndicator />}
+        
     </SafeAreaView>
   );
 }
