@@ -1,9 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { SafeAreaView, StyleSheet, Text, View, Dimensions, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native';
 
 import { Calendar, CalendarProvider, LocaleConfig, AgendaList, ExpandableCalendar, Agenda} from 'react-native-calendars';
 
 import { useTheme } from '../theme/ThemeProvider';
+
+import LottieView from 'lottie-react-native';
 
 
 const months = [
@@ -68,18 +70,33 @@ export default function MainCalendar() {
       minutes: 0,
       name: 'Apap'
     },
+    {
+      id: 5,
+      hour: 9,
+      minutes: 0,
+      name: 'Apap'
+    },
+    {
+      id: 6,
+      hour: 9,
+      minutes: 0,
+      name: 'Apap'
+    },
   ]
 
 
   const Event = ({item}) => {
+
+    const animation = useRef(null);
+
     return(
       <View style={{
         width: 0.9*width,
         height: 80,
-        borderRadius: 20,
+        borderRadius: 15,
         marginLeft: width*0.05,
         backgroundColor: colors.background,
-        marginTop: 10,
+        marginBottom: 10,
         flexDirection: 'row',
       }}>
         <View style={{
@@ -91,9 +108,55 @@ export default function MainCalendar() {
         }}>
           <Text style={{
             fontSize: 20,
-            fontWeight: 'bold'
           }}>{item.hour + ':' + (item.minutes < 10 ? '0'+item.minutes : item.minutes)}</Text>
         </View>
+        <View style={{
+          justifyContent:'space-around',
+          paddingVertical: 5
+        }}>
+          <Text style={{
+            fontSize: 18,
+            fontWeight: 'bold'
+          }}>{item.name}</Text>
+          <View style={{
+            paddingHorizontal: 10,
+            paddingVertical: 5,
+            borderRadius: 5,
+            backgroundColor: '#fcd2d2'
+          }}>
+            <Text style={{
+              color: colors.primary,
+              fontWeight: 'bold'
+            }}>1 tabletka</Text>
+          </View>
+        </View>
+        <TouchableOpacity 
+          onPress={() => animation.current.play()}
+          style={{
+            position: 'absolute',
+            width: 60,
+            height: 60,
+            borderRadius: 10,
+            right: 10,
+            top: 10,
+            borderWidth: 1,
+            borderColor: colors.grey,
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}>
+            <LottieView
+              ref={animation}
+              style={{
+                width: 50,
+                height: 50,
+              }}
+              // Find more Lottie files at https://lottiefiles.com/featured
+              source={require('../assets/ilAE4FTHMK.json')}
+              loop={false}
+              speed={2}
+            />
+
+        </TouchableOpacity>
 
       </View>
     )
@@ -115,7 +178,6 @@ export default function MainCalendar() {
   return (
     <SafeAreaView style={{
       flex: 1,
-      alignItems: 'center',
     }}>
         <Calendar
           onDayPress={day => {
@@ -140,27 +202,28 @@ export default function MainCalendar() {
           }}
           enableSwipeMonths={true}
         />
+
         {day ? 
-        <View style={{
-          width: '100%',
-        }}>
           <Text style={{
             fontSize: 20,
             fontWeight: 'bold',
-            padding: 20
+            padding: 15
           }}>{day.day + ' ' + months[day.month-1]}</Text>
+        
+        : <ActivityIndicator />}
+
+        {day ? 
           <FlatList style={{
             width: '100%',
-            height: 300
           }}
             data={events}
             renderItem={({item}) => <Event item={item} />}
             keyExtractor={item => item.id}
+            showsVerticalScrollIndicator={false}
           />
-            
-        </View>
         
         : <ActivityIndicator />}
+
         
     </SafeAreaView>
   );
