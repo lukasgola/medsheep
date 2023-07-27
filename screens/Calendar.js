@@ -1,11 +1,13 @@
 import { useState, useEffect, useRef } from 'react';
-import { SafeAreaView, StyleSheet, Text, View, Dimensions, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native';
+import { SafeAreaView, StyleSheet, Text, View, Dimensions, TouchableOpacity, FlatList, ActivityIndicator, Animated } from 'react-native';
 
-import { Calendar, CalendarProvider, LocaleConfig, AgendaList, ExpandableCalendar, Agenda} from 'react-native-calendars';
+import { Calendar, LocaleConfig,} from 'react-native-calendars';
 
 import { useTheme } from '../theme/ThemeProvider';
 
 import LottieView from 'lottie-react-native';
+
+import BottomSheet from '../components/BottomSheet';
 
 
 const months = [
@@ -43,6 +45,25 @@ export default function MainCalendar() {
 
   const [ selected, setSelected ] = useState();
   const [ day, setDay ] = useState();
+
+  const [ modalVisible, setModalVisible ] = useState(false);
+
+  const extendValue = useState(new Animated.Value(0))[0];
+
+  function extend(){
+    Animated.spring(extendValue,{
+        toValue: 100,
+        duration: 400,
+        useNativeDriver: false
+    }).start()
+  } 
+  function fold(){
+    Animated.spring(extendValue,{
+        toValue: 0,
+        duration: 400,
+        useNativeDriver: false
+    }).start()
+  } 
 
 
   const events = [
@@ -89,7 +110,20 @@ export default function MainCalendar() {
       taken: false,
     },
   ]
+  const onTakenClick = (item) => {
+    setItem(item);
+    setModalVisible(true);
+  }
 
+  const globalAnimation = useRef(null);
+
+  const confirmTake = () => {
+    extend();
+    globalAnimation.current.play();
+    setTimeout(() => {
+      fold();
+    }, 1000)
+  }
 
   const Event = ({item}) => {
 
@@ -136,7 +170,7 @@ export default function MainCalendar() {
           <View style={{
             borderRadius: 5,
             paddingVertical: 5,
-            backgroundColor: '#fcd2d2',
+            backgroundColor: '#FFE1E1',
             width: 90,
             alignItems: 'center'
           }}>
@@ -147,7 +181,7 @@ export default function MainCalendar() {
           </View>
         </View>
         <TouchableOpacity 
-          onPress={() => animation.current.play()}
+          onPress={() => onTakenClick(item)}
           style={{
             position: 'absolute',
             width: 60,
@@ -161,14 +195,14 @@ export default function MainCalendar() {
             alignItems: 'center'
           }}>
             <LottieView
-            autoPlay={item.taken}
+              autoPlay={item.taken}
               ref={animation}
               style={{
-                width: 50,
-                height: 50,
+                width: 40,
+                height: 40,
               }}
               // Find more Lottie files at https://lottiefiles.com/featured
-              source={require('../assets/ilAE4FTHMK.json')}
+              source={require('../assets/hrURtBKGzl.json')}
               loop={false}
               speed={2}
             />
@@ -178,6 +212,10 @@ export default function MainCalendar() {
       </View>
     )
   }
+
+
+  const [ item, setItem ] = useState();
+
 
   useEffect(() => {
     const date = new Date();
@@ -214,21 +252,31 @@ export default function MainCalendar() {
             textDisabledColor: colors.grey,
             arrowColor: colors.primary,
           }}
-
-          
-          
           style={{
             width: width
           }}
           enableSwipeMonths={true}
         />
 
-        {day ? 
+        {day ?
+        <View style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}>
           <Text style={{
             fontSize: 20,
             fontWeight: 'bold',
             padding: 15
           }}>{day.day + ' ' + months[day.month-1]}</Text>
+          <Text style={{
+            fontSize: 18,
+            color: colors.grey_d,
+            padding: 15,
+            
+          }}>1/6</Text>
+        </View>
+          
         
         : <ActivityIndicator />}
 
@@ -244,6 +292,43 @@ export default function MainCalendar() {
         
         : <ActivityIndicator />}
 
+        <BottomSheet 
+            visible={modalVisible} 
+            setModalVisible={setModalVisible}
+            text={'Czy wziąłeś'}
+            onConfirm={confirmTake}
+            timeout={700}
+          >
+            <View style={{
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}>
+              <Text style={{
+                fontSize: 18,
+                fontWeight: 'bold'
+              }}>{item ? item.name : 'None'}</Text>
+              <Animated.View style={{
+                height: extendValue,
+                justifyContent: 'center',
+                alignItems: 'center',
+                paddingTop: 10,
+              }}>
+                <LottieView
+                  ref={globalAnimation}
+                  style={{
+                    width: 60,
+                    height: 60,
+                    
+                  }}
+                  // Find more Lottie files at https://lottiefiles.com/featured
+                  source={require('../assets/hrURtBKGzl.json')}
+                  loop={false}
+                  speed={2}
+                />
+              </Animated.View>
+              
+            </View>
+        </BottomSheet>
         
     </SafeAreaView>
   );

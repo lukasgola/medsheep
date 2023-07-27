@@ -50,7 +50,10 @@ const BottomSheet = (props) => {
 
     const onConfirm = () => {
         props.onConfirm();
-        slideOut();
+        setTimeout(() => {
+            slideOut();
+        }, props.timeout ? props.timeout : 0);
+        
    }
 
     const onCancel = () => {
