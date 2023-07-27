@@ -50,37 +50,43 @@ export default function MainCalendar() {
       id: 1,
       hour: 9,
       minutes: 0,
-      name: 'Apap'
+      name: 'Apap',
+      taken: true,
     },
     {
       id: 2,
-      hour: 9,
+      hour: 14,
       minutes: 0,
-      name: 'Apap'
+      name: 'Rutinoscorbin',
+      taken: false,
     },
     {
       id: 3,
-      hour: 9,
+      hour: 18,
       minutes: 0,
-      name: 'Apap'
+      name: 'Ibum',
+      taken: false,
     },
     {
       id: 4,
       hour: 9,
       minutes: 0,
-      name: 'Apap'
+      name: 'Apap',
+      taken: false,
     },
     {
       id: 5,
       hour: 9,
       minutes: 0,
-      name: 'Apap'
+      name: 'Apap',
+      taken: false,
     },
     {
       id: 6,
       hour: 9,
       minutes: 0,
-      name: 'Apap'
+      name: 'Apap',
+      taken: false,
     },
   ]
 
@@ -98,6 +104,14 @@ export default function MainCalendar() {
         backgroundColor: colors.background,
         marginBottom: 10,
         flexDirection: 'row',
+        shadowColor: "#000",
+        shadowOffset: {
+          width: 0,
+          height: 2,
+        },
+        shadowOpacity: 0.13,
+        shadowRadius: 2.62,
+        elevation: 4,
       }}>
         <View style={{
           width: 60,
@@ -112,17 +126,19 @@ export default function MainCalendar() {
         </View>
         <View style={{
           justifyContent:'space-around',
-          paddingVertical: 5
+          paddingVertical: 5,
         }}>
           <Text style={{
             fontSize: 18,
             fontWeight: 'bold'
           }}>{item.name}</Text>
+          
           <View style={{
-            paddingHorizontal: 10,
-            paddingVertical: 5,
             borderRadius: 5,
-            backgroundColor: '#fcd2d2'
+            paddingVertical: 5,
+            backgroundColor: '#fcd2d2',
+            width: 90,
+            alignItems: 'center'
           }}>
             <Text style={{
               color: colors.primary,
@@ -145,6 +161,7 @@ export default function MainCalendar() {
             alignItems: 'center'
           }}>
             <LottieView
+            autoPlay={item.taken}
               ref={animation}
               style={{
                 width: 50,
@@ -197,6 +214,9 @@ export default function MainCalendar() {
             textDisabledColor: colors.grey,
             arrowColor: colors.primary,
           }}
+
+          
+          
           style={{
             width: width
           }}
