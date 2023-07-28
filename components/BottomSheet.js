@@ -39,6 +39,7 @@ const BottomSheet = (props) => {
 
     const globalAnimation = useRef(null);
     const extendValue = useRef(new Animated.Value(0)).current;
+    const [ lottieSize, setLottieSize ] = useState(0);
 
     function extend(){
         Animated.spring(extendValue,{
@@ -46,13 +47,15 @@ const BottomSheet = (props) => {
             duration: 400,
             useNativeDriver: false
         }).start()
+        setLottieSize(60);
     } 
     function fold(){
         Animated.spring(extendValue,{
             toValue: 0,
-            duration: 0,
+            duration: 100,
             useNativeDriver: false
         }).start()
+        setLottieSize(0);
     } 
 
     
@@ -74,7 +77,9 @@ const BottomSheet = (props) => {
         globalAnimation.current.play();
         setTimeout(() => {
             fold();
-            slideOut();
+            setTimeout(() => {
+                slideOut();
+            }, 50)
         }, 700)
         props.onConfirm();
         
@@ -147,14 +152,13 @@ const BottomSheet = (props) => {
                 justifyContent: 'center',
                 alignItems: 'center',
                 paddingTop: 10,
-                backgroundColor: colors.grey
+                backgroundColor: colors.background
             }}>
                 <LottieView
                     ref={globalAnimation}
                     style={{
-                    width: 60,
-                    height: 60,
-                    
+                        width: lottieSize,
+                        height: lottieSize,
                     }}
                     // Find more Lottie files at https://lottiefiles.com/featured
                     source={require('../assets/hrURtBKGzl.json')}
