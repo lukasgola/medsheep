@@ -48,7 +48,6 @@ export default function MainCalendar() {
 
   const [ modalVisible, setModalVisible ] = useState(false);
 
-
   const events = [
     {
       id: 1,
@@ -97,8 +96,6 @@ export default function MainCalendar() {
     setItem(item);
     setModalVisible(true);
   }
-
-  const globalAnimation = useRef(null);
 
   const confirmTake = () => {
 
@@ -174,7 +171,7 @@ export default function MainCalendar() {
             alignItems: 'center'
           }}>
             <LottieView
-              autoPlay={item.taken}
+              //autoPlay={item.taken}
               ref={animation}
               style={{
                 width: 40,

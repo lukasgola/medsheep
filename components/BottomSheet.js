@@ -66,7 +66,6 @@ const BottomSheet = (props) => {
         else {
             if(props.visible){
                 slideIn();
-                console.log(extendValue)
             }
         }
     });
