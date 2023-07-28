@@ -48,23 +48,6 @@ export default function MainCalendar() {
 
   const [ modalVisible, setModalVisible ] = useState(false);
 
-  const extendValue = useState(new Animated.Value(0))[0];
-
-  function extend(){
-    Animated.spring(extendValue,{
-        toValue: 100,
-        duration: 400,
-        useNativeDriver: false
-    }).start()
-  } 
-  function fold(){
-    Animated.spring(extendValue,{
-        toValue: 0,
-        duration: 400,
-        useNativeDriver: false
-    }).start()
-  } 
-
 
   const events = [
     {
@@ -118,11 +101,7 @@ export default function MainCalendar() {
   const globalAnimation = useRef(null);
 
   const confirmTake = () => {
-    extend();
-    globalAnimation.current.play();
-    setTimeout(() => {
-      fold();
-    }, 1000)
+
   }
 
   const Event = ({item}) => {
@@ -297,7 +276,6 @@ export default function MainCalendar() {
             setModalVisible={setModalVisible}
             text={'Czy wziąłeś'}
             onConfirm={confirmTake}
-            timeout={700}
           >
             <View style={{
               alignItems: 'center',
@@ -307,26 +285,6 @@ export default function MainCalendar() {
                 fontSize: 18,
                 fontWeight: 'bold'
               }}>{item ? item.name : 'None'}</Text>
-              <Animated.View style={{
-                height: extendValue,
-                justifyContent: 'center',
-                alignItems: 'center',
-                paddingTop: 10,
-              }}>
-                <LottieView
-                  ref={globalAnimation}
-                  style={{
-                    width: 60,
-                    height: 60,
-                    
-                  }}
-                  // Find more Lottie files at https://lottiefiles.com/featured
-                  source={require('../assets/hrURtBKGzl.json')}
-                  loop={false}
-                  speed={2}
-                />
-              </Animated.View>
-              
             </View>
         </BottomSheet>
         

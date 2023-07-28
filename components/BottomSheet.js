@@ -3,13 +3,15 @@ import { View, Modal, KeyboardAvoidingView, Text, TouchableOpacity, Animated, Pr
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
+import LottieView from 'lottie-react-native';
+
 
 import {useTheme} from '../theme/ThemeProvider';
 
 const BottomSheet = (props) => {
 
 
-    const leftValue = useState(new Animated.Value(-500))[0]
+    const leftValue = useState(new Animated.Value(-500))[0];
 
     const {colors} = useTheme();
 
@@ -35,6 +37,24 @@ const BottomSheet = (props) => {
         }, 100)
     }
 
+    const globalAnimation = useRef(null);
+    const extendValue = useRef(new Animated.Value(0)).current;
+
+    function extend(){
+        Animated.spring(extendValue,{
+            toValue: 100,
+            duration: 400,
+            useNativeDriver: false
+        }).start()
+    } 
+    function fold(){
+        Animated.spring(extendValue,{
+            toValue: 0,
+            duration: 0,
+            useNativeDriver: false
+        }).start()
+    } 
+
     
     useLayoutEffect(() => {
         if (firstUpdate.current) {
@@ -43,16 +63,20 @@ const BottomSheet = (props) => {
         else {
             if(props.visible){
                 slideIn();
+                console.log(extendValue)
             }
         }
     });
 
 
     const onConfirm = () => {
-        props.onConfirm();
+        extend();
+        globalAnimation.current.play();
         setTimeout(() => {
+            fold();
             slideOut();
-        }, props.timeout ? props.timeout : 0);
+        }, 700)
+        props.onConfirm();
         
    }
 
@@ -118,6 +142,26 @@ const BottomSheet = (props) => {
                     {props.children}
                 
             </View>
+            <Animated.View style={{
+                height: extendValue,
+                justifyContent: 'center',
+                alignItems: 'center',
+                paddingTop: 10,
+                backgroundColor: colors.grey
+            }}>
+                <LottieView
+                    ref={globalAnimation}
+                    style={{
+                    width: 60,
+                    height: 60,
+                    
+                    }}
+                    // Find more Lottie files at https://lottiefiles.com/featured
+                    source={require('../assets/hrURtBKGzl.json')}
+                    loop={false}
+                    speed={3}
+                />
+            </Animated.View>
 
             <View
                 style={{
