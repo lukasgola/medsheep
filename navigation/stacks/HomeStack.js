@@ -1,5 +1,9 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+import { TouchableOpacity, Button } from 'react-native';
+
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
 import {useTheme} from '../../theme/ThemeProvider';
 
 //Screens
@@ -8,11 +12,12 @@ import Calendar from '../../screens/Calendar';
 import Doctor from '../../screens/Doctor';
 import Search from '../../screens/Search';
 import Results from '../../screens/Results';
+import AddToCalendar from '../../screens/AddToCalendar';
 
 
 const Stack = createNativeStackNavigator();
 
-export default function HomeStack() {
+export default function HomeStack({navigation}) {
 
   const {colors} = useTheme();
 
@@ -27,10 +32,25 @@ export default function HomeStack() {
       }}
     >
       <Stack.Screen name="Medsheep" component={Main} />
-      <Stack.Screen name="Kalendarz" component={Calendar} />
+      <Stack.Screen 
+        name="Kalendarz" 
+        component={Calendar} 
+        options={{
+          headerRight: () => (
+            <TouchableOpacity
+              onPress={() => navigation.navigate('AddToCalendar')}
+              title="Info"
+              color="#fff"
+            >
+              <Ionicons name={'add-outline'} size={32} color={colors.primary} style={{marginTop: 4}} />
+            </TouchableOpacity>
+          )
+        }}
+      />
       <Stack.Screen name="Lekarz" component={Doctor} />
       <Stack.Screen name="Szukaj" component={Search} />
       <Stack.Screen name="Wyniki" component={Results} />
+      <Stack.Screen name="AddToCalendar" component={AddToCalendar} />
     </Stack.Navigator>
   );
 }

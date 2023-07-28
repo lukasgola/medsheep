@@ -27,7 +27,7 @@ export default function PersonalData({navigation}){
 
     const [isConfirming, setIsConfirming] = useState(false);
 
-    const [isDatePickerVisible, setDatePickerVisibile] = useState(false);
+    const [isDatePickerVisible, setDatePickerVisible] = useState(false);
     const [isHeightPickerVisible, setHeightPickerVisible] = useState(false);
     const [isWeightPickerVisible, setWeightPickerVisible] = useState(false);
     const [isBloodPickerVisible, setBloodPickerVisible] = useState(false);
@@ -50,22 +50,18 @@ export default function PersonalData({navigation}){
     const handleDateConfirm = () => {
         let month = date.getMonth()+1;
         setDateString(date.getDate() + ' / ' + month + ' / ' + date.getFullYear())
-        setDatePickerVisibile(false);
     };
 
     const handleHeightConfirm = () => {
         setHeightString(height);
-        setHeightPickerVisible(false);
     }
 
     const handleWeightConfirm = () => {
         setWeightString(weight);
-        setWeightPickerVisible(false);
     }
 
     const handleBloodConfirm = () => {
         setBloodString(blood);
-        setBloodPickerVisible(false);
     }
 
     const onConfirm = () => {
@@ -163,12 +159,12 @@ export default function PersonalData({navigation}){
                 <InputPicker 
                     icon={'calendar-outline'} 
                     placeholder={'Data urodzenia'} 
-                    setVisible={setDatePickerVisibile}
+                    setVisible={setDatePickerVisible}
                     showValue={dateString}
                 />
                 <BottomSheet 
                     visible={isDatePickerVisible} 
-                    setModalVisible={setDatePickerVisibile}
+                    setModalVisible={setDatePickerVisible}
                     text={'Podaj date urodzenia'}
                     onConfirm={handleDateConfirm}
                 >
