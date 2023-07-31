@@ -43,11 +43,17 @@ export default function AddToCalendar(){
         },
     ]
 
-    const [freq, setFreq] = useState(new Date());
+    const [freq, setFreq] = useState();
     const [freqString, setFreqString] = useState('Częstotliwość')
 
-    const [time, setTime] = useState(new Date())
+    const [time, setTime] = useState(new Date(Date.now()))
     const [timeString, setTimeString] = useState('Wybierz godzinę')
+
+    const [ dateStart, setDateStart ] = useState(new Date())
+    const [ dateStartString, setDateStartString ] = useState('Początek')
+
+    const [ dateEnd, setDateEnd ] = useState(new Date())
+    const [ dateEndString, setDateEndString ] = useState('Koniec')
 
     const [eventLocation, setEventLocation] = useState(null)
     const [address, setAddress] = useState(null);
@@ -58,20 +64,41 @@ export default function AddToCalendar(){
     const [place, setPlace] = useState('Indoor');
 
     const [isTimePickerVisible, setTimePickerVisible] = useState(false);
-    const [isDatePickerVisible, setDatePickerVisible] = useState(false);
+    const [isFreqPickerVisible, setFreqPickerVisible] = useState(false);
+    const [isDateStartPickerVisible, setDateStartPickerVisible] = useState(false);
+    const [isDateEndPickerVisible, setDateEndPickerVisible] = useState(false);
 
     const handleFreqConfirm = () => {
         setFreqString(freq);
     }
 
-    const onChangeTime = (event, selectedTime) => {
-        const currentTime = selectedTime || time;
-        setTime(currentTime);
+    const onChangeTime = (event, value) => {
+        setTime(value);
+    };
+
+    const onChangeDateStart = (event, selectedDate) => {
+        const currentDate = selectedDate || dateStart;
+        setDateStart(currentDate);
+    };
+
+    const handleDateStartConfirm = () => {
+        let month = dateStart.getMonth()+1;
+        setDateStartString(dateStart.getDate() + ' / ' + month + ' / ' + dateStart.getFullYear())
+    };
+
+    const onChangeDateEnd = (event, selectedDate) => {
+        const currentDate = selectedDate || dateEnd;
+        setDateEnd(currentDate);
+    };
+
+    const handleDateEndConfirm = () => {
+        let month = dateEnd.getMonth()+1;
+        setDateEndString(dateEnd.getDate() + ' / ' + month + ' / ' + dateEnd.getFullYear())
     };
 
     const handleTimeConfirm = () => {
-        setTime(time)
         setTimeString(time.getHours() + ':' + time.getMinutes())
+        console.log(time.getHours() + ':' + time.getMinutes())
     };
 
 
@@ -121,22 +148,32 @@ export default function AddToCalendar(){
                 showsVerticalScrollIndicator={false}
                 style={{width: width*0.9}}
             >
-                <View style={{width: '100%', alignItems: 'center', flexDirection: 'row', justifyContent: 'center', marginTop: 20, marginBottom: 10}}>
-                    <Text>New</Text>
-                    <Text> Event</Text>
+                <View style={{width: '100%', alignItems: 'center', flexDirection: 'row', justifyContent: 'center', marginTop: 60, marginBottom: 10}}>
+                    <Text style={{
+                        fontSize: 24,
+                        fontWeight: 'bold',
+                        color: colors.text
+                    }}>Dodaj lek do</Text>
+                    <Text style={{
+                        fontSize: 24,
+                        fontWeight: 'bold',
+                        color: colors.primary
+                    }}> kalendarza</Text>
                 </View>
 
                 <View style={{width: '100%', alignItems: 'center', marginTop: 10, marginBottom: 30}}>
-                    <Text>Complete information about the event.</Text>
+                    <Text style={{
+                        color: colors.grey_d
+                    }}>Wypełnij szczegóły</Text>
                 </View>
 
                 <View style={{ width: '100%', height: 50, justifyContent: 'center', alignItems: 'center', marginTop: 20 }}>
                     <CustomInput
                         name="title"
                         control={control}
-                        placeholder="Title"
+                        placeholder="Tytuł"
                         rules={{
-                            required: 'Title is required',
+                            required: 'Nazwa jest wymagana',
                         }}
                         size={12} 
                         color={colors.grey_l} 
@@ -154,7 +191,7 @@ export default function AddToCalendar(){
                 }}> 
                     <View style={{width: '47.5%', height: '100%'}}>    
                         <TouchableOpacity 
-                            onPress={() => setDatePickerVisible(true)}
+                            onPress={() => setFreqPickerVisible(true)}
                             style={{
                                 width: '100%', 
                                 height: '100%', 
@@ -176,10 +213,13 @@ export default function AddToCalendar(){
                                     <Ionicons name={'calendar-outline'} size={16} color={colors.grey_d}/>
                             </View>
                             
-                            <Text>{freqString}</Text>
+                            <Text style={{
+                                color: freqString == 'Częstotliwość' ? colors.grey_d : colors.text,
+                                fontSize: 12
+                            }}>{freqString}</Text>
                             <BottomSheet 
-                                visible={isDatePickerVisible} 
-                                setModalVisible={setDatePickerVisible}
+                                visible={isFreqPickerVisible} 
+                                setModalVisible={setFreqPickerVisible}
                                 text={'Podaj częstotliwość'}
                                 onConfirm={handleFreqConfirm}
                             >
@@ -217,21 +257,24 @@ export default function AddToCalendar(){
                                     justifyContent: 'center'
                                 }}
                                 >
-                                    <Ionicons name={'time-outline'} size={16} color={colors.grey_d}/>
+                                    <Ionicons name={'calendar-outline'} size={16} color={colors.grey_d}/>
                             </View>
                             
-                            <Text>{timeString}</Text>
+                            <Text style={{
+                                color: timeString == 'Wybierz godzinę' ? colors.grey_d : colors.text,
+                                fontSize: 12
+                            }}>{timeString}</Text>
                             <BottomSheet 
                                 visible={isTimePickerVisible} 
                                 setModalVisible={setTimePickerVisible}
-                                text={'Podaj godzinę'}
+                                text={'Podaj począek'}
                                 onConfirm={handleTimeConfirm}
                             >
                                 <DateTimePicker
                                     testID="dateTimePicker"
                                     value={time}
                                     mode={'time'}
-                                    is24Hour={true}
+                                    is24Hour={false}
                                     display="spinner"
                                     onChange={onChangeTime}
                                     textColor={colors.text}
@@ -241,11 +284,6 @@ export default function AddToCalendar(){
                     </View>
                 
                 </View>
-                
-
-                <View style={{width: '100%', marginTop: 20}}>
-                    <Text>Event type</Text>
-                </View>
 
                 <View style={{
                     width: '100%',
@@ -253,106 +291,102 @@ export default function AddToCalendar(){
                     flexDirection: 'row',
                     alignItems: 'center',
                     justifyContent: 'space-between',
-                    marginTop: 10
+                    marginTop: 20
                 }}> 
-                    <TouchableOpacity 
-                        onPress={() => setType('Private')}
-                        style={{
-                            width: '47.5%', 
-                            height: '100%', 
-                            flexDirection: 'row',
-                            backgroundColor: colors.grey_l,
-                            borderRadius: 10,
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            borderColor: type == 'Private' ? colors.primary : '#e8e8e8',
-                            borderWidth: 1
-                        }}>
-                        <Text>Private</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity 
-                        onPress={() => setType('Professional')}
-                        style={{
-                            width: '47.5%', 
-                            height: '100%', 
-                            flexDirection: 'row',
-                            backgroundColor: colors.grey_l,
-                            borderRadius: 10,
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            borderColor: type == 'Professional' ? colors.primary : '#e8e8e8',
-                            borderWidth: 1
-                        }}>
-                        <Text>Professional</Text>
-                    </TouchableOpacity>
-                </View>
+                    <View style={{width: '47.5%', height: '100%'}}>    
+                        <TouchableOpacity 
+                            onPress={() => setDateStartPickerVisible(true)}
+                            style={{
+                                width: '100%', 
+                                height: '100%', 
+                                flexDirection: 'row',
+                                backgroundColor: colors.grey_l,
+                                borderRadius: 10,
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                borderColor: '#e8e8e8',
+                                borderWidth: 1
+                            }}>
+                            <View
+                                style={{
+                                    width: 40,
+                                    paddingLeft: 10,
+                                    justifyContent: 'center'
+                                }}
+                                >
+                                    <Ionicons name={'calendar-outline'} size={16} color={colors.grey_d}/>
+                            </View>
+                            
+                            <Text style={{
+                                color: dateStartString == 'Początek' ? colors.grey_d : colors.text,
+                                fontSize: 12
+                            }}>{dateStartString}</Text>
+                            <BottomSheet 
+                                visible={isDateStartPickerVisible}
+                                setModalVisible={setDateStartPickerVisible}
+                                text={'Podaj częstotliwość'}
+                                onConfirm={handleDateStartConfirm}
+                            >
+                                <DateTimePicker
+                                    testID="dateTimePicker"
+                                    value={dateStart}
+                                    mode={'date'}
+                                    is24Hour={true}
+                                    display="spinner"
+                                    onChange={onChangeDateStart}
+                                    textColor={colors.text}
+                                />
+                            </BottomSheet>
+                        </TouchableOpacity>
+                    </View>
 
-                <View style={{width: '100%', marginTop: 20}}>
-                    <Text>Event place</Text>
-                </View>
-
-                <View style={{
-                    width: '100%',
-                    height: 50,
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    marginTop: 10
-                }}> 
-                    <TouchableOpacity 
-                        onPress={() => setPlace('Indoor')}
-                        style={{
-                            width: '47.5%', 
-                            height: '100%', 
-                            flexDirection: 'row',
-                            backgroundColor: colors.grey_l,
-                            borderRadius: 10,
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            borderColor: place == 'Indoor' ? colors.primary : '#e8e8e8',
-                            borderWidth: 1
-                        }}>
-                        <Text>Indoor</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity 
-                        onPress={() => setPlace('Outdoor')}
-                        style={{
-                            width: '47.5%', 
-                            height: '100%', 
-                            flexDirection: 'row',
-                            backgroundColor: colors.grey_l,
-                            borderRadius: 10,
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            borderColor: place == 'Outdoor' ? colors.primary : '#e8e8e8',
-                            borderWidth: 1
-                        }}>
-                        <Text>Outdoor</Text>
-                    </TouchableOpacity>
-                </View>
-
+                    <View style={{width: '47.5%', height: '100%'}}>     
+                        <TouchableOpacity 
+                            onPress={() => setDateEndPickerVisible(true)}
+                            style={{
+                                width: '100%', 
+                                height: '100%', 
+                                flexDirection: 'row',
+                                backgroundColor: colors.grey_l,
+                                borderRadius: 10,
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                borderColor: '#e8e8e8',
+                                borderWidth: 1
+                            }}>
+                            <View
+                                style={{
+                                    width: 40,
+                                    paddingLeft: 10,
+                                    justifyContent: 'center'
+                                }}
+                                >
+                                    <Ionicons name={'time-outline'} size={16} color={colors.grey_d}/>
+                            </View>
+                            
+                            <Text style={{
+                                color: dateEndString == 'Koniec' ? colors.grey_d : colors.text,
+                                fontSize: 12
+                            }}>{dateEndString}</Text>
+                            <BottomSheet 
+                                visible={isDateEndPickerVisible} 
+                                setModalVisible={setDateEndPickerVisible}
+                                text={'Podaj koniec'}
+                                onConfirm={handleDateEndConfirm}
+                            >
+                                <DateTimePicker
+                                    testID="dateTimePicker"
+                                    value={dateStart}
+                                    mode={'date'}
+                                    is24Hour={true}
+                                    display="spinner"
+                                    onChange={onChangeDateStart}
+                                    textColor={colors.text}
+                                />
+                            </BottomSheet>
+                        </TouchableOpacity>
+                    </View>
                 
-                <View style={{ width: '100%', height: 50, justifyContent: 'center', alignItems: 'center', marginTop: 20 }}>
-                    <CustomInput
-                        name="maxGuests"
-                        control={control}
-                        placeholder="Max guests"
-                        rules={{
-                            required: 'Required',
-                        }}
-                        size={12} 
-                        color={colors.grey_l} 
-                        icon={'people-outline'}
-                        keyboardType={'numeric'}
-                    />
-                </View>
-
-                <View style={{width: '100%', marginTop: 20}}>
-                    <Text>Description</Text>
                 </View>
             
                 <TouchableOpacity 
@@ -367,7 +401,11 @@ export default function AddToCalendar(){
                         borderRadius: 10,
                         backgroundColor: colors.primary
                     }}>
-                    <Text>Create event</Text>
+                    <Text style={{
+                        fontSize: 18,
+                        fontWeight: 'bold',
+                        color: colors.background
+                    }}>Dodaj lek</Text>
                 </TouchableOpacity>
 
             </ScrollView>
