@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {View, KeyboardAvoidingView, Alert, TouchableOpacity, Dimensions, ScrollView, Text} from 'react-native';
+import React, {useState, useEffect, useRef } from 'react';
+import {View, KeyboardAvoidingView, Alert, TouchableOpacity, Dimensions, ScrollView, Text, Animated} from 'react-native';
 
 //Hooks
 import {useTheme} from '../theme/ThemeProvider';
@@ -7,7 +7,6 @@ import {useForm, Controller} from 'react-hook-form';
 
 
 import BottomSheet from '../components/BottomSheet';
-
 
 //Components
 import CustomInput from '../components/CustomInput';
@@ -41,6 +40,60 @@ export default function AddToCalendar(){
             id: 3,
             text: 'Co 3 dni',
         },
+        {
+            id: 4,
+            text: 'Niestandardowe',
+        },
+    ]
+
+    customFrequencies = [
+        {
+            id: 1,
+            text: 'Dzień'
+        },
+        {
+            id: 2,
+            text: 'Tydzień'
+        },
+        {
+            id: 3,
+            text: 'Miesiąc'
+        },
+        {
+            id: 4,
+            text: 'Rok'
+        },
+    ]
+
+    const nums = [
+        {
+            id: 1,
+            text: 1
+        },
+        {
+            id: 2,
+            text: 2
+        },
+        {
+            id: 3,
+            text: 3
+        },
+        {
+            id: 4,
+            text: 4
+        },
+        {
+            id: 5,
+            text: 5
+        },
+        {
+            id: 6,
+            text: 6
+        },
+        {
+            id: 7,
+            text: 7
+        },
     ]
 
     const [freq, setFreq] = useState();
@@ -63,13 +116,40 @@ export default function AddToCalendar(){
     const [type, setType] = useState('Private');
     const [place, setPlace] = useState('Indoor');
 
+    const [ customFreq, setCustomFreq ] = useState(1);
+    const [ customFreqString, setCustomFreqString ] = useState(1);
+
+    const [ customPeriod, setCustomPeriod ] = useState('Dzień');
+    const [ customPeriodString, setCustomPeriodString ] = useState('Dzień');
+
     const [isTimePickerVisible, setTimePickerVisible] = useState(false);
     const [isFreqPickerVisible, setFreqPickerVisible] = useState(false);
     const [isDateStartPickerVisible, setDateStartPickerVisible] = useState(false);
     const [isDateEndPickerVisible, setDateEndPickerVisible] = useState(false);
+    const [isCustomFreqPickerVisible, setCustomFreqPickerVisible] = useState(false);
+    const [isCustomFreqPeriodPickerVisible, setCustomFreqPeriodPickerVisible] = useState(false);
 
     const handleFreqConfirm = () => {
         setFreqString(freq);
+        if ( freq == 'Niestandardowe' || freqString != 'Niestandardowe'){
+            setTimeout(() => {
+                springIn();
+            }, 1000)
+        }
+        if( freqString == 'Niestandardowe' || freq != 'Niestandardowe'){
+            setTimeout(() => {
+                springOut();
+            }, 1000)
+        }
+    }
+
+
+    const handleCustomFreqConfirm = () => {
+        setCustomFreqString(customFreq)
+    }
+
+    const handleCustomPeriodConfirm = () => {
+        setCustomPeriodString(customPeriod)
     }
 
     const onChangeTime = (event, value) => {
@@ -137,6 +217,26 @@ export default function AddToCalendar(){
             }},
         ]);
         
+    };
+
+    const springAnim = useRef(new Animated.Value(0)).current;
+
+    const springIn = () => {
+        // Will change fadeAnim value to 1 in 5 seconds
+        Animated.spring(springAnim, {
+            toValue: 100,
+            duration: 500,
+            useNativeDriver: false,
+        }).start();
+    };
+
+    const springOut = () => {
+        // Will change fadeAnim value to 0 in 3 seconds
+        Animated.spring(springAnim, {
+            toValue: 0,
+            duration: 500,
+            useNativeDriver: false,
+        }).start();
     };
 
     return (
@@ -285,13 +385,147 @@ export default function AddToCalendar(){
                 
                 </View>
 
+                <Animated.View
+                    style={{
+                        // Bind opacity to animated value
+                        height: springAnim,
+
+                    }}>
+                    
+
+                    {freqString == 'Niestandardowe' ? 
+                    <View>
+                    <Text style={{
+                        fontSize: 14,
+                        fontWeight: 'bold',
+                        color: colors.text,
+                        marginTop: 20,
+                    }}>Powtarza się co...</Text>
+                    <View style={{
+                        width: '100%',
+                        height: 50,
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        marginTop: 10
+                    }}> 
+                        <View style={{width: '47.5%', height: '100%'}}>    
+                            <TouchableOpacity 
+                                onPress={() => setCustomFreqPickerVisible(true)}
+                                style={{
+                                    width: '100%', 
+                                    height: '100%', 
+                                    flexDirection: 'row',
+                                    backgroundColor: colors.grey_l,
+                                    borderRadius: 10,
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                    borderColor: '#e8e8e8',
+                                    borderWidth: 1
+                                }}>
+                                <View
+                                    style={{
+                                        width: 40,
+                                        paddingLeft: 10,
+                                        justifyContent: 'center'
+                                    }}
+                                    >
+                                        <Ionicons name={'calendar-outline'} size={16} color={colors.grey_d}/>
+                                </View>
+                                
+                                <Text style={{
+                                    color: customFreqString == 'Częstotliwość' ? colors.grey_d : colors.text,
+                                    fontSize: 12
+                                }}>{customFreqString}</Text>
+                                <BottomSheet 
+                                    visible={isCustomFreqPickerVisible} 
+                                    setModalVisible={setCustomFreqPickerVisible}
+                                    text={''}
+                                    onConfirm={handleCustomFreqConfirm}
+                                >
+                                    <Picker
+                                        selectedValue={customFreq}
+                                        onValueChange={(itemValue, itemIndex) =>
+                                            setCustomFreq(itemValue)
+                                        }>
+                                            {nums.map((item) => (
+                                                <Picker.Item label={item.text.toString()} value={item.text} key={item.id} />
+                                            ))}
+                                    </Picker>
+                                </BottomSheet>
+                            </TouchableOpacity>
+                        </View>
+    
+                        <View style={{width: '47.5%', height: '100%'}}>     
+                            <TouchableOpacity 
+                                onPress={() => setCustomFreqPeriodPickerVisible(true)}
+                                style={{
+                                    width: '100%', 
+                                    height: '100%', 
+                                    flexDirection: 'row',
+                                    backgroundColor: colors.grey_l,
+                                    borderRadius: 10,
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                    borderColor: '#e8e8e8',
+                                    borderWidth: 1
+                                }}>
+                                <View
+                                    style={{
+                                        width: 40,
+                                        paddingLeft: 10,
+                                        justifyContent: 'center'
+                                    }}
+                                    >
+                                        <Ionicons name={'calendar-outline'} size={16} color={colors.grey_d}/>
+                                </View>
+                                
+                                <Text style={{
+                                    color: customPeriodString == 'W' ? colors.grey_d : colors.text,
+                                    fontSize: 12
+                                }}>{customPeriodString}</Text>
+                                <BottomSheet 
+                                    visible={isCustomFreqPeriodPickerVisible} 
+                                    setModalVisible={setCustomFreqPeriodPickerVisible}
+                                    text={''}
+                                    onConfirm={handleCustomPeriodConfirm}
+                                >
+                                    <Picker
+                                        selectedValue={customPeriod}
+                                        onValueChange={(itemValue, itemIndex) =>
+                                            setCustomPeriod(itemValue)
+                                        }>
+                                            {customFrequencies.map((item) => (
+                                                <Picker.Item label={item.text.toString()} value={item.text} key={item.id} />
+                                            ))}
+                                    </Picker>
+                                </BottomSheet>
+                            </TouchableOpacity>
+                        </View>
+                    
+                    </View>
+                    </View>
+                 : 
+                 <View></View>
+                 }
+
+                
+                </Animated.View>
+
+                <Text style={{
+                    fontSize: 14,
+                    fontWeight: 'bold',
+                    color: colors.text,
+                    marginTop: 20,
+                }}>Czas trwania</Text>
+
                 <View style={{
                     width: '100%',
                     height: 50,
                     flexDirection: 'row',
                     alignItems: 'center',
                     justifyContent: 'space-between',
-                    marginTop: 20
+                    marginTop: 10
                 }}> 
                     <View style={{width: '47.5%', height: '100%'}}>    
                         <TouchableOpacity 
@@ -388,6 +622,8 @@ export default function AddToCalendar(){
                     </View>
                 
                 </View>
+
+                
             
                 <TouchableOpacity 
                     onPress={handleSubmit(onCreateEvent)}
