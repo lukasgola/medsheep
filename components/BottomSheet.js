@@ -5,6 +5,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import LottieView from 'lottie-react-native';
 
+import * as Haptics from 'expo-haptics';
+
 
 import {useTheme} from '../theme/ThemeProvider';
 
@@ -72,6 +74,10 @@ const BottomSheet = (props) => {
 
 
     const onConfirm = () => {
+        //Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy)
+        Haptics.notificationAsync(
+            Haptics.NotificationFeedbackType.Success
+          )
         extend();
         globalAnimation.current.play();
         setTimeout(() => {
