@@ -177,7 +177,7 @@ export default function AddToCalendar(){
     };
 
     const handleTimeConfirm = () => {
-        setTimeString(time.getHours() + ':' + time.getMinutes())
+        setTimeString(time.getHours() + ':' + (time.getMinutes() < 10 ? '0'+time.getMinutes() : time.getMinutes()))
         console.log(time.getHours() + ':' + time.getMinutes())
     };
 
