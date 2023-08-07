@@ -627,6 +627,16 @@ export default function AddToCalendar(){
                     }}>Dodaj lek</Text>
                 </TouchableOpacity>
 
+                <Picker
+                    selectedValue={freq}
+                    onValueChange={(itemValue, itemIndex) =>
+                        setFreq(itemValue)
+                    }>
+                        {frequencies.map((item) => (
+                            <Picker.Item label={item.text.toString()} value={item.text} key={item.id} />
+                        ))}
+                </Picker>
+
             </ScrollView>
         </KeyboardAvoidingView>
     );
