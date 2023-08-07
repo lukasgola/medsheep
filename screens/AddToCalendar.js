@@ -16,7 +16,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import {Picker} from '@react-native-picker/picker';
 
 //Firebase
-import { addEvent } from '../firebase/firebase-config';
+import { addToCalendar } from '../firebase/firebase-config';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -103,10 +103,10 @@ export default function AddToCalendar(){
     const [timeString, setTimeString] = useState(new Date(Date.now()).getHours() + ':' + (new Date(Date.now()).getMinutes() < 10 ? '0'+new Date(Date.now()).getMinutes() : new Date(Date.now()).getMinutes()))
 
     const [ dateStart, setDateStart ] = useState(new Date())
-    const [ dateStartString, setDateStartString ] = useState('Początek')
+    const [ dateStartString, setDateStartString ] = useState(new Date().getDate() + ' / ' + (new Date().getMonth()+1) + ' / ' + new Date().getFullYear())
 
     const [ dateEnd, setDateEnd ] = useState(new Date())
-    const [ dateEndString, setDateEndString ] = useState('Koniec')
+    const [ dateEndString, setDateEndString ] = useState(new Date().getDate() + ' / ' + (new Date().getMonth()+1) + ' / ' + new Date().getFullYear())
 
     const [ customFreq, setCustomFreq ] = useState(1);
     const [ customFreqString, setCustomFreqString ] = useState(1);
@@ -187,16 +187,32 @@ export default function AddToCalendar(){
         {
             text: 'Yes',
             onPress: () => {
-                const { title, maxGuests, description} = data;
+
+                const { title } = data;
+                
+                const dateS = dateStart;
+                const dateE = dateEnd;
+
+                dateS.setHours(0,0,0,0);
+                dateE.setHours(0,0,0,0);
+
                 const event = {
                     title: title,
-                    day: date.getDate(),
-                    month: date.getMonth()+1,
-                    year: date.getFullYear(),
-                    time_hour: time.getHours(),
-                    time_minute: time.getMinutes(),
+                    freq: freq,
+                    dateStart: dateS,
+                    dateEnd: dateE,
+                    dayStart: dateStart.getDate(),
+                    monthStart: dateStart.getMonth(),
+                    yearStart: dateStart.getFullYear(),
+                    dayEnd: dateEnd.getDate(),
+                    monthEnd: dateEnd.getMonth(),
+                    yearEnd: dateEnd.getFullYear(),
+                    timeHour: time.getHours(),
+                    timeMinutes: time.getMinutes(),
+                    dateStartString: dateStart.getFullYear() + '-' + (dateStart.getMonth() < 10 ? '0' + dateStart.getMonth() : dateStart.getMonth()) + '-' + (dateStart.getDate() < 10 ? '0' + dateStart.getDate() : dateStart.getDate()),
+                    dateEndString: dateEnd.getFullYear() + '-' + (dateEnd.getMonth() < 10 ? '0' + dateEnd.getMonth() : dateEnd.getMonth()) + '-' + (dateEnd.getDate() < 10 ? '0' + dateEnd.getDate() : dateEnd.getDate()),
                 }
-                addEvent(event);
+                addToCalendar(event);
             }},
         ]);
         
@@ -503,27 +519,26 @@ export default function AddToCalendar(){
                 
                 </Animated.View>
 
-                <Text style={{
-                    fontSize: 14,
-                    fontWeight: 'bold',
-                    color: colors.text,
-                    marginTop: 20,
-                }}>Czas trwania</Text>
-
                 <View style={{
                     width: '100%',
-                    height: 50,
+                    height: 70,
                     flexDirection: 'row',
                     alignItems: 'center',
                     justifyContent: 'space-between',
-                    marginTop: 10
+                    marginTop: 20
                 }}> 
-                    <View style={{width: '47.5%', height: '100%'}}>    
+                    <View style={{width: '47.5%', height: '100%'}}>  
+                    <Text style={{
+                        fontSize: 14,
+                        fontWeight: 'bold',
+                        color: colors.text,
+                        marginBottom: 10
+                    }}>Początek</Text>  
                         <TouchableOpacity 
                             onPress={() => setDateStartPickerVisible(true)}
                             style={{
                                 width: '100%', 
-                                height: '100%', 
+                                height: 50, 
                                 flexDirection: 'row',
                                 backgroundColor: colors.grey_l,
                                 borderRadius: 10,
@@ -565,12 +580,18 @@ export default function AddToCalendar(){
                         </TouchableOpacity>
                     </View>
 
-                    <View style={{width: '47.5%', height: '100%'}}>     
+                    <View style={{width: '47.5%', height: '100%'}}>
+                        <Text style={{
+                            fontSize: 14,
+                            fontWeight: 'bold',
+                            color: colors.text,
+                            marginBottom: 10
+                        }}>Koniec</Text>      
                         <TouchableOpacity 
                             onPress={() => setDateEndPickerVisible(true)}
                             style={{
                                 width: '100%', 
-                                height: '100%', 
+                                height: 50, 
                                 flexDirection: 'row',
                                 backgroundColor: colors.grey_l,
                                 borderRadius: 10,
@@ -601,7 +622,7 @@ export default function AddToCalendar(){
                             >
                                 <DateTimePicker
                                     testID="dateTimePicker"
-                                    value={dateStart}
+                                    value={dateEnd}
                                     mode={'date'}
                                     is24Hour={true}
                                     display="spinner"

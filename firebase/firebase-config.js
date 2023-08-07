@@ -104,12 +104,20 @@ export async function addToBasket(product, number, price){
   export async function addToCalendar(event){
     try {
       await addDoc(collection(db, `users/${auth.currentUser.uid}/calendar`), {
-        dateStart: event.startDate,
-        dateEnd: event.endDate,
         title: event.title,
         freq: event.freq,
-        time: event.time
-
+        dateStart: event.dateStart,
+        dayStart: event.dayStart,
+        monthStart: event.monthStart,
+        yearStart: event.yearStart,
+        dateEnd: event.dateEnd,
+        dayStart: event.dayStart,
+        monthEnd: event.monthEnd,
+        yearEnd: event.yearEnd,
+        timeHour: event.timeHour,
+        timeMinutes: event.timeMinutes,
+        dateStartString: event.dateStartString,
+        dateEndString: event.dateEndString
       });
     } catch (e) {
       console.error("Error adding document: ", e);

@@ -195,7 +195,6 @@ export default function MainCalendar() {
 
   useEffect(() => {
     const date = new Date();
-    console.log(date);
     setDay({
       dateString: date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate(),
       day: date.getDate(),
@@ -212,7 +211,7 @@ export default function MainCalendar() {
     }}>
         <Calendar
           onDayPress={day => {
-            [setSelected(day.dateString), setDay(day), console.log(day)];
+            [setSelected(day.dateString), setDay(day), console.log(day.dateString)];
           }}
           markedDates={{
             [selected]: {selected: true, disableTouchEvent: true, selectedDotColor: 'orange'}
