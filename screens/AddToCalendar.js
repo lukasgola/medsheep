@@ -108,14 +108,6 @@ export default function AddToCalendar(){
     const [ dateEnd, setDateEnd ] = useState(new Date())
     const [ dateEndString, setDateEndString ] = useState('Koniec')
 
-    const [eventLocation, setEventLocation] = useState(null)
-    const [address, setAddress] = useState(null);
-
-    const [category, setCategory] = useState('Party')
-
-    const [type, setType] = useState('Private');
-    const [place, setPlace] = useState('Indoor');
-
     const [ customFreq, setCustomFreq ] = useState(1);
     const [ customFreqString, setCustomFreqString ] = useState(1);
 
@@ -203,15 +195,6 @@ export default function AddToCalendar(){
                     year: date.getFullYear(),
                     time_hour: time.getHours(),
                     time_minute: time.getMinutes(),
-                    type: type,
-                    place: place,
-                    actGuests: 0,
-                    maxGuests: maxGuests,
-                    description:  description ? description : 'none',
-                    latitude: eventLocation.latitude,
-                    longitude: eventLocation.longitude,
-                    likes: 0,
-                    category: category
                 }
                 addEvent(event);
             }},
@@ -614,7 +597,7 @@ export default function AddToCalendar(){
                                     mode={'date'}
                                     is24Hour={true}
                                     display="spinner"
-                                    onChange={onChangeDateStart}
+                                    onChange={onChangeDateEnd}
                                     textColor={colors.text}
                                 />
                             </BottomSheet>
