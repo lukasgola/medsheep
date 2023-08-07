@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { SafeAreaView, StyleSheet, Text, View, Dimensions, TouchableOpacity, FlatList, ActivityIndicator, Animated } from 'react-native';
+import { SafeAreaView, StyleSheet, Text, View, Dimensions, TouchableOpacity, FlatList, ActivityIndicator, Animated, Alert } from 'react-native';
 
 import { Calendar, LocaleConfig,} from 'react-native-calendars';
 
@@ -8,6 +8,10 @@ import { useTheme } from '../theme/ThemeProvider';
 import LottieView from 'lottie-react-native';
 
 import BottomSheet from '../components/BottomSheet';
+
+//Firebase
+import { auth, db } from '../firebase/firebase-config';
+import { getDocs, collection, where, query } from "firebase/firestore";
 
 
 const months = [
@@ -48,50 +52,29 @@ export default function MainCalendar() {
 
   const [ modalVisible, setModalVisible ] = useState(false);
 
-  const events = [
-    {
-      id: 1,
-      hour: 9,
-      minutes: 0,
-      name: 'Apap',
-      taken: true,
-    },
-    {
-      id: 2,
-      hour: 14,
-      minutes: 0,
-      name: 'Rutinoscorbin',
-      taken: false,
-    },
-    {
-      id: 3,
-      hour: 18,
-      minutes: 0,
-      name: 'Ibum',
-      taken: false,
-    },
-    {
-      id: 4,
-      hour: 9,
-      minutes: 0,
-      name: 'Apap',
-      taken: false,
-    },
-    {
-      id: 5,
-      hour: 9,
-      minutes: 0,
-      name: 'Apap',
-      taken: false,
-    },
-    {
-      id: 6,
-      hour: 9,
-      minutes: 0,
-      name: 'Apap',
-      taken: false,
-    },
-  ]
+  const [events, setEvents] = useState([]);
+
+  const getDayEvents = async (day) => {
+    const q = query(collection(db, "users", auth.currentUser.uid, "calendar"), where("dateStartString", "==", day));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+        // doc.data() is never undefined for query doc snapshots
+        const data = {
+            ...doc.data(),
+            id: doc.id,
+        }
+        setEvents(old => [...old, data])
+    });
+}
+
+
+  const onDayClick = (day) => {
+    setEvents([]);
+    setSelected(day.dateString);
+    setDay(day);
+    getDayEvents(day.dateString);
+  }
+
   const onTakenClick = (item) => {
     setItem(item);
     setModalVisible(true);
@@ -132,7 +115,7 @@ export default function MainCalendar() {
         }}>
           <Text style={{
             fontSize: 20,
-          }}>{item.hour + ':' + (item.minutes < 10 ? '0'+item.minutes : item.minutes)}</Text>
+          }}>{item.timeHour + ':' + (item.timeMinutes < 10 ? '0'+item.timeMinutes : item.timeMinutes)}</Text>
         </View>
         <View style={{
           justifyContent:'space-around',
@@ -141,7 +124,7 @@ export default function MainCalendar() {
           <Text style={{
             fontSize: 18,
             fontWeight: 'bold'
-          }}>{item.name}</Text>
+          }}>{item.title}</Text>
           
           <View style={{
             borderRadius: 5,
@@ -211,7 +194,7 @@ export default function MainCalendar() {
     }}>
         <Calendar
           onDayPress={day => {
-            [setSelected(day.dateString), setDay(day), console.log(day.dateString)];
+            onDayClick(day);
           }}
           markedDates={{
             [selected]: {selected: true, disableTouchEvent: true, selectedDotColor: 'orange'}

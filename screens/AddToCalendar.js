@@ -155,7 +155,7 @@ export default function AddToCalendar(){
 
     const handleDateStartConfirm = () => {
         let month = dateStart.getMonth()+1;
-        setDateStartString(dateStart.getDate() + ' / ' + month + ' / ' + dateStart.getFullYear())
+        setDateStartString(dateStart.getDate() + '-' + month + '-' + dateStart.getFullYear())
     };
 
     const onChangeDateEnd = (event, selectedDate) => {
@@ -165,7 +165,7 @@ export default function AddToCalendar(){
 
     const handleDateEndConfirm = () => {
         let month = dateEnd.getMonth()+1;
-        setDateEndString(dateEnd.getDate() + ' / ' + month + ' / ' + dateEnd.getFullYear())
+        setDateEndString(dateEnd.getDate() + '-' + month + '-' + dateEnd.getFullYear())
     };
 
     const handleTimeConfirm = () => {
@@ -202,15 +202,15 @@ export default function AddToCalendar(){
                     dateStart: dateS,
                     dateEnd: dateE,
                     dayStart: dateStart.getDate(),
-                    monthStart: dateStart.getMonth(),
+                    monthStart: dateStart.getMonth()+1,
                     yearStart: dateStart.getFullYear(),
                     dayEnd: dateEnd.getDate(),
-                    monthEnd: dateEnd.getMonth(),
+                    monthEnd: dateEnd.getMonth()+1,
                     yearEnd: dateEnd.getFullYear(),
                     timeHour: time.getHours(),
                     timeMinutes: time.getMinutes(),
-                    dateStartString: dateStart.getFullYear() + '-' + (dateStart.getMonth() < 10 ? '0' + dateStart.getMonth() : dateStart.getMonth()) + '-' + (dateStart.getDate() < 10 ? '0' + dateStart.getDate() : dateStart.getDate()),
-                    dateEndString: dateEnd.getFullYear() + '-' + (dateEnd.getMonth() < 10 ? '0' + dateEnd.getMonth() : dateEnd.getMonth()) + '-' + (dateEnd.getDate() < 10 ? '0' + dateEnd.getDate() : dateEnd.getDate()),
+                    dateStartString: dateStart.getFullYear() + '-' + (dateStart.getMonth() < 10 ? '0' + (dateStart.getMonth()+1) : (dateStart.getMonth()+1)) + '-' + (dateStart.getDate() < 10 ? '0' + dateStart.getDate() : dateStart.getDate()),
+                    dateEndString: dateEnd.getFullYear() + '-' + (dateEnd.getMonth() < 10 ? '0' + (dateEnd.getMonth()+1) : (dateEnd.getMonth()+1)) + '-' + (dateEnd.getDate() < 10 ? '0' + dateEnd.getDate() : dateEnd.getDate()),
                 }
                 addToCalendar(event);
             }},
