@@ -7,6 +7,8 @@ import LottieView from 'lottie-react-native';
 
 import * as Haptics from 'expo-haptics';
 
+import { BlurView } from 'expo-blur';
+
 
 import {useTheme} from '../theme/ThemeProvider';
 
@@ -60,6 +62,23 @@ const BottomSheet = (props) => {
         setLottieSize(0);
     } 
 
+    const opacityValue = useRef(new Animated.Value(0)).current;
+
+    function fadeIn(){
+        Animated.spring(opacityValue,{
+            toValue: 1,
+            duration: 400,
+            useNativeDriver: true
+        }).start()
+    } 
+
+    function fadeOut(){
+        Animated.spring(opacityValue,{
+            toValue: 0,
+            duration: 100,
+            useNativeDriver: true
+        }).start()
+    } 
     
     useLayoutEffect(() => {
         if (firstUpdate.current) {
@@ -79,11 +98,13 @@ const BottomSheet = (props) => {
             Haptics.NotificationFeedbackType.Success
           )
         extend();
+        fadeIn();
         globalAnimation.current.play();
         setTimeout(() => {
             fold();
             setTimeout(() => {
                 slideOut();
+                fadeOut();
             }, 50)
         }, 700)
         props.onConfirm();
@@ -101,14 +122,20 @@ const BottomSheet = (props) => {
       transparent={true}
       visible={props.visible}
     >
-      <Pressable 
-        onPress={() => slideOut()}
-        style={{
-          flex: 1,
-          backgroundColor: 'black',
-          opacity: 0.3,
-      }}>
-        </Pressable>
+        <BlurView 
+            intensity={20} 
+            tint='dark'
+            style={{
+                flex: 1,
+            }}
+        >
+            <Pressable 
+                onPress={() => slideOut()}
+                style={{
+                    flex: 1     
+            }}>
+            </Pressable>
+        </BlurView>
 
         <Animated.View style={{
             width: '95%',
@@ -118,11 +145,11 @@ const BottomSheet = (props) => {
             zIndex: 10,
         }}>
 
+        
 
         <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        >
-            
+        >   
             <View style={{
                 backgroundColor: colors.background,
                 flex: 1,
@@ -130,7 +157,9 @@ const BottomSheet = (props) => {
                 borderTopRightRadius: 15,
                 paddingHorizontal: '5%',
                 paddingVertical: 10,
+                alignItems: 'center'
             }}>
+                
                 <View style={{
                     flexDirection: 'row',
                     width: '100%',
@@ -152,6 +181,8 @@ const BottomSheet = (props) => {
                     {props.children}
                 
             </View>
+            
+
             <Animated.View style={{
                 height: extendValue,
                 justifyContent: 'center',
@@ -171,6 +202,7 @@ const BottomSheet = (props) => {
                     speed={3}
                 />
             </Animated.View>
+            
 
             <View
                 style={{
