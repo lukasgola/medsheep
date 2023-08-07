@@ -80,7 +80,7 @@ const CustomInput = ({
           </View>
           {error && (
             <View style={{width: '100%'}}>
-              <Text>{error.message || 'Error'}</Text>
+              <Text style={{color: 'red'}}>{error.message || 'Error'}</Text>
             </View>
             
           )}
