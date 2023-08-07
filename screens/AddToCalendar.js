@@ -96,11 +96,11 @@ export default function AddToCalendar(){
         },
     ]
 
-    const [freq, setFreq] = useState();
-    const [freqString, setFreqString] = useState('Częstotliwość')
+    const [freq, setFreq] = useState(1);
+    const [freqString, setFreqString] = useState('Codziennie')
 
     const [time, setTime] = useState(new Date(Date.now()))
-    const [timeString, setTimeString] = useState('Wybierz godzinę')
+    const [timeString, setTimeString] = useState(new Date(Date.now()).getHours() + ':' + (new Date(Date.now()).getMinutes() < 10 ? '0'+new Date(Date.now()).getMinutes() : new Date(Date.now()).getMinutes()))
 
     const [ dateStart, setDateStart ] = useState(new Date())
     const [ dateStartString, setDateStartString ] = useState('Początek')
@@ -123,12 +123,12 @@ export default function AddToCalendar(){
 
     const handleFreqConfirm = () => {
         setFreqString(freq);
-        if ( freq == 'Niestandardowe' || freqString != 'Niestandardowe'){
+        if ( freq == 'Niestandardowe' && freqString != 'Niestandardowe'){
             setTimeout(() => {
                 springIn();
             }, 1000)
         }
-        if( freqString == 'Niestandardowe' || freq != 'Niestandardowe'){
+        if( freqString == 'Niestandardowe' && freq != 'Niestandardowe'){
             setTimeout(() => {
                 springOut();
             }, 1000)
@@ -264,13 +264,20 @@ export default function AddToCalendar(){
                     />
                 </View>
 
+                <Text style={{
+                    fontSize: 14,
+                    fontWeight: 'bold',
+                    color: colors.text,
+                    marginTop: 20,
+                }}>Częstotliowść</Text>
+
                 <View style={{
                     width: '100%',
                     height: 50,
                     flexDirection: 'row',
                     alignItems: 'center',
                     justifyContent: 'space-between',
-                    marginTop: 20
+                    marginTop: 10
                 }}> 
                     <View style={{width: '47.5%', height: '100%'}}>    
                         <TouchableOpacity 
@@ -361,6 +368,7 @@ export default function AddToCalendar(){
                                     display="spinner"
                                     onChange={onChangeTime}
                                     textColor={colors.text}
+                                    minuteInterval={15}
                                 />
                             </BottomSheet>
                         </TouchableOpacity>
@@ -626,16 +634,6 @@ export default function AddToCalendar(){
                         color: colors.background
                     }}>Dodaj lek</Text>
                 </TouchableOpacity>
-
-                <Picker
-                    selectedValue={freq}
-                    onValueChange={(itemValue, itemIndex) =>
-                        setFreq(itemValue)
-                    }>
-                        {frequencies.map((item) => (
-                            <Picker.Item label={item.text.toString()} value={item.text} key={item.id} />
-                        ))}
-                </Picker>
 
             </ScrollView>
         </KeyboardAvoidingView>
