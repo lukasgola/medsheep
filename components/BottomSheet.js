@@ -61,24 +61,6 @@ const BottomSheet = (props) => {
         }).start()
         setLottieSize(0);
     } 
-
-    const opacityValue = useRef(new Animated.Value(0)).current;
-
-    function fadeIn(){
-        Animated.spring(opacityValue,{
-            toValue: 1,
-            duration: 400,
-            useNativeDriver: true
-        }).start()
-    } 
-
-    function fadeOut(){
-        Animated.spring(opacityValue,{
-            toValue: 0,
-            duration: 100,
-            useNativeDriver: true
-        }).start()
-    } 
     
     useLayoutEffect(() => {
         if (firstUpdate.current) {
@@ -98,13 +80,11 @@ const BottomSheet = (props) => {
             Haptics.NotificationFeedbackType.Success
           )
         extend();
-        fadeIn();
         globalAnimation.current.play();
         setTimeout(() => {
             fold();
             setTimeout(() => {
                 slideOut();
-                fadeOut();
             }, 50)
         }, 700)
         props.onConfirm();
@@ -142,7 +122,7 @@ const BottomSheet = (props) => {
             position: 'absolute',
             bottom: leftValue,
             left: '2.5%',
-            zIndex: 10,
+            //zIndex: 10,
         }}>
 
         
@@ -157,7 +137,6 @@ const BottomSheet = (props) => {
                 borderTopRightRadius: 15,
                 paddingHorizontal: '5%',
                 paddingVertical: 10,
-                alignItems: 'center'
             }}>
                 
                 <View style={{
