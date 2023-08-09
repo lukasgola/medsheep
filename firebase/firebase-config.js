@@ -118,7 +118,8 @@ export async function addToBasket(product, number, price){
         timeMinutes: event.timeMinutes,
         dateStartString: event.dateStartString,
         dateEndString: event.dateEndString,
-        timestamp: event.timestamp
+        startTimestamp: event.startTimestamp,
+        endTimestamp: event.endTimestamp
       });
     } catch (e) {
       console.error("Error adding document: ", e);

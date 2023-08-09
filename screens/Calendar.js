@@ -57,7 +57,7 @@ export default function MainCalendar() {
   const [isLoading, setIsLoading] = useState(true);
 
   const getDayEvents = async (timestamp) => {
-    const q = query(collection(db, "users", auth.currentUser.uid, "calendar"), where("timestamp", "==", timestamp));
+    const q = query(collection(db, "users", auth.currentUser.uid, "calendar"), where("startTimestamp", "<=", timestamp));
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
         // doc.data() is never undefined for query doc snapshots
@@ -65,6 +65,9 @@ export default function MainCalendar() {
             ...doc.data(),
             id: doc.id,
         }
+
+
+
         setEvents(old => [...old, data])
         
     });
@@ -78,7 +81,6 @@ export default function MainCalendar() {
     setSelected(day.dateString);
     setDay(day);
     getDayEvents(day.timestamp);
-    console.log(day);
   }
 
   const onTakenClick = (item) => {
