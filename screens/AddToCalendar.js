@@ -193,8 +193,8 @@ export default function AddToCalendar(){
                 const dateS = dateStart;
                 const dateE = dateEnd;
 
-                dateS.setHours(0,0,0,0);
-                dateE.setHours(0,0,0,0);
+                dateS.setHours(2,0,0,0);
+                dateE.setHours(2,0,0,0);
 
                 const event = {
                     title: title,
@@ -211,6 +211,7 @@ export default function AddToCalendar(){
                     timeMinutes: time.getMinutes(),
                     dateStartString: dateStart.getFullYear() + '-' + (dateStart.getMonth() < 10 ? '0' + (dateStart.getMonth()+1) : (dateStart.getMonth()+1)) + '-' + (dateStart.getDate() < 10 ? '0' + dateStart.getDate() : dateStart.getDate()),
                     dateEndString: dateEnd.getFullYear() + '-' + (dateEnd.getMonth() < 10 ? '0' + (dateEnd.getMonth()+1) : (dateEnd.getMonth()+1)) + '-' + (dateEnd.getDate() < 10 ? '0' + dateEnd.getDate() : dateEnd.getDate()),
+                    timestamp: dateS.getTime(),
                 }
                 addToCalendar(event);
             }},

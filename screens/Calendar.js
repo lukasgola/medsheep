@@ -54,8 +54,10 @@ export default function MainCalendar() {
 
   const [events, setEvents] = useState([]);
 
-  const getDayEvents = async (day) => {
-    const q = query(collection(db, "users", auth.currentUser.uid, "calendar"), where("dateStartString", "==", day));
+  const [isLoading, setIsLoading] = useState(true);
+
+  const getDayEvents = async (timestamp) => {
+    const q = query(collection(db, "users", auth.currentUser.uid, "calendar"), where("timestamp", "==", timestamp));
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
         // doc.data() is never undefined for query doc snapshots
@@ -64,15 +66,19 @@ export default function MainCalendar() {
             id: doc.id,
         }
         setEvents(old => [...old, data])
+        
     });
+    setIsLoading(false);
 }
 
 
   const onDayClick = (day) => {
+    setIsLoading(true);
     setEvents([]);
     setSelected(day.dateString);
     setDay(day);
-    getDayEvents(day.dateString);
+    getDayEvents(day.timestamp);
+    console.log(day);
   }
 
   const onTakenClick = (item) => {
@@ -178,13 +184,19 @@ export default function MainCalendar() {
 
   useEffect(() => {
     const date = new Date();
-    setDay({
+
+    date.setHours(2,0,0,0);
+
+    const actDay = {
       dateString: date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate(),
       day: date.getDate(),
       month: date.getMonth() + 1,
       year: date.getFullYear(),
-      timestamp: date
-    })
+      timestamp: date.getTime()
+    }
+
+    setDay(actDay);
+    getDayEvents(actDay.timestamp)
   }, [])
 
 
@@ -238,7 +250,7 @@ export default function MainCalendar() {
         
         : <ActivityIndicator />}
 
-        {day ? 
+        {!isLoading ? 
           <FlatList style={{
             width: '100%',
           }}
@@ -248,7 +260,13 @@ export default function MainCalendar() {
             showsVerticalScrollIndicator={false}
           />
         
-        : <ActivityIndicator />}
+        : <View style={{
+          flex: 1,
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+            <ActivityIndicator />
+          </View>}
 
         <BottomSheet 
             visible={modalVisible} 

@@ -117,7 +117,8 @@ export async function addToBasket(product, number, price){
         timeHour: event.timeHour,
         timeMinutes: event.timeMinutes,
         dateStartString: event.dateStartString,
-        dateEndString: event.dateEndString
+        dateEndString: event.dateEndString,
+        timestamp: event.timestamp
       });
     } catch (e) {
       console.error("Error adding document: ", e);
