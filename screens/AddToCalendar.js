@@ -155,7 +155,7 @@ export default function AddToCalendar(){
 
     const handleDateStartConfirm = () => {
         let month = dateStart.getMonth()+1;
-        setDateStartString(dateStart.getDate() + '-' + month + '-' + dateStart.getFullYear())
+        setDateStartString(dateStart.getDate() + ' / ' + month + ' / ' + dateStart.getFullYear())
     };
 
     const onChangeDateEnd = (event, selectedDate) => {
@@ -165,7 +165,7 @@ export default function AddToCalendar(){
 
     const handleDateEndConfirm = () => {
         let month = dateEnd.getMonth()+1;
-        setDateEndString(dateEnd.getDate() + '-' + month + '-' + dateEnd.getFullYear())
+        setDateEndString(dateEnd.getDate() + ' / ' + month + ' / ' + dateEnd.getFullYear())
     };
 
     const handleTimeConfirm = () => {

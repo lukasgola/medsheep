@@ -65,10 +65,9 @@ export default function MainCalendar() {
             ...doc.data(),
             id: doc.id,
         }
-
-
-
-        setEvents(old => [...old, data])
+        if(data.endTimestamp >= timestamp){
+          setEvents(old => [...old, data])
+        }
         
     });
     setIsLoading(false);
