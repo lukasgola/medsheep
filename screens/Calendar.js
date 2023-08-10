@@ -80,6 +80,8 @@ export default function MainCalendar() {
     setSelected(day.dateString);
     setDay(day);
     getDayEvents(day.timestamp);
+    console.log(day);
+    console.log(86400000);
   }
 
   const onTakenClick = (item) => {
@@ -184,6 +186,7 @@ export default function MainCalendar() {
 
 
   useEffect(() => {
+    setEvents([]);
     const date = new Date();
 
     date.setHours(2,0,0,0);
@@ -282,7 +285,7 @@ export default function MainCalendar() {
               <Text style={{
                 fontSize: 18,
                 fontWeight: 'bold'
-              }}>{item ? item.name : 'None'}</Text>
+              }}>{item ? item.title : 'None'}</Text>
             </View>
         </BottomSheet>
         
