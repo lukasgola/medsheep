@@ -58,20 +58,28 @@ export default function MainCalendar() {
 
   const [ item, setItem ] = useState();
 
+  const [ taken, setTaken ] = useState(false);
+
   const getDayEvents = async (timestamp) => {
+
     const q = query(collection(db, "users", auth.currentUser.uid, "calendar"), where("startTimestamp", "<=", timestamp));
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
+        
         // doc.data() is never undefined for query doc snapshots
         const data = {
-            ...doc.data(),
-            id: doc.id,
-        }
-        if(data.endTimestamp >= timestamp){
-          setEvents(old => [...old, data])
-        }
+          ...doc.data(),
+          id: doc.id,
+          taken: true,
+      }
+
+
+      if(data.endTimestamp >= timestamp){
+        setEvents(old => [...old, data])
+      }
         
     });
+
     setIsLoading(false);
 }
 
@@ -93,7 +101,6 @@ export default function MainCalendar() {
 
   const confirmTake = () => {
     setTaken(item.id, day.timestamp);
-    //console.log(day);
   }
 
   const Event = ({item}) => {
@@ -166,7 +173,7 @@ export default function MainCalendar() {
             alignItems: 'center'
           }}>
             <LottieView
-              //autoPlay={item.taken}
+              autoPlay={item.taken}
               ref={animation}
               style={{
                 width: 40,
