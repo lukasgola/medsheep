@@ -62,8 +62,10 @@ export default function MainCalendar() {
 
   const getDayEvents = async (timestamp) => {
 
+
     const q = query(collection(db, "users", auth.currentUser.uid, "calendar"), where("startTimestamp", "<=", timestamp));
     const querySnapshot = await getDocs(q);
+    console.log(querySnapshot);
     querySnapshot.forEach((doc) => {
         
         // doc.data() is never undefined for query doc snapshots
