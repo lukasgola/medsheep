@@ -196,6 +196,15 @@ export default function AddToCalendar(){
                 dateS.setHours(2,0,0,0);
                 dateE.setHours(2,0,0,0);
 
+                const takenArray = [];
+
+                for(var i=dateS.getTime(); i <= dateE.getTime(); i+=86400000){
+                    takenArray.push({
+                        id: i,
+                        taken: false
+                    })
+                }
+
                 const event = {
                     title: title,
                     freq: freq,
@@ -213,6 +222,7 @@ export default function AddToCalendar(){
                     dateEndString: dateEnd.getFullYear() + '-' + (dateEnd.getMonth() < 10 ? '0' + (dateEnd.getMonth()+1) : (dateEnd.getMonth()+1)) + '-' + (dateEnd.getDate() < 10 ? '0' + dateEnd.getDate() : dateEnd.getDate()),
                     startTimestamp: dateS.getTime(),
                     endTimestamp: dateE.getTime(),
+                    takenArray: takenArray
                 }
                 addToCalendar(event);
             }},

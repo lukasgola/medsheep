@@ -119,8 +119,18 @@ export async function addToBasket(product, number, price){
         dateStartString: event.dateStartString,
         dateEndString: event.dateEndString,
         startTimestamp: event.startTimestamp,
-        endTimestamp: event.endTimestamp
-      });
+        endTimestamp: event.endTimestamp,
+        takenArray: event.takenArray
+      }).then(function(docRef) {
+        console.log("Document written with ID: ", event.startTimestamp);
+        for(var i=event.startTimestamp; i <= event.endTimestamp; i+=86400000){
+          addDoc(collection(db, `users/${auth.currentUser.uid}/calendar/${docRef.id}/takenArray`), {
+            id: i,
+            taken: false
+          });
+        }
+            
+    })
     } catch (e) {
       console.error("Error adding document: ", e);
     }
