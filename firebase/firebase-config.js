@@ -7,7 +7,7 @@ import {
 } from "firebase/auth";
 
 import { getFirestore } from "firebase/firestore";
-import { collection, setDoc, getDoc, addDoc, doc, updateDoc } from "firebase/firestore"; 
+import { collection, setDoc, getDoc, addDoc, doc, updateDoc, query, where } from "firebase/firestore"; 
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -133,5 +133,22 @@ export async function addToBasket(product, number, price){
     })
     } catch (e) {
       console.error("Error adding document: ", e);
+    }
+  }
+
+
+  export async function setTaken(id, takenId){
+    try {
+      const q = doc(collection(db, "users", auth.currentUser.uid, "calendar", id, "takenArray"), where("id", "==", takenId));
+      const docSnap = await getDoc(q);
+      
+      if (docSnap.exists()) {
+        console.log("Document data:", docSnap.data());
+      } else {
+        // docSnap.data() will be undefined in this case
+        console.log("No such document!");
+      }
+    } catch (e) {
+      console.error("Error updating document: ", e);
     }
   }

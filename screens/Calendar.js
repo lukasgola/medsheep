@@ -10,7 +10,7 @@ import LottieView from 'lottie-react-native';
 import BottomSheet from '../components/BottomSheet';
 
 //Firebase
-import { auth, db } from '../firebase/firebase-config';
+import { auth, db, setTaken } from '../firebase/firebase-config';
 import { getDocs, collection, where, query } from "firebase/firestore";
 
 
@@ -56,6 +56,8 @@ export default function MainCalendar() {
 
   const [isLoading, setIsLoading] = useState(true);
 
+  const [ item, setItem ] = useState();
+
   const getDayEvents = async (timestamp) => {
     const q = query(collection(db, "users", auth.currentUser.uid, "calendar"), where("startTimestamp", "<=", timestamp));
     const querySnapshot = await getDocs(q);
@@ -90,7 +92,8 @@ export default function MainCalendar() {
   }
 
   const confirmTake = () => {
-
+    setTaken(item.id, day.timestamp);
+    //console.log(day);
   }
 
   const Event = ({item}) => {
@@ -182,7 +185,7 @@ export default function MainCalendar() {
   }
 
 
-  const [ item, setItem ] = useState();
+  
 
 
   useEffect(() => {
