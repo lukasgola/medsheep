@@ -11,7 +11,7 @@ import BottomSheet from '../components/BottomSheet';
 
 //Firebase
 import { auth, db, setTaken } from '../firebase/firebase-config';
-import { getDocs, collection, where, query } from "firebase/firestore";
+import { getDocs, collection, where, query, collectionGroup } from "firebase/firestore";
 
 
 const months = [
@@ -58,27 +58,47 @@ export default function MainCalendar() {
 
   const [ item, setItem ] = useState();
 
-  const [ taken, setTaken ] = useState(false);
-
-  const getDayEvents = async (timestamp) => {
-
-
-    const q = query(collection(db, "users", auth.currentUser.uid, "calendar"), where("startTimestamp", "<=", timestamp));
-    const querySnapshot = await getDocs(q);
-    console.log(querySnapshot);
-    querySnapshot.forEach((doc) => {
+  const getTakenArray = async (id, timestamp) => {
+    let takenItem = 0;
+    const q2 = query(collection(db, "users", auth.currentUser.uid, "events", id, "calendar" ), where("id", "==", timestamp));
+    const querySnapshot2 = await getDocs(q2);
+    querySnapshot2.forEach((doc) => {
         
         // doc.data() is never undefined for query doc snapshots
         const data = {
           ...doc.data(),
-          id: doc.id,
-          taken: true,
+          id: doc.id
       }
 
+      takenItem = data.taken;
+        
+    });
 
-      if(data.endTimestamp >= timestamp){
-        setEvents(old => [...old, data])
-      }
+    return takenItem;
+
+  }
+
+  const getDayEvents = async (timestamp) => {
+    const q = query(collection(db, "users", auth.currentUser.uid, "events"), where("endTimestamp", ">=", timestamp));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+        // doc.data() is never undefined for query doc snapshots
+        let data = {
+          ...doc.data(),
+            id: doc.id,
+        }
+
+        getTakenArray(doc.id, timestamp).then(value => {
+          const newData = {
+            ...data,
+            taken: value
+          }
+
+          if(newData.startTimestamp <= timestamp){
+            setEvents(old => [...old, newData])
+          }
+
+        })
         
     });
 
@@ -92,8 +112,6 @@ export default function MainCalendar() {
     setSelected(day.dateString);
     setDay(day);
     getDayEvents(day.timestamp);
-    console.log(day);
-    console.log(86400000);
   }
 
   const onTakenClick = (item) => {

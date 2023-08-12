@@ -103,7 +103,7 @@ export async function addToBasket(product, number, price){
 
   export async function addToCalendar(event){
     try {
-      await addDoc(collection(db, `users/${auth.currentUser.uid}/calendar`), {
+      await addDoc(collection(db, `users/${auth.currentUser.uid}/events`), {
         title: event.title,
         freq: event.freq,
         dateStart: event.dateStart,
@@ -120,18 +120,26 @@ export async function addToBasket(product, number, price){
         dateEndString: event.dateEndString,
         startTimestamp: event.startTimestamp,
         endTimestamp: event.endTimestamp,
-        takenArray: event.takenArray
       }).then(function(docRef) {
         console.log("Document written with ID: ", event.startTimestamp);
-        for(var i=event.startTimestamp; i <= event.endTimestamp; i+=86400000){
-          addDoc(collection(db, `users/${auth.currentUser.uid}/calendar/${docRef.id}/takenArray`), {
-            id: i,
-            taken: false
-          });
-        }
-            
+        setDates(docRef.id, event)
     })
     } catch (e) {
+      console.error("Error adding document: ", e);
+    }
+  }
+
+
+  export async function setDates(id, event){
+    try {
+      for(var i=event.startTimestamp; i <= event.endTimestamp; i+=86400000){
+        await addDoc(collection(db, `users/${auth.currentUser.uid}/events/${id}/calendar`), {
+          id: i,
+          taken: false
+        });
+      }
+    }
+    catch (e) {
       console.error("Error adding document: ", e);
     }
   }
@@ -140,7 +148,7 @@ export async function addToBasket(product, number, price){
   export async function setTaken(id, takenId){
     try {
       
-      const q = query(collection(db, "users", auth.currentUser.uid, "calendar", id, "takenArray"), where("id", "==", takenId));
+      const q = query(collection(db, "users", auth.currentUser.uid, "events", id, "calendar"), where("id", "==", takenId));
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach((doc) => {
           // doc.data() is never undefined for query doc snapshots
