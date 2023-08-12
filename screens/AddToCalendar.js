@@ -5,7 +5,6 @@ import {View, KeyboardAvoidingView, Alert, TouchableOpacity, Dimensions, ScrollV
 import {useTheme} from '../theme/ThemeProvider';
 import {useForm, Controller} from 'react-hook-form';
 
-
 import BottomSheet from '../components/BottomSheet';
 
 //Components
@@ -21,7 +20,7 @@ import { addToCalendar } from '../firebase/firebase-config';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 
-export default function AddToCalendar(){
+export default function AddToCalendar({navigation}){
 
     const width = Dimensions.get('window').width;
 
@@ -224,8 +223,11 @@ export default function AddToCalendar(){
                     endTimestamp: dateE.getTime(),
                 }
                 addToCalendar(event);
+                navigation.navigate('Kalendarz');
             }},
         ]);
+
+        
         
     };
 
