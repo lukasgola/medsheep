@@ -79,18 +79,16 @@ export default function MainCalendar() {
   }
 
   const getDayEvents = async (timestamp) => {
+    setEvents([])
     const q = query(collection(db, "users", auth.currentUser.uid, "events"), where("endTimestamp", ">=", timestamp));
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
         // doc.data() is never undefined for query doc snapshots
-        let data = {
-          ...doc.data(),
-            id: doc.id,
-        }
 
         getTakenArray(doc.id, timestamp).then(value => {
           const newData = {
-            ...data,
+            ...doc.data(),
+            id: doc.id,
             taken: value
           }
 
@@ -108,7 +106,6 @@ export default function MainCalendar() {
 
   const onDayClick = (day) => {
     setIsLoading(true);
-    setEvents([]);
     setSelected(day.dateString);
     setDay(day);
     getDayEvents(day.timestamp);
@@ -121,6 +118,7 @@ export default function MainCalendar() {
 
   const confirmTake = () => {
     setTaken(item.id, day.timestamp);
+    getDayEvents(day.timestamp);
   }
 
   const Event = ({item}) => {
@@ -212,8 +210,6 @@ export default function MainCalendar() {
   }
 
 
-  
-
 
   useEffect(() => {
     setEvents([]);
@@ -230,7 +226,7 @@ export default function MainCalendar() {
     }
 
     setDay(actDay);
-    getDayEvents(actDay.timestamp)
+    getDayEvents(actDay.timestamp);
   }, [])
 
 
