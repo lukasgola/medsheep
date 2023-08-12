@@ -218,7 +218,7 @@ export default function MainCalendar() {
     date.setHours(2,0,0,0);
 
     const actDay = {
-      dateString: date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate(),
+      dateString: date.getFullYear() + '-' + (date.getMonth() < 10 ? '0' + (date.getMonth()+1) : (date.getMonth()+1)) + '-' + (date.getDate() < 10 ? '0' + date.getDate() : date.getDate()),
       day: date.getDate(),
       month: date.getMonth() + 1,
       year: date.getFullYear(),
@@ -226,6 +226,7 @@ export default function MainCalendar() {
     }
 
     setDay(actDay);
+    setSelected(actDay.dateString);
     getDayEvents(actDay.timestamp);
   }, [])
 
