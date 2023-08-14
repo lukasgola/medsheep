@@ -12,6 +12,7 @@ import BottomSheet from '../components/BottomSheet';
 //Firebase
 import { auth, db, setTaken } from '../firebase/firebase-config';
 import { getDocs, collection, where, query, collectionGroup } from "firebase/firestore";
+import { TextInputComponent } from 'react-native';
 
 
 const months = [
@@ -58,6 +59,10 @@ export default function MainCalendar() {
 
   const [ item, setItem ] = useState();
 
+
+  const ref = useRef(null);
+  const [ index, setIndex ] = useState(0);
+
   const getTakenArray = async (id, timestamp) => {
     let takenItem = 0;
     const q2 = query(collection(db, "users", auth.currentUser.uid, "events", id, "calendar" ), where("id", "==", timestamp));
@@ -68,7 +73,7 @@ export default function MainCalendar() {
         const data = {
           ...doc.data(),
           id: doc.id
-      }
+        }
 
       takenItem = data.taken;
         
@@ -80,6 +85,7 @@ export default function MainCalendar() {
 
   const getDayEvents = async (timestamp) => {
     setEvents([])
+    const temp = []
     const q = query(collection(db, "users", auth.currentUser.uid, "events"), where("endTimestamp", ">=", timestamp));
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
@@ -93,13 +99,15 @@ export default function MainCalendar() {
           }
 
           if(newData.startTimestamp <= timestamp){
-            setEvents(old => [...old, newData])
+            temp.push(newData);
           }
-
         })
         
     });
-
+    const sorted = temp.sort(function(a, b) {
+      return (a.timeHour < b.timeHour) || (a.timeMinutes < b.timeMinutes) ? -1 : (a.timeHour > b.timeHour) || (a.timeMinutes > b.timeMinutes) ? 1 : 0;
+    })
+    setEvents(sorted);
     setIsLoading(false);
 }
 
@@ -189,7 +197,9 @@ export default function MainCalendar() {
             borderColor: colors.grey,
             justifyContent: 'center',
             alignItems: 'center'
-          }}>
+          }}
+            disabled={item.taken}
+          >
             <LottieView
               autoPlay={item.taken}
               ref={animation}
@@ -286,6 +296,8 @@ export default function MainCalendar() {
             width: '100%',
           }}
             data={events}
+            ref={ref}
+            initialScrollIndex={index}
             renderItem={({item}) => <Event item={item} />}
             keyExtractor={item => item.id}
             showsVerticalScrollIndicator={false}
