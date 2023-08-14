@@ -60,9 +60,7 @@ export default function MainCalendar() {
 
 
   const ref = useRef(null);
-  const [ index, setIndex ] = useState(0);
-
-  const takenArray = [];
+  //const [ index, setIndex ] = useState(0);
 
   const getTakenArray = async (id, timestamp) => {
     let takenItem = 0;
@@ -90,7 +88,7 @@ export default function MainCalendar() {
     const querySnapshot = await getDocs(q);
     const fetchedData = querySnapshot.docs.map( doc => ({id: doc.id, ...doc.data(), taken: false}));
 
-    let filtered = fetchedData.filter((item) => item.startTimestamp <= timestamp);
+    const filtered = fetchedData.filter((item) => item.startTimestamp <= timestamp);
 
     const updatedArray = [...filtered];
   
@@ -104,6 +102,13 @@ export default function MainCalendar() {
 
     setEvents(filtered);
     setIsLoading(false);
+    
+  }
+
+  const scrollToIndex = (index) => {
+    if (ref.current) {
+      ref.current.scrollToIndex({ index, animated: true });
+    }
   }
 
   const onDayClick = (day) => {
@@ -214,6 +219,19 @@ export default function MainCalendar() {
   }
 
 
+  useEffect(() => {
+    setTimeout(() => {
+      for( let i = 0; i<events.length;i++){
+        if(events[i].taken == false) {
+          
+            scrollToIndex(i);
+            break;
+        }
+      }
+    }, 100)
+    
+  }, [isLoading])
+
 
   useEffect(() => {
     const date = new Date();
@@ -286,13 +304,31 @@ export default function MainCalendar() {
         {!isLoading ? 
           <FlatList style={{
             width: '100%',
+            height: '100%'
           }}
             data={events}
             ref={ref}
-            initialScrollIndex={index}
             renderItem={({item}) => <Event item={item} />}
             keyExtractor={item => item.id}
             showsVerticalScrollIndicator={false}
+            getItemLayout={(data, index) => ({
+              length: 80, // Height of each item
+              offset: 50 * index,
+              index,
+            })}
+            ListEmptyComponent={
+              <View style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                width: '100%',
+                height: '100%',
+                marginTop: 100,
+              }}>
+                <Text style={{
+                  color: colors.grey_d
+                }}>Nie ma zadnych leków</Text>
+              </View>
+            }
           />
         
         : <View style={{
