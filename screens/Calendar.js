@@ -11,8 +11,7 @@ import BottomSheet from '../components/BottomSheet';
 
 //Firebase
 import { auth, db, setTaken } from '../firebase/firebase-config';
-import { getDocs, collection, where, query, collectionGroup } from "firebase/firestore";
-import { TextInputComponent } from 'react-native';
+import { getDocs, collection, where, query, collectionGroup, orderBy, loadBundle } from "firebase/firestore";
 
 
 const months = [
@@ -83,9 +82,10 @@ export default function MainCalendar() {
 
   }
 
+  const temp = [];
+
   const getDayEvents = async (timestamp) => {
     setEvents([])
-    const temp = []
     const q = query(collection(db, "users", auth.currentUser.uid, "events"), where("endTimestamp", ">=", timestamp));
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
@@ -99,18 +99,23 @@ export default function MainCalendar() {
           }
 
           if(newData.startTimestamp <= timestamp){
+            //setEvents(old => [...old, newData]);
             temp.push(newData);
+            sortArray(temp);
           }
         })
         
     });
-    const sorted = temp.sort(function(a, b) {
-      return (a.timeHour < b.timeHour) || (a.timeMinutes < b.timeMinutes) ? -1 : (a.timeHour > b.timeHour) || (a.timeMinutes > b.timeMinutes) ? 1 : 0;
-    })
-    setEvents(sorted);
-    setIsLoading(false);
-}
 
+    setIsLoading(false);
+  }
+
+  const sortArray = (arrayToSort) => {
+    const sortedArray = [...arrayToSort]; // Create a copy of the array
+    sortedArray.sort((a, b) => (a.timeHour < b.timeHour) || (a.timeMinutes < b.timeMinutes) ? -1 : (a.timeHour > b.timeHour) || (a.timeMinutes > b.timeMinutes) ? 1 : 0) // Sort the copy in ascending order
+    
+    setEvents(sortedArray);
+  };
 
   const onDayClick = (day) => {
     setIsLoading(true);
@@ -222,7 +227,6 @@ export default function MainCalendar() {
 
 
   useEffect(() => {
-    setEvents([]);
     const date = new Date();
 
     date.setHours(2,0,0,0);
@@ -239,7 +243,6 @@ export default function MainCalendar() {
     setSelected(actDay.dateString);
     getDayEvents(actDay.timestamp);
   }, [])
-
 
   return (
     <SafeAreaView style={{
