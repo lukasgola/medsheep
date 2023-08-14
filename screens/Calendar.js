@@ -62,6 +62,8 @@ export default function MainCalendar() {
   const ref = useRef(null);
   const [ index, setIndex ] = useState(0);
 
+  const takenArray = [];
+
   const getTakenArray = async (id, timestamp) => {
     let takenItem = 0;
     const q2 = query(collection(db, "users", auth.currentUser.uid, "events", id, "calendar" ), where("id", "==", timestamp));
@@ -82,40 +84,27 @@ export default function MainCalendar() {
 
   }
 
-  const temp = [];
-
   const getDayEvents = async (timestamp) => {
     setEvents([])
     const q = query(collection(db, "users", auth.currentUser.uid, "events"), where("endTimestamp", ">=", timestamp));
     const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((doc) => {
-        // doc.data() is never undefined for query doc snapshots
+    const fetchedData = querySnapshot.docs.map( doc => ({id: doc.id, ...doc.data(), taken: false}));
 
-        getTakenArray(doc.id, timestamp).then(value => {
-          const newData = {
-            ...doc.data(),
-            id: doc.id,
-            taken: value
-          }
+    let filtered = fetchedData.filter((item) => item.startTimestamp <= timestamp);
 
-          if(newData.startTimestamp <= timestamp){
-            //setEvents(old => [...old, newData]);
-            temp.push(newData);
-            sortArray(temp);
-          }
-        })
-        
-    });
+    const updatedArray = [...filtered];
+  
+    for (let index = 0; index < updatedArray.length; index++) {
+      const item = updatedArray[index];
+      const value = await getTakenArray(item.id, timestamp);
+      updatedArray[index].taken = value;
+    }
 
+    filtered.sort((a, b) => (a.timeHour < b.timeHour) || (a.timeMinutes < b.timeMinutes) ? -1 : (a.timeHour > b.timeHour) || (a.timeMinutes > b.timeMinutes) ? 1 : 0);
+
+    setEvents(filtered);
     setIsLoading(false);
   }
-
-  const sortArray = (arrayToSort) => {
-    const sortedArray = [...arrayToSort]; // Create a copy of the array
-    sortedArray.sort((a, b) => (a.timeHour < b.timeHour) || (a.timeMinutes < b.timeMinutes) ? -1 : (a.timeHour > b.timeHour) || (a.timeMinutes > b.timeMinutes) ? 1 : 0) // Sort the copy in ascending order
-    
-    setEvents(sortedArray);
-  };
 
   const onDayClick = (day) => {
     setIsLoading(true);

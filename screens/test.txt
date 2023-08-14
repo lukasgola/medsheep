@@ -1,0 +1,22 @@
+querySnapshot.forEach((doc) => {
+        // doc.data() is never undefined for query doc snapshots
+
+        getTakenArray(doc.id, timestamp).then(value => {
+          const newData = {
+            ...doc.data(),
+            id: doc.id,
+            taken: value
+          }
+
+          if(newData.startTimestamp <= timestamp){
+            //setEvents(old => [...old, newData]);
+            temp.push(newData);
+            sortArray(temp);
+            
+          }
+          
+        }).then(() => {
+          setIsLoading(false);
+        })
+        
+    });
