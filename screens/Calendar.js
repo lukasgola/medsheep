@@ -58,6 +58,8 @@ export default function MainCalendar() {
 
   const [ item, setItem ] = useState();
 
+  const [takenAmount, setTakenAmount] = useState(0);
+
 
   const ref = useRef(null);
   //const [ index, setIndex ] = useState(0);
@@ -83,7 +85,8 @@ export default function MainCalendar() {
   }
 
   const getDayEvents = async (timestamp) => {
-    setEvents([])
+    setEvents([]);
+    setTakenAmount(0);
     const q = query(collection(db, "users", auth.currentUser.uid, "events"), where("endTimestamp", ">=", timestamp));
     const querySnapshot = await getDocs(q);
     const fetchedData = querySnapshot.docs.map( doc => ({id: doc.id, ...doc.data(), taken: false}));
@@ -101,7 +104,23 @@ export default function MainCalendar() {
     filtered.sort((a, b) => (a.timeHour < b.timeHour) || (a.timeMinutes < b.timeMinutes) ? -1 : (a.timeHour > b.timeHour) || (a.timeMinutes > b.timeMinutes) ? 1 : 0);
 
     setEvents(filtered);
-    setIsLoading(false);
+
+    let amount = 0;
+    setTimeout(() => {
+      for( let i = 0; i<filtered.length;i++){
+        
+        if(filtered[i].taken == false) {
+            scrollToIndex(i);
+            break;
+        }
+        else{
+          amount = amount + 1;
+        }
+        
+      }
+      setTakenAmount(amount);
+      setIsLoading(false);
+    }, 0)
     
   }
 
@@ -218,21 +237,6 @@ export default function MainCalendar() {
     )
   }
 
-
-  useEffect(() => {
-    setTimeout(() => {
-      for( let i = 0; i<events.length;i++){
-        if(events[i].taken == false) {
-          
-            scrollToIndex(i);
-            break;
-        }
-      }
-    }, 100)
-    
-  }, [isLoading])
-
-
   useEffect(() => {
     const date = new Date();
 
@@ -295,7 +299,7 @@ export default function MainCalendar() {
             color: colors.grey_d,
             padding: 15,
             
-          }}>1/6</Text>
+          }}>{takenAmount}/{events.length}</Text>
         </View>
           
         
