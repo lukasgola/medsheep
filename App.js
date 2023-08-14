@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { View, Image, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 
+
 //Providers
 import {ThemeProvider} from './theme/ThemeProvider';
 import { useTheme } from './theme/ThemeProvider';
@@ -57,6 +58,7 @@ export default function App() {
       </View>
     )
   }
+
 
   return (
     <NavigationContainer>
