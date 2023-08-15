@@ -9,9 +9,11 @@ import LottieView from 'lottie-react-native';
 
 import BottomSheet from '../components/BottomSheet';
 
+import { useIsFocused } from "@react-navigation/native";
+
 //Firebase
 import { auth, db, setTaken } from '../firebase/firebase-config';
-import { getDocs, collection, where, query, collectionGroup, orderBy, loadBundle } from "firebase/firestore";
+import { getDocs, collection, where, query } from "firebase/firestore";
 
 
 const months = [
@@ -46,6 +48,8 @@ export default function MainCalendar() {
 
   const {colors} = useTheme();
 
+  const isFocused = useIsFocused();
+
 
   const [ selected, setSelected ] = useState();
   const [ day, setDay ] = useState();
@@ -62,7 +66,6 @@ export default function MainCalendar() {
 
 
   const ref = useRef(null);
-  //const [ index, setIndex ] = useState(0);
 
   const getTakenArray = async (id, timestamp) => {
     let takenItem = 0;
@@ -101,15 +104,15 @@ export default function MainCalendar() {
       updatedArray[index].taken = value;
     }
 
-    filtered.sort((a, b) => (a.timeHour < b.timeHour) || (a.timeMinutes < b.timeMinutes) ? -1 : (a.timeHour > b.timeHour) || (a.timeMinutes > b.timeMinutes) ? 1 : 0);
+    filtered.sort((a, b) => (a.timeHour < b.timeHour) ? -1 : (a.timeHour > b.timeHour) ? 1 : ((a.timeHour == b.timeHour) && (a.timeMinutes < b.timeMinutes) ? -1 : 0));
 
     setEvents(filtered);
 
     let amount = 0;
     setTimeout(() => {
-      for( let i = 0; i<filtered.length;i++){
+      for( let i = 0; i<events.length;i++){
         
-        if(filtered[i].taken == false) {
+        if(events[i].taken == false) {
             scrollToIndex(i);
             break;
         }
@@ -121,8 +124,23 @@ export default function MainCalendar() {
       setTakenAmount(amount);
       setIsLoading(false);
     }, 0)
+
+    
     
   }
+
+  const updateItemValue = (itemId, newValue) => {
+    const updatedItems = events.map(item => {
+      if (item.id === itemId) {
+        // Update the value of the specific object
+        return { ...item, taken: newValue };
+      }
+      return item;
+    });
+  
+    // Update the state with the modified array
+    setEvents(updatedItems);
+  };
 
   const scrollToIndex = (index) => {
     if (ref.current) {
@@ -143,8 +161,9 @@ export default function MainCalendar() {
   }
 
   const confirmTake = () => {
+    updateItemValue(item.id, true);
     setTaken(item.id, day.timestamp);
-    getDayEvents(day.timestamp);
+    setTakenAmount(takenAmount + 1);
   }
 
   const Event = ({item}) => {
@@ -253,7 +272,7 @@ export default function MainCalendar() {
     setDay(actDay);
     setSelected(actDay.dateString);
     getDayEvents(actDay.timestamp);
-  }, [])
+  }, [isFocused])
 
   return (
     <SafeAreaView style={{

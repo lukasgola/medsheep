@@ -38,7 +38,7 @@ export default function HomeStack({navigation}) {
         options={{
           headerRight: () => (
             <TouchableOpacity
-              onPress={() => navigation.navigate('AddToCalendar')}
+              onPress={() => navigation.navigate('Nowy lek')}
               title="Info"
               color="#fff"
             >
@@ -50,7 +50,7 @@ export default function HomeStack({navigation}) {
       <Stack.Screen name="Lekarz" component={Doctor} />
       <Stack.Screen name="Szukaj" component={Search} />
       <Stack.Screen name="Wyniki" component={Results} />
-      <Stack.Screen name="AddToCalendar" component={AddToCalendar} />
+      <Stack.Screen name="Nowy lek" component={AddToCalendar} />
     </Stack.Navigator>
   );
 }
