@@ -3,6 +3,11 @@ import { Text, View, SafeAreaView, FlatList, TouchableOpacity, Image } from 'rea
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
+import 'react-native-reanimated'
+import 'react-native-gesture-handler'
+
+import { MotiView } from 'moti'
+
 
 import { useTheme } from '../theme/ThemeProvider';
 import { useBasket } from '../providers/BasketProvider';
@@ -421,22 +426,33 @@ export default function Medicines({navigation}) {
 
   const CatItem = ({item}) => {
     return(
-      <TouchableOpacity style={{
-        height: 40,
-        paddingHorizontal: 20,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: item.id == catSelected ? colors.primary : colors.background,
-        borderRadius: 10
-      }}
+      <TouchableOpacity 
         onPress={() => setCatSelected(item.id)}
+        style={{
+          backgroundColor: 'red'
+        }}
       >
-        <Text style={{
-          fontSize: 14,
-          fontWeight: item.id == catSelected ? 'bold' : 'regular',
-          color: item.id == catSelected ? colors.background : colors.grey_d
-        }}>{item.category}</Text>
+        <MotiView 
+          from={{ opacity: 0.5 }}
+          animate={{ opacity: 1 }}
+          transition={{ type: 'timing' }}
+        style={{
+          height: 40,
+          paddingHorizontal: 20,
+          justifyContent: 'center',
+          alignItems: 'center',
+          borderRadius: 10,
+          backgroundColor: item.id === catSelected ? colors.primary : 'white'
+        }}
+        >
+          <Text style={{
+            fontSize: 14,
+            fontWeight: 'bold',
+            color: item.id == catSelected ? colors.background : colors.grey_d
+          }}>{item.category}</Text>
+        </MotiView>
       </TouchableOpacity>
+      
     )
   }
 
