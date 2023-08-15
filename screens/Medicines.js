@@ -1,12 +1,11 @@
+import 'react-native-reanimated'
+import 'react-native-gesture-handler'
 import { useLayoutEffect, useState } from 'react';
 import { Text, View, SafeAreaView, FlatList, TouchableOpacity, Image } from 'react-native';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import 'react-native-reanimated'
-import 'react-native-gesture-handler'
-
-import { MotiView } from 'moti'
+import { MotiView } from 'moti';
 
 
 import { useTheme } from '../theme/ThemeProvider';
@@ -428,22 +427,22 @@ export default function Medicines({navigation}) {
     return(
       <TouchableOpacity 
         onPress={() => setCatSelected(item.id)}
-        style={{
-          backgroundColor: 'red'
-        }}
       >
-        <MotiView 
-          from={{ opacity: 0.5 }}
-          animate={{ opacity: 1 }}
-          transition={{ type: 'timing' }}
-        style={{
-          height: 40,
-          paddingHorizontal: 20,
-          justifyContent: 'center',
-          alignItems: 'center',
-          borderRadius: 10,
-          backgroundColor: item.id === catSelected ? colors.primary : 'white'
-        }}
+        <MotiView
+          //from={{ opacity: 0}}
+          animate={{
+            opacity: item.id == catSelected ? 1 : 0.5,
+            //backgroundColor: item.id === catSelected ? colors.primary : 'white'
+          }}
+          //transition={{ type: 'spring', duration: 500 }}
+          style={{
+            height: 40,
+            paddingHorizontal: 20,
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderRadius: 10,
+            backgroundColor: item.id === catSelected ? colors.primary : 'white'
+          }}
         >
           <Text style={{
             fontSize: 14,
@@ -464,6 +463,16 @@ export default function Medicines({navigation}) {
         justifyContent: 'center',
       }}
     >
+      <TouchableOpacity
+        onPress={() => setCatSelected(3)}
+        style={{
+          backgroundColor: 'green',
+          width: 100,
+          height: 100
+        }}
+      >
+
+      </TouchableOpacity>
       <BottomSheet 
         visible={modalVisible} 
         setModalVisible={setModalVisible}
@@ -491,12 +500,8 @@ export default function Medicines({navigation}) {
         </View>
         
       </BottomSheet>
+      
       <FlatList
-        data={filteredData}
-        renderItem={({item}) => <MedItem item={item} />}
-        keyExtractor={item => item.id}
-        ListHeaderComponent={
-          <FlatList
             data={CATDATA}
             renderItem={({item}) => <CatItem item={item} />}
             keyExtractor={item => item.id}
@@ -514,8 +519,7 @@ export default function Medicines({navigation}) {
               paddingHorizontal: 20
             }}
           />
-        }
-      />
+
     </SafeAreaView>
   );
 }
