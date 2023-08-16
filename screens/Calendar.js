@@ -62,7 +62,7 @@ export default function MainCalendar() {
 
   const [ item, setItem ] = useState();
 
-  const [takenAmount, setTakenAmount] = useState(0);
+  const [ takenAmount, setTakenAmount ] = useState(0);
 
 
   const ref = useRef(null);
@@ -88,8 +88,6 @@ export default function MainCalendar() {
   }
 
   const getDayEvents = async (timestamp) => {
-    setEvents([]);
-    setTakenAmount(0);
     const q = query(collection(db, "users", auth.currentUser.uid, "events"), where("endTimestamp", ">=", timestamp));
     const querySnapshot = await getDocs(q);
     const fetchedData = querySnapshot.docs.map( doc => ({id: doc.id, ...doc.data(), taken: false}));
