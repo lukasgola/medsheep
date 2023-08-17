@@ -1,15 +1,21 @@
 import { useState, useEffect, useRef } from 'react';
-import { SafeAreaView, StyleSheet, Text, View, Dimensions, TouchableOpacity, FlatList, ActivityIndicator, Animated, Alert } from 'react-native';
+import { SafeAreaView, Text, View, Dimensions, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native';
 
-import { Calendar, LocaleConfig,} from 'react-native-calendars';
-
-import { useTheme } from '../theme/ThemeProvider';
-
+//Lottie
 import LottieView from 'lottie-react-native';
 
+//Calendars
+import { Calendar, LocaleConfig,} from 'react-native-calendars';
+
+//Providers
+import { useTheme } from '../theme/ThemeProvider';
+
+//Hooks
+import { useIsFocused } from "@react-navigation/native";
+
+//Components
 import BottomSheet from '../components/BottomSheet';
 
-import { useIsFocused } from "@react-navigation/native";
 
 //Firebase
 import { auth, db, setTaken } from '../firebase/firebase-config';
@@ -45,25 +51,17 @@ LocaleConfig.defaultLocale = 'pl';
 export default function MainCalendar() {
 
   const width = Dimensions.get('screen').width;
-
   const {colors} = useTheme();
-
   const isFocused = useIsFocused();
-
 
   const [ selected, setSelected ] = useState();
   const [ day, setDay ] = useState();
-
-  const [ modalVisible, setModalVisible ] = useState(false);
-
-  const [events, setEvents] = useState([]);
-
-  const [isLoading, setIsLoading] = useState(true);
-
+  const [ events, setEvents ] = useState([]);
+  const [ isLoading, setIsLoading ] = useState(true);
   const [ item, setItem ] = useState();
-
   const [ takenAmount, setTakenAmount ] = useState(0);
 
+  const [ modalVisible, setModalVisible ] = useState(false);
 
   const ref = useRef(null);
 
@@ -84,16 +82,13 @@ export default function MainCalendar() {
     });
 
     return takenItem;
-
   }
 
   const getDayEvents = async (timestamp) => {
     const q = query(collection(db, "users", auth.currentUser.uid, "events"), where("endTimestamp", ">=", timestamp));
     const querySnapshot = await getDocs(q);
     const fetchedData = querySnapshot.docs.map( doc => ({id: doc.id, ...doc.data(), taken: false}));
-
     const filtered = fetchedData.filter((item) => item.startTimestamp <= timestamp);
-
     const updatedArray = [...filtered];
   
     for (let index = 0; index < updatedArray.length; index++) {
@@ -107,24 +102,18 @@ export default function MainCalendar() {
     setEvents(filtered);
 
     let amount = 0;
-    setTimeout(() => {
-      for( let i = 0; i<events.length;i++){
-        
-        if(events[i].taken == false) {
-            scrollToIndex(i);
-            break;
-        }
-        else{
-          amount = amount + 1;
-        }
-        
+    for( let i = 0; i<filtered.length;i++){
+      if(filtered[i].taken == false) {
+          scrollToIndex(i);
+          break;
       }
-      setTakenAmount(amount);
-      setIsLoading(false);
-    }, 0)
-
-    
-    
+      else{
+        amount = amount + 1;
+        console.log(amount)
+      }
+    }
+    setTakenAmount(amount);
+    setIsLoading(false);
   }
 
   const updateItemValue = (itemId, newValue) => {
@@ -135,7 +124,6 @@ export default function MainCalendar() {
       }
       return item;
     });
-  
     // Update the state with the modified array
     setEvents(updatedItems);
   };
