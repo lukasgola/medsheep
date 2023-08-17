@@ -42,7 +42,7 @@ export default function HomeStack({navigation}) {
               title="Info"
               color="#fff"
             >
-              <Ionicons name={'add-outline'} size={32} color={colors.primary} style={{marginTop: 4}} />
+              <Ionicons name={'add-outline'} size={28} color={colors.primary} style={{marginTop: 4}} />
             </TouchableOpacity>
           )
         }}

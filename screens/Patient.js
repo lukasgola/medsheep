@@ -176,27 +176,6 @@ export default function Patient({navigation}) {
             }}>Zobacz więcej...</Text>
           </TouchableOpacity>
         </View>
-
-
-        <View style={[styles.block,{
-          backgroundColor: colors.background,
-        }]}>
-          <Text style={{
-              fontSize: 20,
-              color: colors.text,
-              fontWeight: 'bold',
-              marginTop: 15
-          }}>Ostatnie zamówienia</Text>
-            <OrderItem />
-            <OrderItem />
-          <TouchableOpacity style={styles.viewMore}>
-            <Text style={{
-              fontSize: 14,
-              color: colors.text,
-              fontWeight: 'bold',
-            }}>Zobacz więcej...</Text>
-          </TouchableOpacity>
-        </View>
         <View style={[styles.block, { marginBottom: 20}]}>
           <TouchableOpacity
             onPress={() => auth.signOut().then(() => console.log('User signed out!'))}
