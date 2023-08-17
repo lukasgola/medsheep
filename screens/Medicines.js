@@ -423,38 +423,6 @@ export default function Medicines({navigation}) {
     )
   }
 
-  const CatItem = ({item}) => {
-    return(
-      <TouchableOpacity 
-        onPress={() => setCatSelected(item.id)}
-      >
-        <MotiView
-          //from={{ opacity: 0}}
-          animate={{
-            opacity: item.id == catSelected ? 1 : 0.5,
-            //backgroundColor: item.id === catSelected ? colors.primary : 'white'
-          }}
-          //transition={{ type: 'spring', duration: 500 }}
-          style={{
-            height: 40,
-            paddingHorizontal: 20,
-            justifyContent: 'center',
-            alignItems: 'center',
-            borderRadius: 10,
-            backgroundColor: item.id === catSelected ? colors.primary : 'white'
-          }}
-        >
-          <Text style={{
-            fontSize: 14,
-            fontWeight: 'bold',
-            color: item.id == catSelected ? colors.background : colors.grey_d
-          }}>{item.category}</Text>
-        </MotiView>
-      </TouchableOpacity>
-      
-    )
-  }
-
   return (
     <SafeAreaView 
       style={{
@@ -463,16 +431,6 @@ export default function Medicines({navigation}) {
         justifyContent: 'center',
       }}
     >
-      <TouchableOpacity
-        onPress={() => setCatSelected(3)}
-        style={{
-          backgroundColor: 'green',
-          width: 100,
-          height: 100
-        }}
-      >
-
-      </TouchableOpacity>
       <BottomSheet 
         visible={modalVisible} 
         setModalVisible={setModalVisible}
@@ -502,23 +460,13 @@ export default function Medicines({navigation}) {
       </BottomSheet>
       
       <FlatList
-            data={CATDATA}
-            renderItem={({item}) => <CatItem item={item} />}
-            keyExtractor={item => item.id}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            ItemSeparatorComponent={
-              <View style={{
-                  width: 20,
-              }}>
-
-              </View>
-            }
-            style={{
-              marginTop: 20,
-              paddingHorizontal: 20
-            }}
-          />
+        data={filteredData}
+        renderItem={({item}) => <MedItem item={item} />}
+        keyExtractor={item => item.id}
+        style={{
+          width: '100%'
+        }}
+      />
 
     </SafeAreaView>
   );
