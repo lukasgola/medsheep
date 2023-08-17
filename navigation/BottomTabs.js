@@ -51,7 +51,9 @@ export default function BottomTabs() {
           position: 'absolute',
           top: 0,
           backgroundColor: colors.primary
-        }
+        },
+        swipeEnabled: false
+        
       }}
       screenListeners={{
         focus: () => {
