@@ -121,7 +121,6 @@ export async function addToBasket(product, number, price){
         startTimestamp: event.startTimestamp,
         endTimestamp: event.endTimestamp,
       }).then(function(docRef) {
-        console.log("Document written with ID: ", event.startTimestamp);
         setDates(docRef.id, event)
     })
     } catch (e) {
@@ -156,7 +155,6 @@ export async function addToBasket(product, number, price){
               ...doc.data(),
               id: doc.id,
           }
-          console.log(data);
 
           updateDoc(doc.ref, {
             taken: true

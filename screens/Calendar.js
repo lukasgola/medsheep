@@ -70,17 +70,12 @@ export default function MainCalendar() {
     const q2 = query(collection(db, "users", auth.currentUser.uid, "events", id, "calendar" ), where("id", "==", timestamp));
     const querySnapshot2 = await getDocs(q2);
     querySnapshot2.forEach((doc) => {
-        
-        // doc.data() is never undefined for query doc snapshots
         const data = {
           ...doc.data(),
           id: doc.id
         }
-
       takenItem = data.taken;
-        
     });
-
     return takenItem;
   }
 
@@ -109,7 +104,6 @@ export default function MainCalendar() {
       }
       else{
         amount = amount + 1;
-        console.log(amount)
       }
     }
     setTakenAmount(amount);
@@ -119,12 +113,10 @@ export default function MainCalendar() {
   const updateItemValue = (itemId, newValue) => {
     const updatedItems = events.map(item => {
       if (item.id === itemId) {
-        // Update the value of the specific object
         return { ...item, taken: newValue };
       }
       return item;
     });
-    // Update the state with the modified array
     setEvents(updatedItems);
   };
 
