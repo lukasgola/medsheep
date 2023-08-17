@@ -13,10 +13,10 @@ const CartItem = (props) => {
         height: 50,
         flexDirection: 'row',
         alignItems: 'center',
-        paddingHorizontal: '5%',
+        justifyContent: 'space-between',
       }}>
         <Image 
-          source={require('../assets/med/apap_noc.jpg')} 
+          source={props.item.img} 
           resizeMode='contain' 
           style={{
             width: 50,

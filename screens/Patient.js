@@ -20,7 +20,7 @@ export default function Patient({navigation}) {
   const { currentUser } = useCurrentUser();
   const { basket } = useBasket();
 
-  const [ cumulation, setCumulation] = useState(0);
+  const [ cumulation, setCumulation ] = useState(0);
 
 
   useEffect(() =>{
