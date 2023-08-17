@@ -5,12 +5,11 @@ import { Text, View, SafeAreaView, FlatList, TouchableOpacity, Image } from 'rea
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import { MotiView } from 'moti';
-
-
+//Providers
 import { useTheme } from '../theme/ThemeProvider';
 import { useBasket } from '../providers/BasketProvider';
 
+//Components
 import BottomSheet from '../components/BottomSheet';
 import Amounter from '../components/Amounter';
 import CartItem from '../components/CartItem';
@@ -275,27 +274,7 @@ export default function Medicines({navigation}) {
     }
   ]
 
-  const CATDATA = [
-    {
-      id: 1,
-      category: 'Ból głowy'
-    },
-    {
-      id: 2,
-      category: 'Gorączka'
-    },
-    {
-      id: 3,
-      category: 'Katar'
-    },
-    {
-      id: 4,
-      category: 'Przeziębienie'
-    },
-  ]
-
   const [filteredData, setFilteredData] = useState(DATA);
-  const [catSelected, setCatSelected] = useState(1);
   const [selectedItem, setSelectedItem] = useState({name: 'None'});
 
   const [modalVisible, setModalVisible] = useState(false);
