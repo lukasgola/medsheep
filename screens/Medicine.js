@@ -4,6 +4,7 @@ import { Text, View, Image, TouchableOpacity, Dimensions, FlatList, Modal, TextI
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import {useTheme} from '../theme/ThemeProvider';
+import { useBasket } from '../providers/BasketProvider';
 
 import BottomSheet from '../components/BottomSheet';
 import Amounter from '../components/Amounter';
@@ -16,6 +17,7 @@ export default function Medicine({route, navigation}) {
 
     const {item} = route.params;
     const {colors} = useTheme();
+    const {basket, setBasket} = useBasket();
 
     const [liked, setLiked] = useState(false)
     const [modalVisible, setModalVisible] = useState(false)
@@ -36,6 +38,7 @@ export default function Medicine({route, navigation}) {
     }
 
     const onAddToBasket = () => {
+        setBasket({product: item, number: number, price: price});
         addToBasket(item, number, price);
     }
 

@@ -330,7 +330,7 @@ export default function Medicines({navigation}) {
   }
 
   const onAddToBasket = () => {
-    setBasket({product: selectedItem, number: number,price: price});
+    setBasket({product: selectedItem, number: number, price: price});
     addToBasket(selectedItem, number, price);
   }
 
