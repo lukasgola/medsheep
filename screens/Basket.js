@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, FlatList, TouchableOpacity } from 'react-native'
+import { View, Text, FlatList, TouchableOpacity, Animated, StyleSheet, Button } from 'react-native'
 
 import { useBasket } from '../providers/BasketProvider';
 import { useTheme } from '../theme/ThemeProvider';
@@ -8,6 +8,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import CartItem from '../components/CartItem';
 import BottomSheet from '../components/BottomSheet';
+
+import Swipeable from 'react-native-gesture-handler/Swipeable';
 
 export default function Basket({navigation}) {
 
@@ -40,8 +42,46 @@ export default function Basket({navigation}) {
     setItemsNumber(basket.length);
   },[basket])
 
-  const BasketItem = ({item}) => {
+
+  let row = [];
+  let prevOpenedRow;
+
+  const BasketItem = ({item, index}, onClick) => {
+
+    const closeRow = (index) => {
+      console.log('closerow');
+      if (prevOpenedRow && prevOpenedRow !== row[index]) {
+        prevOpenedRow.close();
+      }
+      prevOpenedRow = row[index];
+    };
+
+    const renderRightActions = (progress, dragX, onClick) => {
+      return (
+        <TouchableOpacity
+          style={{
+            //alignItems: 'center',
+            justifyContent: 'center',
+            width: 100,
+            height: 70,
+            marginTop: 10,
+            paddingLeft: 30
+          }}
+        >
+          <Ionicons name={'trash-outline'} size={25} color={colors.primary} />
+        </TouchableOpacity>
+      );
+    };
+    
     return(
+      <Swipeable
+        renderRightActions={(progress, dragX) =>
+          renderRightActions(progress, dragX, onClick)
+        }
+        onSwipeableWillOpen={() => closeRow(index)}
+        ref={(ref) => (row[index] = ref)}
+        rightOpenValue={-100}
+      >
       <TouchableOpacity 
         onLongPress={() => onClickItem(item) }
         style={{
@@ -66,10 +106,9 @@ export default function Basket({navigation}) {
       }}>
         <CartItem item={item.product} number={item.number} price={item.price} />
       </TouchableOpacity>
-    )
-    
+      </Swipeable>
+    ) 
   }
-
 
   return (
     <View>
@@ -117,7 +156,7 @@ export default function Basket({navigation}) {
       </View>
       <FlatList
         data={basket}
-        renderItem={({item}) => <BasketItem item={item} />}
+        renderItem={({item, index}) => <BasketItem item={item} index={index} />}
         keyExtractor={item => item.id}
         style={{
           width: '100%',
@@ -136,3 +175,46 @@ export default function Basket({navigation}) {
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    minHeight: 300,
+  },
+  row: {
+    flexDirection: 'row',
+    flex: 1,
+    alignItems: 'center',
+    paddingLeft: 5,
+    backgroundColor: '#efefef',
+    margin: 20,
+    minHeight: 50,
+  },
+  swipedRow: {
+    flexDirection: 'row',
+    flex: 1,
+    alignItems: 'center',
+    paddingLeft: 5,
+    backgroundColor: '#818181',
+    margin: 20,
+    minHeight: 50,
+  },
+  swipedConfirmationContainer: {
+    flex: 1,
+  },
+  deleteConfirmationText: {
+    color: '#fcfcfc',
+    fontWeight: 'bold',
+  },
+  deleteButton: {
+    backgroundColor: '#b60000',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    height: '100%',
+  },
+  deleteButtonText: {
+    color: '#fcfcfc',
+    fontWeight: 'bold',
+    padding: 3,
+  },
+});
