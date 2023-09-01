@@ -53,8 +53,7 @@ export default function Basket({navigation}) {
     let a = basket;
     a.splice(index, 1);
     setNewBasket([...a]);
-    console.log(item.id)
-    removeFromBasket(item.id)
+    removeFromBasket(item.id);
   };
 
   const BasketItem = ({item, index}) => {
