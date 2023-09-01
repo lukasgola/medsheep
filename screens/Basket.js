@@ -11,10 +11,13 @@ import BottomSheet from '../components/BottomSheet';
 
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 
+//Firebase
+import { addToBasket, removeFromBasket } from '../firebase/firebase-config';
+
 export default function Basket({navigation}) {
 
 
-  const { basket, setBasket } = useBasket();
+  const { basket, setBasket, setNewBasket } = useBasket();
   const { colors } = useTheme();
 
   const [ cumulation, setCumulation ] = useState(0);
@@ -46,19 +49,27 @@ export default function Basket({navigation}) {
   let row = [];
   let prevOpenedRow;
 
-  const BasketItem = ({item, index}, onClick) => {
+  const deleteItem = ({ item, index }) => {
+    let a = basket;
+    a.splice(index, 1);
+    setNewBasket([...a]);
+    console.log(item.id)
+    removeFromBasket(item.id)
+  };
+
+  const BasketItem = ({item, index}) => {
 
     const closeRow = (index) => {
-      console.log('closerow');
       if (prevOpenedRow && prevOpenedRow !== row[index]) {
         prevOpenedRow.close();
       }
       prevOpenedRow = row[index];
     };
 
-    const renderRightActions = (progress, dragX, onClick) => {
+    const renderRightActions = (progress, dragX) => {
       return (
         <TouchableOpacity
+          onPress={() => deleteItem({item, index})}
           style={{
             //alignItems: 'center',
             justifyContent: 'center',
@@ -76,7 +87,7 @@ export default function Basket({navigation}) {
     return(
       <Swipeable
         renderRightActions={(progress, dragX) =>
-          renderRightActions(progress, dragX, onClick)
+          renderRightActions(progress, dragX)
         }
         onSwipeableWillOpen={() => closeRow(index)}
         ref={(ref) => (row[index] = ref)}
@@ -156,7 +167,8 @@ export default function Basket({navigation}) {
       </View>
       <FlatList
         data={basket}
-        renderItem={({item, index}) => <BasketItem item={item} index={index} />}
+        //renderItem={({item, index}) => <BasketItem item={item} index={index} />}
+        renderItem={({item, index}) => BasketItem({item, index})}
         keyExtractor={item => item.id}
         style={{
           width: '100%',

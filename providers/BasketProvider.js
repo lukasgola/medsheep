@@ -36,7 +36,8 @@ export const BasketProvider = (props) => {
 
     const basketObject = {
         basket,
-        setBasket: (data) =>  setBasket([...basket, data])
+        setBasket: (data) =>  setBasket([...basket, data]),
+        setNewBasket: (data) => setBasket(data)
     }
 
   return (

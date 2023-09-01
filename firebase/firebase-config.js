@@ -6,7 +6,7 @@ import {
     signInWithEmailAndPassword
 } from "firebase/auth";
 
-import { getFirestore } from "firebase/firestore";
+import { deleteDoc, getFirestore } from "firebase/firestore";
 import { collection, setDoc, getDocs, addDoc, doc, updateDoc, query, where } from "firebase/firestore"; 
 
 // Your web app's Firebase configuration
@@ -96,6 +96,14 @@ export async function addToBasket(product, number, price){
         number: number,
         price: price
       });
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
+  }
+
+  export async function removeFromBasket(id){
+    try {
+      await deleteDoc(doc(db, `users/${auth.currentUser.uid}/basket/${id}`))
     } catch (e) {
       console.error("Error adding document: ", e);
     }
