@@ -6,6 +6,8 @@ import { useTheme } from '../theme/ThemeProvider';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
+import styles from '../styles/styles';
+
 import CartItem from '../components/CartItem';
 import BottomSheet from '../components/BottomSheet';
 
@@ -87,7 +89,6 @@ export default function Basket({navigation}) {
             justifyContent: 'center',
             width: 100,
             height: 70,
-            marginTop: 10,
             paddingLeft: 30
           }}
         >
@@ -104,6 +105,9 @@ export default function Basket({navigation}) {
         onSwipeableWillOpen={() => closeRow(index)}
         ref={(ref) => (row[index] = ref)}
         rightOpenValue={-100}
+        containerStyle={[styles.shadow, {
+          paddingBottom: 10
+        }]}
       >
       <TouchableOpacity 
         onLongPress={() => onClickItem(item) }
@@ -115,7 +119,6 @@ export default function Basket({navigation}) {
           alignItems: 'center',
           borderRadius: 10,
           marginLeft: '5%',
-          marginTop: 10,
           flexDirection: 'row',
           paddingHorizontal: '3%',
       }}>
@@ -176,7 +179,8 @@ export default function Basket({navigation}) {
         keyExtractor={item => item.id}
         style={{
           width: '100%',
-          height: '100%'
+          height: '100%',
+          paddingTop: 10,
         }}
       />
       <BottomSheet 
