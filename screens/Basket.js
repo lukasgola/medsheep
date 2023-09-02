@@ -10,8 +10,11 @@ import styles from '../styles/styles';
 
 import CartItem from '../components/CartItem';
 import BottomSheet from '../components/BottomSheet';
+import Amounter from '../components/Amounter';
 
 import Swipeable from 'react-native-gesture-handler/Swipeable';
+
+
 
 //Firebase
 import { addToBasket, removeFromBasket } from '../firebase/firebase-config';
@@ -28,15 +31,31 @@ export default function Basket({navigation}) {
   const [ modalVisible, setModalVisible ] = useState(false);
 
   const [ item, setItem ] = useState(null);
+  const [ number, setNumber ] = useState(null);
+  const [ price, setPrice ] = useState(null);
 
   const onConfirm = () => {
 
   }
 
   const onClickItem = (item) => {
-    setItem(item);
-    setModalVisible(true);
-    
+    setItem(item)
+    setNumber(item.number)
+    setPrice(item.price)
+    setModalVisible(true)
+  }
+
+  const goUp = (amount) => {
+    setNumber(amount)
+    setPrice((item.product.price*(number+1)).toFixed(2))
+  }
+
+  const goDown = (amount) => {
+      number == 0 ? console.log('You can not') : [setNumber(amount), setPrice((item.product.price*amount).toFixed(2))]
+  }
+
+  const onChangeText = (amount) => {
+      setPrice((item.product.price*(amount)).toFixed(2))
   }
 
   useEffect(() =>{
@@ -189,7 +208,31 @@ export default function Basket({navigation}) {
         text={'Zarządzaj lekiem'}
         onConfirm={onConfirm}
       >
-        {item ? <CartItem item={item.product} number={item.number} price={item.price} /> : <View></View> }
+        
+        {item ? 
+        <View style={{
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}>
+          <CartItem item={item.product} number={number} price={price} /> 
+          <View style={{
+            paddingTop: 20
+          }}>
+            <Amounter 
+                item={item} 
+                setModalVisible={setModalVisible} 
+                goUp={goUp}
+                goDown={goDown}
+                onChangeText={onChangeText}
+                number={item.number}
+            />
+          </View>
+          
+        </View>
+        :
+          <View></View> 
+        
+        }
             
         </BottomSheet>
     </View>

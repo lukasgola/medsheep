@@ -10,7 +10,7 @@ const Amounter = (props) => {
 
     const {colors} = useTheme();
 
-    const [number, setNumber] = useState(1)
+    const [number, setNumber] = useState(props.number ? props.number : 1)
 
     const goUp = () => {
         setNumber(number+1);
