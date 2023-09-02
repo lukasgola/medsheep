@@ -12,12 +12,14 @@ import CartItem from '../components/CartItem';
 
 //Firebase
 import { addToBasket } from '../firebase/firebase-config';
+import { addDoc, collection, query, where, updateDoc, getDocs } from 'firebase/firestore';
+import { auth, db } from '../firebase/firebase-config';
 
 export default function Medicine({route, navigation}) {
 
     const {item} = route.params;
     const {colors} = useTheme();
-    const {basket, setBasket} = useBasket();
+    const {basket, setBasket, setNewBasket} = useBasket();
 
     const [liked, setLiked] = useState(false)
     const [modalVisible, setModalVisible] = useState(false)
@@ -37,9 +39,58 @@ export default function Medicine({route, navigation}) {
         setPrice((item.price*(amount)).toFixed(2))
     }
 
-    const onAddToBasket = () => {
-        setBasket({product: item, number: number, price: price});
-        addToBasket(item, number, price);
+    const onAddToBasket = async () => {
+
+        const result = basket.filter((element) => element.product.name == item.name);
+        
+        if(result.length !== 0){
+            try {
+                const q = query(collection(db, "users", auth.currentUser.uid, "basket"), where("product", "==", item));
+                const querySnapshot = await getDocs(q);
+                querySnapshot.forEach((doc) => {
+                    // doc.data() is never undefined for query doc snapshots
+                    const data = {
+                        ...doc.data(),
+                        id: doc.id,
+                    }
+
+                    let tempBasket = [...basket];
+
+                    for(let i = 0; i < tempBasket.length; i++){
+                        if(tempBasket[i].id == doc.id){
+                            tempBasket[i].number = data.number + number;
+                            tempBasket[i].price = data.price + price;
+                        }
+                    }
+
+                    setNewBasket(tempBasket);
+
+          
+                    updateDoc(doc.ref, {
+                      number: data.number + number,
+                      price: data.price + price
+                    });
+                    
+                });
+          
+              } catch (e) {
+                console.error("Error updating document: ", e);
+              }
+        }
+        else{
+            try {
+                await addDoc(collection(db, `users/${auth.currentUser.uid}/basket`), {
+                    product: item,
+                    number: number,
+                    price: price
+                }).then(function(docRef) {
+                    setBasket({id: docRef.id, product: item, number: number, price: price})
+                });
+                } catch (e) {
+                console.error("Error adding document: ", e);
+            }
+        }
+        
     }
 
 
