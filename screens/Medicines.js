@@ -4,6 +4,7 @@ import { useLayoutEffect, useState } from 'react';
 import { Text, View, SafeAreaView, FlatList, TouchableOpacity, Image } from 'react-native';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import styles from '../styles/styles';
 
 //Providers
 import { useTheme } from '../theme/ThemeProvider';
@@ -338,7 +339,7 @@ export default function Medicines({navigation}) {
     return(
       <TouchableOpacity 
       onPress={() => navigation.navigate('Lek', {item: item})}
-      style={{
+      style={[styles.shadow,{
         backgroundColor: colors.background,
         width: '90%',
         height: 100,
@@ -346,15 +347,7 @@ export default function Medicines({navigation}) {
         borderRadius: 20,
         marginTop: 20,
         flexDirection: 'row',
-        shadowColor: "#000",
-        shadowOffset: {
-          width: 0,
-          height: 2,
-        },
-        shadowOpacity: 0.13,
-        shadowRadius: 2.62,
-        elevation: 4,
-      }}>
+      }]}>
         <Image style={{
           width: 70,
           height: 70,

@@ -118,14 +118,6 @@ export default function Basket({navigation}) {
           marginTop: 10,
           flexDirection: 'row',
           paddingHorizontal: '3%',
-          shadowColor: "#000",
-          shadowOffset: {
-            width: 0,
-            height: 2,
-          },
-          shadowOpacity: 0.13,
-          shadowRadius: 2.62,
-          elevation: 4,
       }}>
         <CartItem item={item.product} number={item.number} price={item.price} />
       </TouchableOpacity>
@@ -199,46 +191,3 @@ export default function Basket({navigation}) {
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    minHeight: 300,
-  },
-  row: {
-    flexDirection: 'row',
-    flex: 1,
-    alignItems: 'center',
-    paddingLeft: 5,
-    backgroundColor: '#efefef',
-    margin: 20,
-    minHeight: 50,
-  },
-  swipedRow: {
-    flexDirection: 'row',
-    flex: 1,
-    alignItems: 'center',
-    paddingLeft: 5,
-    backgroundColor: '#818181',
-    margin: 20,
-    minHeight: 50,
-  },
-  swipedConfirmationContainer: {
-    flex: 1,
-  },
-  deleteConfirmationText: {
-    color: '#fcfcfc',
-    fontWeight: 'bold',
-  },
-  deleteButton: {
-    backgroundColor: '#b60000',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    height: '100%',
-  },
-  deleteButtonText: {
-    color: '#fcfcfc',
-    fontWeight: 'bold',
-    padding: 3,
-  },
-});

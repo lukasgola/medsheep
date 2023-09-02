@@ -8,6 +8,7 @@ import { useBasket } from '../providers/BasketProvider';
 import CartItem from '../components/CartItem';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import styles from '../styles/styles';
 
 
 //Firebase
@@ -70,7 +71,7 @@ export default function Patient({navigation}) {
     }}>
         <TouchableOpacity
           onPress={() => navigation.navigate('Dane osobiste')}
-          style={[styles.block,{
+          style={[styles2.block,{
             backgroundColor: colors.background,
             flexDirection: 'row',
             padding: 15,
@@ -133,7 +134,7 @@ export default function Patient({navigation}) {
           </View>
         </TouchableOpacity>
         
-        <View style={[styles.block,{
+        <View style={[styles2.block,{
           backgroundColor: colors.background,
         }]}>
           <Text style={{
@@ -168,7 +169,7 @@ export default function Patient({navigation}) {
             }}>{cumulation}</Text>
           </View>
 
-          <TouchableOpacity style={styles.viewMore}>
+          <TouchableOpacity style={styles2.viewMore}>
             <Text style={{
               fontSize: 14,
               color: colors.text,
@@ -176,7 +177,7 @@ export default function Patient({navigation}) {
             }}>Zobacz więcej...</Text>
           </TouchableOpacity>
         </View>
-        <View style={[styles.block, { marginBottom: 20}]}>
+        <View style={[styles2.block, { marginBottom: 20}]}>
           <TouchableOpacity
             onPress={() => auth.signOut().then(() => console.log('User signed out!'))}
           >
@@ -188,20 +189,13 @@ export default function Patient({navigation}) {
 }
 
 
-const styles = StyleSheet.create({
+const styles2 = StyleSheet.create({
   block: {
+    ...styles.shadow,
     width: '100%',
     borderRadius: 20,
     marginTop: 20,
     paddingHorizontal: 20,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.13,
-    shadowRadius: 2.62,
-    elevation: 4,
   },
   viewMore:{
     width: '50%',

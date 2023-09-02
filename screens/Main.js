@@ -3,6 +3,8 @@ import { Text, View, SafeAreaView, FlatList, Image, TouchableOpacity, Dimensions
 import {useTheme} from '../theme/ThemeProvider';
 import { useCurrentUser } from '../providers/CurrentUserProvider';
 
+import styles from '../styles/styles';
+
 export default function Main({navigation}) {
 
   const windowWidth = Dimensions.get('screen').width;
@@ -44,7 +46,7 @@ export default function Main({navigation}) {
   const Item = ({item}) => {
     return(
       <TouchableOpacity 
-        style={{
+        style={[styles.shadow, {
           width: boxWidth,
           height: windowHeight/3.1,
           backgroundColor: colors.background,
@@ -53,15 +55,7 @@ export default function Main({navigation}) {
           justifyContent: 'center',
           alignItems: 'center',
           marginHorizontal: boxWidth*0.05,
-          shadowColor: "#000",
-          shadowOffset: {
-            width: 0,
-            height: 2,
-          },
-          shadowOpacity: 0.13,
-          shadowRadius: 2.62,
-          elevation: 4,
-        }}
+        }]}
         onPress={() => navigation.navigate(item.navigation)}
       
       >
