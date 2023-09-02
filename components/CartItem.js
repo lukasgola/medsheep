@@ -37,18 +37,25 @@ const CartItem = (props) => {
             color: colors.text
           }}>{props.item ? props.item.amount : 'None'} tab.</Text>
         </View>
-        <Text style={{
+        <View style={{
+          width: '55%',
+          paddingLeft: '15%',
+          justifyContent:'space-between',
+          flexDirection: 'row',
+        }}>
+          <Text style={{
+              fontSize: 14,
+              color: colors.text,
+          }}>x{props.number ? props.number : 0 }</Text>
+          <Text style={{
             fontSize: 14,
             color: colors.text,
-            paddingLeft: '15%',
-            width: '20%',
-            textAlign: 'center',
-        }}>x{props.number ? props.number : 0 }</Text>
-        <Text style={{
-            fontSize: 14,
-            color: colors.text,
-            marginLeft: '18%'
+            marginLeft: '10%',
+
         }}>{props.price ? props.price : 0} zł</Text>
+        </View>
+        
+        
       </View>
     )
   }
