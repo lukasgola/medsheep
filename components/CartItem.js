@@ -13,7 +13,7 @@ const CartItem = (props) => {
         height: 50,
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between',
+        //justifyContent: 'space-between',
       }}>
         <Image 
           source={props.item.img} 
@@ -30,7 +30,7 @@ const CartItem = (props) => {
           <Text style={{
             fontSize: 14,
             color: colors.text,
-            fontWeight: 'bold'
+            fontWeight: 'bold',
           }}>{props.item ? props.item.name : 'None'}</Text>
           <Text style={{
             fontSize: 14,
@@ -40,7 +40,9 @@ const CartItem = (props) => {
         <Text style={{
             fontSize: 14,
             color: colors.text,
-            marginLeft: '10%',
+            paddingLeft: '15%',
+            width: '20%',
+            textAlign: 'center',
         }}>x{props.number ? props.number : 0 }</Text>
         <Text style={{
             fontSize: 14,
