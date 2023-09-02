@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { SafeAreaView, Text, View, Dimensions, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native';
 
+import styles from '../styles/styles';
+
 //Lottie
 import LottieView from 'lottie-react-native';
 
@@ -149,7 +151,7 @@ export default function MainCalendar() {
     const animation = useRef(null);
 
     return(
-      <View style={{
+      <View style={[styles.shadow, {
         width: 0.9*width,
         height: 80,
         borderRadius: 15,
@@ -157,15 +159,7 @@ export default function MainCalendar() {
         backgroundColor: colors.background,
         marginBottom: 10,
         flexDirection: 'row',
-        shadowColor: "#000",
-        shadowOffset: {
-          width: 0,
-          height: 2,
-        },
-        shadowOpacity: 0.13,
-        shadowRadius: 2.62,
-        elevation: 4,
-      }}>
+      }]}>
         <View style={{
           width: 60,
           height: 60,
