@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, FlatList, TouchableOpacity, Animated, StyleSheet, Button } from 'react-native'
+import { View, Text, FlatList, TouchableOpacity, Animated, StyleSheet, LayoutAnimation } from 'react-native'
 
 import { useBasket } from '../providers/BasketProvider';
 import { useTheme } from '../theme/ThemeProvider';
@@ -45,6 +45,18 @@ export default function Basket({navigation}) {
     setItemsNumber(basket.length);
   },[basket])
 
+  const layoutAnimConfig = {
+    duration: 300,
+    update: {
+      type: LayoutAnimation.Types.easeInEaseOut, 
+    },
+    delete: {
+      duration: 100,
+      type: LayoutAnimation.Types.easeInEaseOut,
+      property: LayoutAnimation.Properties.opacity,
+    },
+  };
+
 
   let row = [];
   let prevOpenedRow;
@@ -54,6 +66,7 @@ export default function Basket({navigation}) {
     a.splice(index, 1);
     setNewBasket([...a]);
     removeFromBasket(item.id);
+    LayoutAnimation.configureNext(layoutAnimConfig)
   };
 
   const BasketItem = ({item, index}) => {
