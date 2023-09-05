@@ -4,21 +4,14 @@ import { View, Text, FlatList, TouchableOpacity, Animated, StyleSheet, LayoutAni
 import { useBasket } from '../providers/BasketProvider';
 import { useTheme } from '../theme/ThemeProvider';
 
-import Ionicons from 'react-native-vector-icons/Ionicons';
-
-import styles from '../styles/styles';
-
 import CartItem from '../components/CartItem';
 import BottomSheet from '../components/BottomSheet';
 import Amounter from '../components/Amounter';
-
-import Swipeable from 'react-native-gesture-handler/Swipeable';
-
-
+import Swipe from '../components/Swipe';
 
 //Firebase
 import { query, collection, getDocs, where, updateDoc  } from 'firebase/firestore';
-import { addToBasket, removeFromBasket, db, auth } from '../firebase/firebase-config';
+import { removeFromBasket, db, auth } from '../firebase/firebase-config';
 
 export default function Basket({navigation}) {
 
@@ -37,16 +30,6 @@ export default function Basket({navigation}) {
   const [ index, setIndex ] = useState(null);
 
   const [ test, setTest ] = useState(null);
-  
-
-  const onClickItem = ({item, index}) => {
-    setItem(item)
-    setNumber(item.number)
-    setPrice(item.price)
-    setIndex(index)
-    setTest(prevOpenedRow)
-    setModalVisible(true)
-  }
 
   const goUp = (amount) => {
     setNumber(amount)
@@ -81,9 +64,14 @@ export default function Basket({navigation}) {
     },
   };
 
-
-  let row = [];
-  let prevOpenedRow;
+  const onSettingsClick = ({item, index}) => {
+    setItem(item)
+    setNumber(item.number)
+    setPrice(item.price)
+    setIndex(index)
+    setTest(prevOpenedRow)
+    setModalVisible(true)
+  }
 
   const deleteItem = ({ item, index }) => {
     let a = basket;
@@ -92,6 +80,9 @@ export default function Basket({navigation}) {
     removeFromBasket(item.id);
     LayoutAnimation.configureNext(layoutAnimConfig)
   };
+
+  let row = [];
+  let prevOpenedRow;
 
   const closeRow = (index) => {
     if (prevOpenedRow && prevOpenedRow !== row[index]) {
@@ -136,49 +127,14 @@ export default function Basket({navigation}) {
   }
 
   const BasketItem = ({item, index}) => {
-
-    const renderRightActions = (progress, dragX) => {
-      return (
-        <View style={{
-          flexDirection: 'row',
-          width: 100
-        }}>
-          <TouchableOpacity
-          onPress={() => onClickItem({item, index})}
-          style={{
-            justifyContent: 'center',
-            width: '50%',
-            height: 70,
-          }}
-        >
-          <Ionicons name={'settings-outline'} size={25} color={colors.grey_d} />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => deleteItem({item, index})}
-          style={{
-            justifyContent: 'center',
-            width: '50%',
-            height: 70,
-          }}
-        >
-          <Ionicons name={'trash-outline'} size={25} color={colors.primary} />
-        </TouchableOpacity>
-        </View>
-        
-      );
-    };
     
     return(
-      <Swipeable
-        renderRightActions={(progress, dragX) =>
-          renderRightActions(progress, dragX)
-        }
-        onSwipeableWillOpen={() => closeRow(index)}
-        ref={(ref) => (row[index] = ref)}
-        rightOpenValue={-100}
-        containerStyle={[styles.shadow, {
-          paddingBottom: 10
-        }]}
+      <Swipe
+        index={index}
+        settingsClick={() => onSettingsClick({item, index})}
+        trashClick={() => deleteItem({item, index})}
+        closeRow={() => closeRow(index)}
+        row={row}
       >
       <View 
         style={{
@@ -194,7 +150,7 @@ export default function Basket({navigation}) {
       }}>
         <CartItem item={item.product} number={item.number} price={item.price} />
       </View>
-      </Swipeable>
+      </Swipe>
     ) 
   }
 
@@ -244,7 +200,6 @@ export default function Basket({navigation}) {
       </View>
       <FlatList
         data={basket}
-        //renderItem={({item, index}) => <BasketItem item={item} index={index} />}
         renderItem={({item, index}) => BasketItem({item, index})}
         keyExtractor={item => item.id}
         style={{
