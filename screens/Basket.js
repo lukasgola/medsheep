@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { View, Text, FlatList, TouchableOpacity, Animated, StyleSheet, LayoutAnimation } from 'react-native'
 
 import { useBasket } from '../providers/BasketProvider';
@@ -17,7 +17,8 @@ import Swipeable from 'react-native-gesture-handler/Swipeable';
 
 
 //Firebase
-import { addToBasket, removeFromBasket } from '../firebase/firebase-config';
+import { query, collection, getDocs, where, updateDoc  } from 'firebase/firestore';
+import { addToBasket, removeFromBasket, db, auth } from '../firebase/firebase-config';
 
 export default function Basket({navigation}) {
 
@@ -33,15 +34,17 @@ export default function Basket({navigation}) {
   const [ item, setItem ] = useState(null);
   const [ number, setNumber ] = useState(null);
   const [ price, setPrice ] = useState(null);
+  const [ index, setIndex ] = useState(null);
 
-  const onConfirm = () => {
+  const [ test, setTest ] = useState(null);
+  
 
-  }
-
-  const onClickItem = (item) => {
+  const onClickItem = ({item, index}) => {
     setItem(item)
     setNumber(item.number)
     setPrice(item.price)
+    setIndex(index)
+    setTest(prevOpenedRow)
     setModalVisible(true)
   }
 
@@ -90,29 +93,78 @@ export default function Basket({navigation}) {
     LayoutAnimation.configureNext(layoutAnimConfig)
   };
 
-  const BasketItem = ({item, index}) => {
+  const closeRow = (index) => {
+    if (prevOpenedRow && prevOpenedRow !== row[index]) {
+      prevOpenedRow.close();
+    }
+    
+    prevOpenedRow = row[index];
+  };
 
-    const closeRow = (index) => {
-      if (prevOpenedRow && prevOpenedRow !== row[index]) {
-        prevOpenedRow.close();
-      }
-      prevOpenedRow = row[index];
-    };
+
+  const onConfirm = async () => {
+
+    try {
+      const q = query(collection(db, "users", auth.currentUser.uid, "basket"), where("product", "==", item.product));
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+
+        let tempBasket = [...basket];
+
+        for(let i = 0; i < tempBasket.length; i++){
+            if(tempBasket[i].id == doc.id){
+                tempBasket[i].number = number;
+                tempBasket[i].price = price;
+            }
+        }
+
+        setNewBasket(tempBasket);
+        
+        updateDoc(doc.ref, {
+          number: number,
+          price: price
+        });
+          
+      });
+
+    } catch (e) {
+      console.error("Error updating document: ", e);
+    }
+
+    test.close();
+
+  }
+
+  const BasketItem = ({item, index}) => {
 
     const renderRightActions = (progress, dragX) => {
       return (
+        <View style={{
+          flexDirection: 'row',
+          width: 100
+        }}>
+          <TouchableOpacity
+          onPress={() => onClickItem({item, index})}
+          style={{
+            justifyContent: 'center',
+            width: '50%',
+            height: 70,
+          }}
+        >
+          <Ionicons name={'settings-outline'} size={25} color={colors.grey_d} />
+        </TouchableOpacity>
         <TouchableOpacity
           onPress={() => deleteItem({item, index})}
           style={{
-            //alignItems: 'center',
             justifyContent: 'center',
-            width: 100,
+            width: '50%',
             height: 70,
-            paddingLeft: 30
           }}
         >
           <Ionicons name={'trash-outline'} size={25} color={colors.primary} />
         </TouchableOpacity>
+        </View>
+        
       );
     };
     
@@ -128,8 +180,7 @@ export default function Basket({navigation}) {
           paddingBottom: 10
         }]}
       >
-      <TouchableOpacity 
-        onLongPress={() => onClickItem(item) }
+      <View 
         style={{
           width: '90%',
           height: 65,
@@ -142,7 +193,7 @@ export default function Basket({navigation}) {
           paddingHorizontal: '3%',
       }}>
         <CartItem item={item.product} number={item.number} price={item.price} />
-      </TouchableOpacity>
+      </View>
       </Swipeable>
     ) 
   }
