@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Text, View, TouchableOpacity } from 'react-native'
+import { Text, View, TouchableOpacity, Pressable } from 'react-native'
 
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 
@@ -17,31 +17,17 @@ const Swipe = (props) => {
 
     const renderRightActions = (progress, dragX) => {
         return (
-          <View style={{
-            flexDirection: 'row',
-            width: 100
-          }}>
-            <TouchableOpacity
-            onPress={() => props.settingsClick()}
-            style={{
-              justifyContent: 'center',
-              width: '50%',
-              height: props.style.height,
-            }}
-          >
-            <Ionicons name={'settings-outline'} size={25} color={colors.grey_d} />
-          </TouchableOpacity>
           <TouchableOpacity
             onPress={() => props.trashClick()}
             style={{
               justifyContent: 'center',
-              width: '50%',
+              width: 60,
+              marginLeft: 10,
               height: props.style.height,
             }}
           >
             <Ionicons name={'trash-outline'} size={25} color={colors.primary} />
           </TouchableOpacity>
-          </View>
           
         );
       };
@@ -59,9 +45,12 @@ const Swipe = (props) => {
                 paddingBottom: 10
             }]}
         >
-          <View style={props.style}>
+          <Pressable 
+            onPress={() => props.settingsClick()}
+            style={props.style}
+          >
             {props.children}
-          </View>
+          </Pressable>
         </Swipeable>
         
     )

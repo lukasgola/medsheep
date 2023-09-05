@@ -1,8 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { SafeAreaView, Text, View, Dimensions, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native';
 
-import styles from '../styles/styles';
-
 //Lottie
 import LottieView from 'lottie-react-native';
 
@@ -65,6 +63,8 @@ export default function MainCalendar() {
   const [ takenAmount, setTakenAmount ] = useState(0);
 
   const [ modalVisible, setModalVisible ] = useState(false);
+  const [ modalVisible2, setModalVisible2 ] = useState(false);
+  const [ modalVisible3, setModalVisible3 ] = useState(false);
 
   const ref = useRef(null);
 
@@ -152,19 +152,20 @@ export default function MainCalendar() {
   let row = [];
   let prevOpenedRow;
 
-  const onSettingsClick = () => {
-
+  const onSettingsClick = ({item, index}) => {
+    setItem(item);
+    setModalVisible2(true);
   }
 
-  const onDeleteClick = () => {
-
+  const onDeleteClick = ({item, index}) => {
+    setItem(item);
+    setModalVisible3(true);
   }
 
   const closeRow = (index) => {
     if (prevOpenedRow && prevOpenedRow !== row[index]) {
       prevOpenedRow.close();
     }
-    
     prevOpenedRow = row[index];
   };
 
@@ -369,15 +370,49 @@ export default function MainCalendar() {
             text={'Czy wziąłeś'}
             onConfirm={confirmTake}
           >
-            <View style={{
-              alignItems: 'center',
-              justifyContent: 'center'
-            }}>
-              <Text style={{
-                fontSize: 18,
-                fontWeight: 'bold'
-              }}>{item ? item.title : 'None'}</Text>
-            </View>
+              <View style={{
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}>
+                <Text style={{
+                  fontSize: 18,
+                  fontWeight: 'bold'
+                }}>{item ? item.title : 'None'}</Text>
+              </View>
+        </BottomSheet>
+
+        <BottomSheet 
+            visible={modalVisible2} 
+            setModalVisible={setModalVisible2}
+            text={'Edytuj'}
+            onConfirm={confirmTake}
+          >
+              <View style={{
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}>
+                <Text style={{
+                  fontSize: 18,
+                  fontWeight: 'bold'
+                }}>{item ? item.title : 'None'}</Text>
+              </View>
+        </BottomSheet>
+
+        <BottomSheet 
+            visible={modalVisible3} 
+            setModalVisible={setModalVisible3}
+            text={'Czy na pewno chcesz usunąć?'}
+            onConfirm={confirmTake}
+          >
+              <View style={{
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}>
+                <Text style={{
+                  fontSize: 18,
+                  fontWeight: 'bold'
+                }}>{item ? item.title : 'None'}</Text>
+              </View>
         </BottomSheet>
         
     </SafeAreaView>
