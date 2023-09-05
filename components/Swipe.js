@@ -26,7 +26,7 @@ const Swipe = (props) => {
             style={{
               justifyContent: 'center',
               width: '50%',
-              height: 70,
+              height: props.style.height,
             }}
           >
             <Ionicons name={'settings-outline'} size={25} color={colors.grey_d} />
@@ -36,7 +36,7 @@ const Swipe = (props) => {
             style={{
               justifyContent: 'center',
               width: '50%',
-              height: 70,
+              height: props.style.height,
             }}
           >
             <Ionicons name={'trash-outline'} size={25} color={colors.primary} />
@@ -59,7 +59,9 @@ const Swipe = (props) => {
                 paddingBottom: 10
             }]}
         >
+          <View style={props.style}>
             {props.children}
+          </View>
         </Swipeable>
         
     )

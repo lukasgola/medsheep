@@ -17,6 +17,7 @@ import { useIsFocused } from "@react-navigation/native";
 
 //Components
 import BottomSheet from '../components/BottomSheet';
+import Swipe from '../components/Swipe';
 
 
 //Firebase
@@ -146,20 +147,48 @@ export default function MainCalendar() {
     setTakenAmount(takenAmount + 1);
   }
 
-  const Event = ({item}) => {
+
+  //Swipe
+  let row = [];
+  let prevOpenedRow;
+
+  const onSettingsClick = () => {
+
+  }
+
+  const onDeleteClick = () => {
+
+  }
+
+  const closeRow = (index) => {
+    if (prevOpenedRow && prevOpenedRow !== row[index]) {
+      prevOpenedRow.close();
+    }
+    
+    prevOpenedRow = row[index];
+  };
+
+  const Event = ({item, index}) => {
 
     const animation = useRef(null);
 
     return(
-      <View style={[styles.shadow, {
-        width: 0.9*width,
-        height: 80,
-        borderRadius: 15,
-        marginLeft: width*0.05,
-        backgroundColor: colors.background,
-        marginBottom: 10,
-        flexDirection: 'row',
-      }]}>
+      <Swipe 
+        index={index}
+        closeRow={() => closeRow(index)}
+        row={row}
+        settingsClick={() => onSettingsClick({item, index})}
+        trashClick={() => onDeleteClick({item, index})}
+
+        style={{
+          width: '90%',
+          height: 80,
+          backgroundColor: colors.background,
+          alignItems: 'center',
+          borderRadius: 10,
+          marginLeft: '5%',
+          flexDirection: 'row',
+      }}>
         <View style={{
           width: 60,
           height: 60,
@@ -224,7 +253,7 @@ export default function MainCalendar() {
 
         </TouchableOpacity>
 
-      </View>
+      </Swipe>
     )
   }
 
@@ -303,7 +332,7 @@ export default function MainCalendar() {
           }}
             data={events}
             ref={ref}
-            renderItem={({item}) => <Event item={item} />}
+            renderItem={({item, index}) => <Event item={item} index={index} />}
             keyExtractor={item => item.id}
             showsVerticalScrollIndicator={false}
             getItemLayout={(data, index) => ({

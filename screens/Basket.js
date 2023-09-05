@@ -27,7 +27,6 @@ export default function Basket({navigation}) {
   const [ item, setItem ] = useState(null);
   const [ number, setNumber ] = useState(null);
   const [ price, setPrice ] = useState(null);
-  const [ index, setIndex ] = useState(null);
 
   const [ test, setTest ] = useState(null);
 
@@ -68,12 +67,11 @@ export default function Basket({navigation}) {
     setItem(item)
     setNumber(item.number)
     setPrice(item.price)
-    setIndex(index)
     setTest(prevOpenedRow)
     setModalVisible(true)
   }
 
-  const deleteItem = ({ item, index }) => {
+  const onDeleteClick = ({ item, index }) => {
     let a = basket;
     a.splice(index, 1);
     setNewBasket([...a]);
@@ -132,11 +130,9 @@ export default function Basket({navigation}) {
       <Swipe
         index={index}
         settingsClick={() => onSettingsClick({item, index})}
-        trashClick={() => deleteItem({item, index})}
+        trashClick={() => onDeleteClick({item, index})}
         closeRow={() => closeRow(index)}
         row={row}
-      >
-      <View 
         style={{
           width: '90%',
           height: 65,
@@ -147,9 +143,9 @@ export default function Basket({navigation}) {
           marginLeft: '5%',
           flexDirection: 'row',
           paddingHorizontal: '3%',
-      }}>
+        }}
+      >
         <CartItem item={item.product} number={item.number} price={item.price} />
-      </View>
       </Swipe>
     ) 
   }
