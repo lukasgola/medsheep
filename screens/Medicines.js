@@ -6,6 +6,9 @@ import { Text, View, SafeAreaView, FlatList, TouchableOpacity, Image } from 'rea
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import styles from '../styles/styles';
 
+import Animated from 'react-native-reanimated';
+
+
 //Providers
 import { useTheme } from '../theme/ThemeProvider';
 import { useBasket } from '../providers/BasketProvider';
@@ -348,15 +351,16 @@ export default function Medicines({navigation}) {
         marginTop: 20,
         flexDirection: 'row',
       }]}>
-        <Image style={{
+        <Animated.Image style={{
           width: 70,
           height: 70,
           borderRadius: 10,
           marginLeft: 15,
           marginTop: 15,
         }}
-        resizeMode='contain'
+          resizeMode='contain'
           source={item.img}
+          sharedTransitionTag="tag"
         />
         <View style={{marginLeft: 20, justifyContent: 'center'}}>
           <Text style={{

@@ -3,6 +3,9 @@ import { Text, View, Image, TouchableOpacity, Dimensions, FlatList, Modal, TextI
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
+import Animated from 'react-native-reanimated';
+
+
 import {useTheme} from '../theme/ThemeProvider';
 import { useBasket } from '../providers/BasketProvider';
 
@@ -161,10 +164,11 @@ export default function Medicine({route, navigation}) {
             >
                 <Ionicons name={liked ? 'heart' : 'heart-outline'} size={25} color={liked ? colors.primary : colors.text} />
             </TouchableOpacity>
-            <Image 
+            <Animated.Image 
                 source={item.img} 
                 resizeMode='contain' 
                 style={{width: '60%', height: 300, marginLeft: '20%'}} 
+                sharedTransitionTag="tag"
             />
             <Text style={{
                 color: colors.text,
