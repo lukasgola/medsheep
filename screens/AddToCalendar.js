@@ -120,6 +120,9 @@ export default function AddToCalendar({navigation}){
     const [isCustomFreqPickerVisible, setCustomFreqPickerVisible] = useState(false);
     const [isCustomFreqPeriodPickerVisible, setCustomFreqPeriodPickerVisible] = useState(false);
 
+
+    const fontSize = 14;
+
     const handleFreqConfirm = () => {
         setFreqString(freq);
         if ( freq == 'Niestandardowe' && freqString != 'Niestandardowe'){
@@ -287,18 +290,22 @@ export default function AddToCalendar({navigation}){
                         rules={{
                             required: 'Nazwa jest wymagana',
                         }}
-                        size={12} 
+                        size={14} 
                         color={colors.grey_l} 
                         icon={'code-working-outline'}
                     />
                 </View>
 
-                <Text style={{
-                    fontSize: 14,
-                    fontWeight: 'bold',
-                    color: colors.text,
-                    marginTop: 20,
-                }}>Częstotliowść</Text>
+                <DateTimePicker
+                    testID="dateTimePicker"
+                    value={time}
+                    mode={'time'}
+                    is24Hour={false}
+                    display="spinner"
+                    onChange={onChangeTime}
+                    textColor={colors.text}
+                    minuteInterval={15}
+                />
 
                 <View style={{
                     width: '100%',
@@ -308,7 +315,7 @@ export default function AddToCalendar({navigation}){
                     justifyContent: 'space-between',
                     marginTop: 10
                 }}> 
-                    <View style={{width: '47.5%', height: '100%'}}>    
+                    <View style={{width: '100%', height: '100%'}}>    
                         <TouchableOpacity 
                             onPress={() => setFreqPickerVisible(true)}
                             style={{
@@ -316,7 +323,8 @@ export default function AddToCalendar({navigation}){
                                 height: '100%', 
                                 flexDirection: 'row',
                                 backgroundColor: colors.grey_l,
-                                borderRadius: 10,
+                                borderTopLeftRadius: 10,
+                                borderTopRightRadius: 10,
                                 flexDirection: 'row',
                                 alignItems: 'center',
                                 borderColor: '#e8e8e8',
@@ -326,16 +334,32 @@ export default function AddToCalendar({navigation}){
                                 style={{
                                     width: 40,
                                     paddingLeft: 10,
-                                    justifyContent: 'center'
+                                    justifyContent: 'center',
                                 }}
                                 >
                                     <Ionicons name={'calendar-outline'} size={16} color={colors.grey_d}/>
                             </View>
-                            
+
                             <Text style={{
-                                color: freqString == 'Częstotliwość' ? colors.grey_d : colors.text,
-                                fontSize: 12
-                            }}>{freqString}</Text>
+                                color: colors.text,
+                                fontSize: fontSize,
+                            }}>Powtarzaj</Text>
+
+                            <View style={{
+                                flexDirection: 'row',
+                                position: 'absolute',
+                                right: 10,
+                                alignItems: 'center',
+                            }}>
+                                <Text style={{
+                                    color: colors.grey_d,
+                                    fontSize: fontSize
+                                }}>{freqString}</Text>
+
+                                <Ionicons name={'chevron-forward-outline'} size={20} color={colors.grey_d}/>
+
+                            </View>
+
                             <BottomSheet 
                                 visible={isFreqPickerVisible} 
                                 setModalVisible={setFreqPickerVisible}
@@ -354,54 +378,6 @@ export default function AddToCalendar({navigation}){
                             </BottomSheet>
                         </TouchableOpacity>
                     </View>
-
-                    <View style={{width: '47.5%', height: '100%'}}>     
-                        <TouchableOpacity 
-                            onPress={() => setTimePickerVisible(true)}
-                            style={{
-                                width: '100%', 
-                                height: '100%', 
-                                flexDirection: 'row',
-                                backgroundColor: colors.grey_l,
-                                borderRadius: 10,
-                                flexDirection: 'row',
-                                alignItems: 'center',
-                                borderColor: '#e8e8e8',
-                                borderWidth: 1
-                            }}>
-                            <View
-                                style={{
-                                    width: 40,
-                                    paddingLeft: 10,
-                                    justifyContent: 'center'
-                                }}
-                                >
-                                    <Ionicons name={'calendar-outline'} size={16} color={colors.grey_d}/>
-                            </View>
-                            
-                            <Text style={{
-                                color: timeString == 'Wybierz godzinę' ? colors.grey_d : colors.text,
-                                fontSize: 12
-                            }}>{timeString}</Text>
-                            <BottomSheet 
-                                visible={isTimePickerVisible} 
-                                setModalVisible={setTimePickerVisible}
-                                text={'Podaj począek'}
-                                onConfirm={handleTimeConfirm}
-                            >
-                                <DateTimePicker
-                                    testID="dateTimePicker"
-                                    value={time}
-                                    mode={'time'}
-                                    is24Hour={false}
-                                    display="spinner"
-                                    onChange={onChangeTime}
-                                    textColor={colors.text}
-                                    minuteInterval={15}
-                                />
-                            </BottomSheet>
-                        </TouchableOpacity>
-                    </View>
                 
                 </View>
 
@@ -416,7 +392,7 @@ export default function AddToCalendar({navigation}){
                     {freqString == 'Niestandardowe' ? 
                     <View>
                     <Text style={{
-                        fontSize: 14,
+                        fontSize: fontSize,
                         fontWeight: 'bold',
                         color: colors.text,
                         marginTop: 20,
@@ -455,7 +431,7 @@ export default function AddToCalendar({navigation}){
                                 
                                 <Text style={{
                                     color: customFreqString == 'Częstotliwość' ? colors.grey_d : colors.text,
-                                    fontSize: 12
+                                    fontSize: fontSize
                                 }}>{customFreqString}</Text>
                                 <BottomSheet 
                                     visible={isCustomFreqPickerVisible} 
@@ -502,7 +478,7 @@ export default function AddToCalendar({navigation}){
                                 
                                 <Text style={{
                                     color: customPeriodString == 'W' ? colors.grey_d : colors.text,
-                                    fontSize: 12
+                                    fontSize: fontSize
                                 }}>{customPeriodString}</Text>
                                 <BottomSheet 
                                     visible={isCustomFreqPeriodPickerVisible} 
@@ -532,120 +508,100 @@ export default function AddToCalendar({navigation}){
                 
                 </Animated.View>
 
-                <View style={{
-                    width: '100%',
-                    height: 70,
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    marginTop: 20
-                }}> 
-                    <View style={{width: '47.5%', height: '100%'}}>  
-                    <Text style={{
-                        fontSize: 14,
-                        fontWeight: 'bold',
-                        color: colors.text,
-                        marginBottom: 10
-                    }}>Początek</Text>  
-                        <TouchableOpacity 
-                            onPress={() => setDateStartPickerVisible(true)}
+                <View style={{width: '100%', height: 50}}>  
+                    <TouchableOpacity 
+                        onPress={() => setDateStartPickerVisible(true)}
+                        style={{
+                            width: '100%', 
+                            height: 50, 
+                            flexDirection: 'row',
+                            backgroundColor: colors.grey_l,
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            borderColor: '#e8e8e8',
+                            borderWidth: 1,
+                            borderTopWidth: 0
+                        }}>
+                        <View
                             style={{
-                                width: '100%', 
-                                height: 50, 
-                                flexDirection: 'row',
-                                backgroundColor: colors.grey_l,
-                                borderRadius: 10,
-                                flexDirection: 'row',
-                                alignItems: 'center',
-                                borderColor: '#e8e8e8',
-                                borderWidth: 1
-                            }}>
-                            <View
-                                style={{
-                                    width: 40,
-                                    paddingLeft: 10,
-                                    justifyContent: 'center'
-                                }}
-                                >
-                                    <Ionicons name={'calendar-outline'} size={16} color={colors.grey_d}/>
-                            </View>
-                            
-                            <Text style={{
-                                color: dateStartString == 'Początek' ? colors.grey_d : colors.text,
-                                fontSize: 12
-                            }}>{dateStartString}</Text>
-                            <BottomSheet 
-                                visible={isDateStartPickerVisible}
-                                setModalVisible={setDateStartPickerVisible}
-                                text={'Podaj częstotliwość'}
-                                onConfirm={handleDateStartConfirm}
+                                width: 40,
+                                paddingLeft: 10,
+                                justifyContent: 'center'
+                            }}
                             >
-                                <DateTimePicker
-                                    testID="dateTimePicker"
-                                    value={dateStart}
-                                    mode={'date'}
-                                    is24Hour={true}
-                                    display="spinner"
-                                    onChange={onChangeDateStart}
-                                    textColor={colors.text}
-                                />
-                            </BottomSheet>
-                        </TouchableOpacity>
-                    </View>
-
-                    <View style={{width: '47.5%', height: '100%'}}>
+                                <Ionicons name={'calendar-outline'} size={16} color={colors.grey_d}/>
+                        </View>
+                        
                         <Text style={{
-                            fontSize: 14,
-                            fontWeight: 'bold',
-                            color: colors.text,
-                            marginBottom: 10
-                        }}>Koniec</Text>      
-                        <TouchableOpacity 
-                            onPress={() => setDateEndPickerVisible(true)}
+                            color: dateStartString == 'Początek' ? colors.grey_d : colors.text,
+                            fontSize: fontSize
+                        }}>{dateStartString}</Text>
+                        <BottomSheet 
+                            visible={isDateStartPickerVisible}
+                            setModalVisible={setDateStartPickerVisible}
+                            text={'Podaj częstotliwość'}
+                            onConfirm={handleDateStartConfirm}
+                        >
+                            <DateTimePicker
+                                testID="dateTimePicker"
+                                value={dateStart}
+                                mode={'date'}
+                                is24Hour={true}
+                                display="spinner"
+                                onChange={onChangeDateStart}
+                                textColor={colors.text}
+                            />
+                        </BottomSheet>
+                    </TouchableOpacity>
+                </View>
+
+                <View style={{width: '100%', height: 50}}>    
+                    <TouchableOpacity 
+                        onPress={() => setDateEndPickerVisible(true)}
+                        style={{
+                            width: '100%', 
+                            height: 50, 
+                            flexDirection: 'row',
+                            backgroundColor: colors.grey_l,
+                            borderBottomLeftRadius: 10,
+                            borderBottomRightRadius: 10,
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            borderColor: '#e8e8e8',
+                            borderWidth: 1,
+                            borderTopWidth: 0
+                        }}>
+                        <View
                             style={{
-                                width: '100%', 
-                                height: 50, 
-                                flexDirection: 'row',
-                                backgroundColor: colors.grey_l,
-                                borderRadius: 10,
-                                flexDirection: 'row',
-                                alignItems: 'center',
-                                borderColor: '#e8e8e8',
-                                borderWidth: 1
-                            }}>
-                            <View
-                                style={{
-                                    width: 40,
-                                    paddingLeft: 10,
-                                    justifyContent: 'center'
-                                }}
-                                >
-                                    <Ionicons name={'time-outline'} size={16} color={colors.grey_d}/>
-                            </View>
-                            
-                            <Text style={{
-                                color: dateEndString == 'Koniec' ? colors.grey_d : colors.text,
-                                fontSize: 12
-                            }}>{dateEndString}</Text>
-                            <BottomSheet 
-                                visible={isDateEndPickerVisible} 
-                                setModalVisible={setDateEndPickerVisible}
-                                text={'Podaj koniec'}
-                                onConfirm={handleDateEndConfirm}
+                                width: 40,
+                                paddingLeft: 10,
+                                justifyContent: 'center'
+                            }}
                             >
-                                <DateTimePicker
-                                    testID="dateTimePicker"
-                                    value={dateEnd}
-                                    mode={'date'}
-                                    is24Hour={true}
-                                    display="spinner"
-                                    onChange={onChangeDateEnd}
-                                    textColor={colors.text}
-                                />
-                            </BottomSheet>
-                        </TouchableOpacity>
-                    </View>
-                
+                                <Ionicons name={'time-outline'} size={16} color={colors.grey_d}/>
+                        </View>
+                        
+                        <Text style={{
+                            color: dateEndString == 'Koniec' ? colors.grey_d : colors.text,
+                            fontSize: fontSize
+                        }}>{dateEndString}</Text>
+                        <BottomSheet 
+                            visible={isDateEndPickerVisible} 
+                            setModalVisible={setDateEndPickerVisible}
+                            text={'Podaj koniec'}
+                            onConfirm={handleDateEndConfirm}
+                        >
+                            <DateTimePicker
+                                testID="dateTimePicker"
+                                value={dateEnd}
+                                mode={'date'}
+                                is24Hour={true}
+                                display="spinner"
+                                onChange={onChangeDateEnd}
+                                textColor={colors.text}
+                            />
+                        </BottomSheet>
+                    </TouchableOpacity>
                 </View>
 
                 
