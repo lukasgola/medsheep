@@ -200,8 +200,9 @@ export default function MainCalendar() {
           }}>{item.timeHour + ':' + (item.timeMinutes < 10 ? '0'+item.timeMinutes : item.timeMinutes)}</Text>
         </View>
         <View style={{
+          height: '100%',
           justifyContent:'space-around',
-          paddingVertical: 5,
+          paddingVertical: 10,
         }}>
           <Text style={{
             fontSize: 18,

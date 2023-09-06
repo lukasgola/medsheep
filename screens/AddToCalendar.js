@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef } from 'react';
-import {View, KeyboardAvoidingView, Alert, TouchableOpacity, Dimensions, ScrollView, Text, Animated} from 'react-native';
+import {View, KeyboardAvoidingView, Alert, TouchableOpacity, Dimensions, ScrollView, Text, Animated, TextInput} from 'react-native';
 
 //Hooks
 import {useTheme} from '../theme/ThemeProvider';
@@ -123,6 +123,36 @@ export default function AddToCalendar({navigation}){
 
     const fontSize = 14;
 
+    React.useLayoutEffect(() => {
+        navigation.setOptions({
+            headerRight: () => (
+                <TouchableOpacity
+                    onPress={handleSubmit(onCreateEvent)}
+                    title="Info"
+                    color="#fff"
+                >
+                    <Text style={{
+                    color: colors.primary,
+                    fontSize: 18,
+                    fontWeight: 'bold'
+                    }}>Dodaj</Text>
+                </TouchableOpacity>
+            ),
+            headerLeft: () => (
+                <TouchableOpacity
+                  onPress={() => navigation.goBack()}
+                  title="Info"
+                  color="#fff"
+                >
+                  <Text style={{
+                    color: colors.primary,
+                    fontSize: 18,
+                  }}>Anuluj</Text>
+                </TouchableOpacity>
+              )
+        });
+    }, [navigation]);
+
     const handleFreqConfirm = () => {
         setFreqString(freq);
         if ( freq == 'Niestandardowe' && freqString != 'Niestandardowe'){
@@ -148,6 +178,7 @@ export default function AddToCalendar({navigation}){
 
     const onChangeTime = (event, value) => {
         setTime(value);
+        setTimeString(time.getHours() + ':' + (time.getMinutes() < 10 ? '0'+time.getMinutes() : time.getMinutes()))
     };
 
     const onChangeDateStart = (event, selectedDate) => {
@@ -256,9 +287,8 @@ export default function AddToCalendar({navigation}){
 
     return (
         <KeyboardAvoidingView 
-            keyboardVerticalOffset={50}
-            behavior= {Platform.OS == "ios" ? "padding" : "height"}
-            style={{flex: 1,alignItems: 'center', backgroundColor: colors.background}}>
+            behavior= {Platform.OS == "ios" ? "position" : "height"}
+            style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: colors.background }}>
             <ScrollView 
                 showsVerticalScrollIndicator={false}
                 style={{width: width*0.9}}
@@ -276,25 +306,13 @@ export default function AddToCalendar({navigation}){
                     }}> kalendarza</Text>
                 </View>
 
-                <View style={{width: '100%', alignItems: 'center', marginTop: 10, marginBottom: 30}}>
+                <View style={{width: '100%', alignItems: 'center', marginTop: 10, marginBottom: 10}}>
                     <Text style={{
                         color: colors.grey_d
                     }}>Wypełnij szczegóły</Text>
                 </View>
 
-                <View style={{ width: '100%', height: 50, justifyContent: 'center', alignItems: 'center', marginTop: 20 }}>
-                    <CustomInput
-                        name="title"
-                        control={control}
-                        placeholder="Tytuł"
-                        rules={{
-                            required: 'Nazwa jest wymagana',
-                        }}
-                        size={14} 
-                        color={colors.grey_l} 
-                        icon={'code-working-outline'}
-                    />
-                </View>
+                
 
                 <DateTimePicker
                     testID="dateTimePicker"
@@ -337,7 +355,7 @@ export default function AddToCalendar({navigation}){
                                     justifyContent: 'center',
                                 }}
                                 >
-                                    <Ionicons name={'calendar-outline'} size={16} color={colors.grey_d}/>
+                                    <Ionicons name={'refresh-outline'} size={20} color={colors.grey_d}/>
                             </View>
 
                             <Text style={{
@@ -502,11 +520,72 @@ export default function AddToCalendar({navigation}){
                     </View>
                     </View>
                  : 
-                 <View></View>
+                    <View></View>
                  }
 
                 
                 </Animated.View>
+
+                <View style={{ width: '100%', height: 50, justifyContent: 'center', alignItems: 'center'}}>
+                <Controller
+                    control={control}
+                    name={'title'}
+                    render={({field: {value, onChange, onBlur}, fieldState: {error}}) => (
+                        <>
+                        <View
+                            style={{
+                            width: '100%',
+                            height: '100%',
+                            backgroundColor: colors.grey_l,
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            borderColor: error ? 'red' : '#e8e8e8',
+                            borderWidth: 1,
+                            borderTopWidth: 0
+                            }}
+                        >
+                            <View
+                            style={{
+                                width: 40,
+                                justifyContent: 'center',
+                                flexDirection: 'row'
+                            }}
+                            >
+                                <Ionicons name={'code-working-outline'} size={20} color={colors.grey_d}/>
+                            </View>
+
+                            <Text style={{
+                                position: 'absolute',
+                                left: 40
+                            }}>Etykieta</Text>
+
+                            <TextInput
+                                style={{
+                                    width: '90%',
+                                    height: '100%',
+                                    fontSize: fontSize,
+                                    color: colors.grey_d,
+                                    paddingRight: 20
+                                }}
+                                value={value}
+                                onChangeText={onChange}
+                                onBlur={onBlur}
+                                placeholder={'Lek'}
+                                placeholderTextColor={colors.grey_d}
+                                selectionColor={colors.primary}
+                                textAlign='right'
+                            />
+                        </View>
+                        {error && (
+                            <View style={{width: '100%'}}>
+                            <Text style={{color: 'red'}}>{error.message || 'Error'}</Text>
+                            </View>
+                            
+                        )}
+                        </>
+                    )}
+                    />
+                </View>
 
                 <View style={{width: '100%', height: 50}}>  
                     <TouchableOpacity 
@@ -531,15 +610,30 @@ export default function AddToCalendar({navigation}){
                             >
                                 <Ionicons name={'calendar-outline'} size={16} color={colors.grey_d}/>
                         </View>
-                        
+
                         <Text style={{
-                            color: dateStartString == 'Początek' ? colors.grey_d : colors.text,
+                            color: colors.text,
                             fontSize: fontSize
-                        }}>{dateStartString}</Text>
+                        }}>Początek</Text>
+
+                        <View style={{
+                            flexDirection: 'row',
+                            position: 'absolute',
+                            right: 10,
+                            alignItems: 'center',
+                        }}>
+                            <Text style={{
+                                color: colors.grey_d,
+                                fontSize: fontSize
+                            }}>{dateStartString}</Text>
+                            <Ionicons name={'chevron-forward-outline'} size={20} color={colors.grey_d}/>
+
+                        </View>
+
                         <BottomSheet 
                             visible={isDateStartPickerVisible}
                             setModalVisible={setDateStartPickerVisible}
-                            text={'Podaj częstotliwość'}
+                            text={'Podaj początek'}
                             onConfirm={handleDateStartConfirm}
                         >
                             <DateTimePicker
@@ -582,9 +676,23 @@ export default function AddToCalendar({navigation}){
                         </View>
                         
                         <Text style={{
-                            color: dateEndString == 'Koniec' ? colors.grey_d : colors.text,
+                            color: colors.text,
                             fontSize: fontSize
-                        }}>{dateEndString}</Text>
+                        }}>Koniec</Text>
+
+                        <View style={{
+                            flexDirection: 'row',
+                            position: 'absolute',
+                            right: 10,
+                            alignItems: 'center',
+                        }}>
+                            <Text style={{
+                                color: colors.grey_d,
+                                fontSize: fontSize
+                            }}>{dateEndString}</Text>
+                            <Ionicons name={'chevron-forward-outline'} size={20} color={colors.grey_d}/>
+
+                        </View>
                         <BottomSheet 
                             visible={isDateEndPickerVisible} 
                             setModalVisible={setDateEndPickerVisible}
@@ -603,27 +711,6 @@ export default function AddToCalendar({navigation}){
                         </BottomSheet>
                     </TouchableOpacity>
                 </View>
-
-                
-            
-                <TouchableOpacity 
-                    onPress={handleSubmit(onCreateEvent)}
-                    style={{ 
-                        width: '100%', 
-                        height: 50, 
-                        justifyContent: 'center', 
-                        alignItems: 'center', 
-                        marginTop: 20,
-                        marginBottom: 40,
-                        borderRadius: 10,
-                        backgroundColor: colors.primary
-                    }}>
-                    <Text style={{
-                        fontSize: 18,
-                        fontWeight: 'bold',
-                        color: colors.background
-                    }}>Dodaj lek</Text>
-                </TouchableOpacity>
 
             </ScrollView>
         </KeyboardAvoidingView>

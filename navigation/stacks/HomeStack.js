@@ -54,33 +54,7 @@ export default function HomeStack({navigation}) {
         name="Nowy lek" 
         component={AddToCalendar}
         options={{
-          presentation: 'modal',
-          headerRight: () => (
-            <TouchableOpacity
-              //onPress={() => navigation.navigate('Nowy lek')}
-              title="Info"
-              color="#fff"
-            >
-              <Text style={{
-                color: colors.primary,
-                fontSize: 18,
-                fontWeight: 'bold'
-              }}>Dodaj</Text>
-            </TouchableOpacity>
-          ),
-          headerLeft: () => (
-            <TouchableOpacity
-              onPress={() => navigation.navigate('Kalendarz')}
-              title="Info"
-              color="#fff"
-            >
-              <Text style={{
-                color: colors.primary,
-                fontSize: 18,
-              }}>Anuluj</Text>
-            </TouchableOpacity>
-          )
-        
+          presentation: 'modal'        
         }}
         />
     </Stack.Navigator>
