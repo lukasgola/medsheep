@@ -319,7 +319,8 @@ export default function MainCalendar() {
         {!isLoading ? 
           <FlatList style={{
             width: '100%',
-            height: '100%'
+            height: '100%',
+            backgroundColor: colors.grey_l
           }}
             data={events}
             ref={ref}

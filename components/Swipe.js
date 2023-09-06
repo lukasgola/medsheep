@@ -41,13 +41,16 @@ const Swipe = (props) => {
             onSwipeableWillOpen={() => props.closeRow(index)}
             ref={(ref) => (props.row[index] = ref)}
             rightOpenValue={-100}
-            containerStyle={[styles.shadow, {
+            containerStyle={[ {
                 paddingBottom: 10
             }]}
         >
           <Pressable 
             onPress={() => props.settingsClick()}
-            style={props.style}
+            style={[props.style, {
+              borderWidth: 1,
+              borderColor: colors.grey
+            }]}
           >
             {props.children}
           </Pressable>

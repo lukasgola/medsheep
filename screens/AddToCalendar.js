@@ -7,8 +7,6 @@ import {useForm, Controller} from 'react-hook-form';
 
 import BottomSheet from '../components/BottomSheet';
 
-//Components
-import CustomInput from '../components/CustomInput';
 
 import DateTimePicker from '@react-native-community/datetimepicker';
 
@@ -95,11 +93,12 @@ export default function AddToCalendar({navigation}){
         },
     ]
 
+    const [ title, setTitle ] = useState('');
+
     const [freq, setFreq] = useState(1);
     const [freqString, setFreqString] = useState('Codziennie')
 
     const [time, setTime] = useState(new Date(Date.now()))
-    const [timeString, setTimeString] = useState(new Date(Date.now()).getHours() + ':' + (new Date(Date.now()).getMinutes() < 10 ? '0'+new Date(Date.now()).getMinutes() : new Date(Date.now()).getMinutes()))
 
     const [ dateStart, setDateStart ] = useState(new Date())
     const [ dateStartString, setDateStartString ] = useState(new Date().getDate() + ' / ' + (new Date().getMonth()+1) + ' / ' + new Date().getFullYear())
@@ -113,7 +112,6 @@ export default function AddToCalendar({navigation}){
     const [ customPeriod, setCustomPeriod ] = useState('Dzień');
     const [ customPeriodString, setCustomPeriodString ] = useState('Dzień');
 
-    const [isTimePickerVisible, setTimePickerVisible] = useState(false);
     const [isFreqPickerVisible, setFreqPickerVisible] = useState(false);
     const [isDateStartPickerVisible, setDateStartPickerVisible] = useState(false);
     const [isDateEndPickerVisible, setDateEndPickerVisible] = useState(false);
@@ -127,7 +125,7 @@ export default function AddToCalendar({navigation}){
         navigation.setOptions({
             headerRight: () => (
                 <TouchableOpacity
-                    onPress={handleSubmit(onCreateEvent)}
+                    onPress={() => console.log('not working')}
                     title="Info"
                     color="#fff"
                 >
@@ -178,7 +176,6 @@ export default function AddToCalendar({navigation}){
 
     const onChangeTime = (event, value) => {
         setTime(value);
-        setTimeString(time.getHours() + ':' + (time.getMinutes() < 10 ? '0'+time.getMinutes() : time.getMinutes()))
     };
 
     const onChangeDateStart = (event, selectedDate) => {
@@ -201,16 +198,15 @@ export default function AddToCalendar({navigation}){
         setDateEndString(dateEnd.getDate() + ' / ' + month + ' / ' + dateEnd.getFullYear())
     };
 
-    const handleTimeConfirm = () => {
-        setTimeString(time.getHours() + ':' + (time.getMinutes() < 10 ? '0'+time.getMinutes() : time.getMinutes()))
-        console.log(time.getHours() + ':' + time.getMinutes())
-    };
+
+    const hook = () => {
+        console.log(time)
+    }
 
 
 
-    const { control, handleSubmit, formState: {errors} } = useForm();
-
-    const onCreateEvent = async data => {
+    const onCreateEvent = () => {
+        console.log('time: ' + time.getHours())
         Alert.alert('New Event', 'Do you want to public this event?', [
         {
             text: 'Cancel',
@@ -220,8 +216,6 @@ export default function AddToCalendar({navigation}){
         {
             text: 'Yes',
             onPress: () => {
-
-                const { title } = data;
                 
                 const dateS = dateStart;
                 const dateE = dateEnd;
@@ -527,64 +521,50 @@ export default function AddToCalendar({navigation}){
                 </Animated.View>
 
                 <View style={{ width: '100%', height: 50, justifyContent: 'center', alignItems: 'center'}}>
-                <Controller
-                    control={control}
-                    name={'title'}
-                    render={({field: {value, onChange, onBlur}, fieldState: {error}}) => (
-                        <>
+                    <View
+                        style={{
+                        width: '100%',
+                        height: '100%',
+                        backgroundColor: colors.grey_l,
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        borderColor: '#e8e8e8',
+                        borderWidth: 1,
+                        borderTopWidth: 0
+                        }}
+                    >
                         <View
-                            style={{
-                            width: '100%',
-                            height: '100%',
-                            backgroundColor: colors.grey_l,
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            borderColor: error ? 'red' : '#e8e8e8',
-                            borderWidth: 1,
-                            borderTopWidth: 0
-                            }}
+                        style={{
+                            width: 40,
+                            justifyContent: 'center',
+                            flexDirection: 'row'
+                        }}
                         >
-                            <View
-                            style={{
-                                width: 40,
-                                justifyContent: 'center',
-                                flexDirection: 'row'
-                            }}
-                            >
-                                <Ionicons name={'code-working-outline'} size={20} color={colors.grey_d}/>
-                            </View>
-
-                            <Text style={{
-                                position: 'absolute',
-                                left: 40
-                            }}>Etykieta</Text>
-
-                            <TextInput
-                                style={{
-                                    width: '90%',
-                                    height: '100%',
-                                    fontSize: fontSize,
-                                    color: colors.grey_d,
-                                    paddingRight: 20
-                                }}
-                                value={value}
-                                onChangeText={onChange}
-                                onBlur={onBlur}
-                                placeholder={'Lek'}
-                                placeholderTextColor={colors.grey_d}
-                                selectionColor={colors.primary}
-                                textAlign='right'
-                            />
+                            <Ionicons name={'code-working-outline'} size={20} color={colors.grey_d}/>
                         </View>
-                        {error && (
-                            <View style={{width: '100%'}}>
-                            <Text style={{color: 'red'}}>{error.message || 'Error'}</Text>
-                            </View>
-                            
-                        )}
-                        </>
-                    )}
-                    />
+
+                        <Text style={{
+                            position: 'absolute',
+                            left: 40
+                        }}>Etykieta</Text>
+
+                        <TextInput
+                            style={{
+                                width: '90%',
+                                height: '100%',
+                                fontSize: fontSize,
+                                color: colors.grey_d,
+                                paddingRight: 20
+                            }}
+                            value={title}
+                            onChangeText={setTitle}
+                            //onBlur={onBlur}
+                            placeholder={'Lek'}
+                            placeholderTextColor={colors.grey_d}
+                            selectionColor={colors.primary}
+                            textAlign='right'
+                        />
+                    </View>
                 </View>
 
                 <View style={{width: '100%', height: 50}}>  
@@ -711,6 +691,17 @@ export default function AddToCalendar({navigation}){
                         </BottomSheet>
                     </TouchableOpacity>
                 </View>
+                <TouchableOpacity
+                    onPress={onCreateEvent}
+                    title="Info"
+                    color="#fff"
+                >
+                    <Text style={{
+                    color: colors.primary,
+                    fontSize: 18,
+                    fontWeight: 'bold'
+                    }}>Dodaj</Text>
+                </TouchableOpacity>
 
             </ScrollView>
         </KeyboardAvoidingView>
