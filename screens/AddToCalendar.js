@@ -3,7 +3,6 @@ import {View, KeyboardAvoidingView, Alert, TouchableOpacity, Dimensions, ScrollV
 
 //Hooks
 import {useTheme} from '../theme/ThemeProvider';
-import {useForm, Controller} from 'react-hook-form';
 
 import BottomSheet from '../components/BottomSheet';
 
@@ -125,7 +124,7 @@ export default function AddToCalendar({navigation}){
         navigation.setOptions({
             headerRight: () => (
                 <TouchableOpacity
-                    onPress={() => console.log('not working')}
+                    onPress={() => onCreateEvent()}
                     title="Info"
                     color="#fff"
                 >
@@ -149,7 +148,7 @@ export default function AddToCalendar({navigation}){
                 </TouchableOpacity>
               )
         });
-    }, [navigation]);
+    }, [title, time, freq, dateStart, dateEnd, customFreq, navigation]);
 
     const handleFreqConfirm = () => {
         setFreqString(freq);
@@ -691,17 +690,6 @@ export default function AddToCalendar({navigation}){
                         </BottomSheet>
                     </TouchableOpacity>
                 </View>
-                <TouchableOpacity
-                    onPress={onCreateEvent}
-                    title="Info"
-                    color="#fff"
-                >
-                    <Text style={{
-                    color: colors.primary,
-                    fontSize: 18,
-                    fontWeight: 'bold'
-                    }}>Dodaj</Text>
-                </TouchableOpacity>
 
             </ScrollView>
         </KeyboardAvoidingView>
