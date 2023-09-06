@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { SafeAreaView, Text, View, Dimensions, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native';
 
-//Lottie
-import LottieView from 'lottie-react-native';
+//Ionicons
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 //Calendars
 import { Calendar, LocaleConfig,} from 'react-native-calendars';
@@ -171,8 +171,6 @@ export default function MainCalendar() {
 
   const Event = ({item, index}) => {
 
-    const animation = useRef(null);
-
     return(
       <Swipe 
         index={index}
@@ -239,19 +237,10 @@ export default function MainCalendar() {
           }}
             disabled={item.taken}
           >
-            <LottieView
-              autoPlay={item.taken}
-              ref={animation}
-              style={{
-                width: 40,
-                height: 40,
-              }}
-              // Find more Lottie files at https://lottiefiles.com/featured
-              source={require('../assets/hrURtBKGzl.json')}
-              loop={false}
-              speed={2}
-            />
-
+            {item.taken ? 
+            <Ionicons name={'checkmark-circle-outline'} style={{marginLeft: 4}} size={40} color={colors.primary} />
+            : <View></View>
+            }
         </TouchableOpacity>
 
       </Swipe>
