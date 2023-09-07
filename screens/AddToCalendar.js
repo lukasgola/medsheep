@@ -198,12 +198,6 @@ export default function AddToCalendar({navigation}){
     };
 
 
-    const hook = () => {
-        console.log(time)
-    }
-
-
-
     const onCreateEvent = () => {
         console.log('time: ' + time.getHours())
         Alert.alert('New Event', 'Do you want to public this event?', [
@@ -305,6 +299,23 @@ export default function AddToCalendar({navigation}){
                     }}>Wypełnij szczegóły</Text>
                 </View>
 
+                
+                <TouchableOpacity 
+                    onPress={() => navigation.navigate('Apteczka')}
+                    style={{
+                        width: '100%', 
+                        height: 50, 
+                        marginTop: 10,
+                        flexDirection: 'row',
+                        backgroundColor: colors.grey_l,
+                        borderRadius: 10,
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        borderColor: '#e8e8e8',
+                        borderWidth: 1
+                }}>
+
+                </TouchableOpacity>
                 
 
                 <DateTimePicker
