@@ -1,10 +1,9 @@
 import 'react-native-reanimated'
 import 'react-native-gesture-handler'
 import { useLayoutEffect, useState } from 'react';
-import { Text, View, SafeAreaView, FlatList, TouchableOpacity, Image } from 'react-native';
+import { Text, View, SafeAreaView, FlatList, TouchableOpacity, LayoutAnimation, Image } from 'react-native';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import styles from '../styles/styles';
 
 import Animated from 'react-native-reanimated';
 
@@ -307,10 +306,23 @@ export default function Medicines({navigation}) {
         placeholder: 'Szukaj',
         onChangeText: (event) => {
           searchFilterFunction(event.nativeEvent.text);
+          LayoutAnimation.configureNext(layoutAnimConfig)
         },
       },
     });
   }, [navigation]);
+
+  const layoutAnimConfig = {
+    duration: 300,
+    update: {
+      type: LayoutAnimation.Types.easeInEaseOut, 
+    },
+    delete: {
+      duration: 100,
+      type: LayoutAnimation.Types.easeInEaseOut,
+      property: LayoutAnimation.Properties.opacity,
+    },
+  };
 
   const searchFilterFunction = (text) => {
     if(text){ 
@@ -342,14 +354,16 @@ export default function Medicines({navigation}) {
     return(
       <TouchableOpacity 
       onPress={() => navigation.navigate('Lek', {item: item})}
-      style={[styles.shadow,{
+      style={[{
         backgroundColor: colors.background,
         width: '90%',
         height: 100,
         marginLeft: '5%',
-        borderRadius: 20,
-        marginTop: 20,
+        borderRadius: 10,
+        marginTop: 10,
         flexDirection: 'row',
+        borderWidth: 1,
+        borderColor: colors.grey
       }]}>
         <Animated.Image style={{
           width: 70,
