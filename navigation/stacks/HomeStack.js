@@ -13,6 +13,7 @@ import Doctor from '../../screens/Doctor';
 import Search from '../../screens/Search';
 import Results from '../../screens/Results';
 import AddToCalendar from '../../screens/AddToCalendar';
+import Kit from '../../screens/Kit';
 
 
 const Stack = createNativeStackNavigator();
@@ -57,6 +58,7 @@ export default function HomeStack({navigation}) {
           presentation: 'modal'        
         }}
         />
+      <Stack.Screen name="Apteczka" component={Kit} />
     </Stack.Navigator>
   );
 }

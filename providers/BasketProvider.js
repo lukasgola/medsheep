@@ -28,6 +28,7 @@ export const BasketProvider = (props) => {
 
     // Listening to changes of device appearance while in run-time
     React.useEffect(() => {
+        console.log('basket')
         setBasket([]);
         if(auth.currentUser){
             getBasket();

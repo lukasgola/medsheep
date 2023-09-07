@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react'
 import { View, Text, FlatList, TouchableOpacity, Animated, StyleSheet, LayoutAnimation } from 'react-native'
 
 import { useBasket } from '../providers/BasketProvider';
+import { useKit } from '../providers/KitProvider';
 import { useTheme } from '../theme/ThemeProvider';
 
 import CartItem from '../components/CartItem';
@@ -10,13 +11,14 @@ import Amounter from '../components/Amounter';
 import Swipe from '../components/Swipe';
 
 //Firebase
-import { query, collection, getDocs, where, updateDoc  } from 'firebase/firestore';
+import { query, collection, getDocs, where, updateDoc, addDoc  } from 'firebase/firestore';
 import { removeFromBasket, db, auth } from '../firebase/firebase-config';
 
 export default function Basket({navigation}) {
 
 
   const { basket, setBasket, setNewBasket } = useBasket();
+  const { kit, setKit, setNewKit } = useKit(); 
   const { colors } = useTheme();
 
   const [ cumulation, setCumulation ] = useState(0);
@@ -91,7 +93,7 @@ export default function Basket({navigation}) {
   };
 
 
-  const onConfirm = async () => {
+  const onModify = async () => {
 
     try {
       const q = query(collection(db, "users", auth.currentUser.uid, "basket"), where("product", "==", item.product));
@@ -122,6 +124,23 @@ export default function Basket({navigation}) {
 
     test.close();
 
+  }
+
+
+  const onOrder = async () => {
+    basket.map(async(item) => {
+      try {
+        await addDoc(collection(db, `users/${auth.currentUser.uid}/kit`), {
+            product: item.product,
+            number: item.number,
+            price: item.price
+        }).then(function(docRef) {
+            setKit({id: docRef.id, product: item, number: number, price: price})
+        });
+        } catch (e) {
+        console.error("Error adding document: ", e);
+      }
+    })
   }
 
   const BasketItem = ({item, index}) => {
@@ -179,6 +198,7 @@ export default function Basket({navigation}) {
         </View>
         
         <TouchableOpacity 
+            onPress={() => onOrder()}
             style={{ 
                 width: '50%',
                 height: 50,
@@ -208,7 +228,7 @@ export default function Basket({navigation}) {
         visible={modalVisible} 
         setModalVisible={setModalVisible}
         text={'Zarządzaj lekiem'}
-        onConfirm={onConfirm}
+        onConfirm={onModify}
       >
         
         {item ? 

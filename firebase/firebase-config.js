@@ -113,6 +113,28 @@ export async function addToBasket(product, number, price){
     }
   }
 
+  export async function addToKit(product, number, price){
+    try {
+      await addDoc(collection(db, `users/${auth.currentUser.uid}/kit`), {
+        product: product,
+        number: number,
+        price: price
+      }).then(function(docRef) {
+        console.log(docRef.id)
+      });
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
+  }
+
+  export async function removeFromKit(id){
+    try {
+      await deleteDoc(doc(db, `users/${auth.currentUser.uid}/kit/${id}`))
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
+  }
+
   export async function addToCalendar(event){
     try {
       await addDoc(collection(db, `users/${auth.currentUser.uid}/events`), {

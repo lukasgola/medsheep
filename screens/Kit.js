@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { View, Text, FlatList, TouchableOpacity, Animated, StyleSheet, LayoutAnimation } from 'react-native'
 
-import { useBasket } from '../providers/BasketProvider';
+import { useKit } from '../providers/KitProvider';
 import { useTheme } from '../theme/ThemeProvider';
 
 import CartItem from '../components/CartItem';
@@ -11,12 +11,12 @@ import Swipe from '../components/Swipe';
 
 //Firebase
 import { query, collection, getDocs, where, updateDoc  } from 'firebase/firestore';
-import { removeFromBasket, db, auth } from '../firebase/firebase-config';
+import { removeFromKit, db, auth } from '../firebase/firebase-config';
 
-export default function FirstAidKit({navigation}) {
+export default function Kit({navigation}) {
 
 
-  const { basket, setBasket, setNewBasket } = useBasket();
+  const { kit, setKit, setNewKit } = useKit();
   const { colors } = useTheme();
 
   const [ cumulation, setCumulation ] = useState(0);
@@ -45,11 +45,12 @@ export default function FirstAidKit({navigation}) {
 
   useEffect(() =>{
     setCumulation(0);
-    basket.map(item => (
+    kit.map(item => (
       setCumulation((cumulation) => (parseFloat(cumulation) + parseFloat(item.price)).toFixed(2))
     ))
-    setItemsNumber(basket.length);
-  },[basket])
+    setItemsNumber(kit.length);
+    console.log(kit)
+  },[kit])
 
   const layoutAnimConfig = {
     duration: 300,
@@ -72,10 +73,10 @@ export default function FirstAidKit({navigation}) {
   }
 
   const onDeleteClick = ({ item, index }) => {
-    let a = basket;
+    let a = kit;
     a.splice(index, 1);
-    setNewBasket([...a]);
-    removeFromBasket(item.id);
+    setNewKit([...a]);
+    removeFromKit(item.id);
     LayoutAnimation.configureNext(layoutAnimConfig)
   };
 
@@ -94,20 +95,20 @@ export default function FirstAidKit({navigation}) {
   const onConfirm = async () => {
 
     try {
-      const q = query(collection(db, "users", auth.currentUser.uid, "basket"), where("product", "==", item.product));
+      const q = query(collection(db, "users", auth.currentUser.uid, "kit"), where("product", "==", item.product));
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach((doc) => {
 
-        let tempBasket = [...basket];
+        let tempKit = [...kit];
 
-        for(let i = 0; i < tempBasket.length; i++){
-            if(tempBasket[i].id == doc.id){
-                tempBasket[i].number = number;
-                tempBasket[i].price = price;
+        for(let i = 0; i < tempKit.length; i++){
+            if(tempKit[i].id == doc.id){
+                tempKit[i].number = number;
+                tempKit[i].price = price;
             }
         }
 
-        setNewBasket(tempBasket);
+        setNewKit(tempKit);
         
         updateDoc(doc.ref, {
           number: number,
@@ -124,7 +125,7 @@ export default function FirstAidKit({navigation}) {
 
   }
 
-  const BasketItem = ({item, index}) => {
+  const KitItem = ({item, index}) => {
     
     return(
       <Swipe
@@ -195,8 +196,8 @@ export default function FirstAidKit({navigation}) {
         </TouchableOpacity>
       </View>
       <FlatList
-        data={basket}
-        renderItem={({item, index}) => BasketItem({item, index})}
+        data={kit}
+        renderItem={({item, index}) => KitItem({item, index})}
         keyExtractor={item => item.id}
         style={{
           width: '100%',

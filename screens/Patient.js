@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, FlatList } from 'react-native';
 
-import {useTheme} from '../theme/ThemeProvider';
+import { useTheme } from '../theme/ThemeProvider';
 import { useCurrentUser } from '../providers/CurrentUserProvider';
+import { useKit } from '../providers/KitProvider';
 import { useBasket } from '../providers/BasketProvider';
 
 import CartItem from '../components/CartItem';
@@ -17,8 +18,9 @@ import { auth } from '../firebase/firebase-config';
 
 export default function Patient({navigation}) {
 
-  const {colors} = useTheme();
+  const { colors } = useTheme();
   const { currentUser } = useCurrentUser();
+  const { kit } = useKit();
   const { basket } = useBasket();
 
   const [ cumulation, setCumulation ] = useState(0);
@@ -143,7 +145,7 @@ export default function Patient({navigation}) {
               fontWeight: 'bold',
               marginTop: 15,
               marginBottom: 10
-          }}>Koszyk</Text>
+          }}>Apteczka</Text>
 
           <FlatList
             data={basket.slice(0,3)}
@@ -169,7 +171,9 @@ export default function Patient({navigation}) {
             }}>{cumulation}</Text>
           </View>
 
-          <TouchableOpacity style={styles2.viewMore}>
+          <TouchableOpacity 
+            onPress={() => navigation.navigate('Apteczka')}
+            style={styles2.viewMore}>
             <Text style={{
               fontSize: 14,
               color: colors.text,
