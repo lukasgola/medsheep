@@ -19,6 +19,8 @@ export default function Kit({navigation}) {
   const { kit, setKit, setNewKit } = useKit();
   const { colors } = useTheme();
 
+  //const [ kit, setKit ] = useState([]);
+
   const [ cumulation, setCumulation ] = useState(0);
   const [ itemsNumber, setItemsNumber ] = useState(0);
 
@@ -43,14 +45,18 @@ export default function Kit({navigation}) {
       setPrice((item.product.price*(amount)).toFixed(2))
   }
 
-  useEffect(() =>{
-    setCumulation(0);
-    kit.map(item => (
-      setCumulation((cumulation) => (parseFloat(cumulation) + parseFloat(item.price)).toFixed(2))
-    ))
-    setItemsNumber(kit.length);
-    console.log(kit)
-  },[kit])
+  const getKit = async () => {
+    const querySnapshot = await getDocs(collection(db, "users", auth.currentUser.uid, "kit"));
+    querySnapshot.forEach((doc) => {
+        // doc.data() is never undefined for query doc snapshots
+        const data = {
+            ...doc.data(),
+            id: doc.id,
+        }
+        setKit(old => [...old, data])
+    });
+    
+  }
 
   const layoutAnimConfig = {
     duration: 300,

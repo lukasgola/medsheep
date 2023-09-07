@@ -28,7 +28,6 @@ export const KitProvider = (props) => {
 
     // Listening to changes of device appearance while in run-time
     React.useEffect(() => {
-        console.log('kit')
         setKit([]);
         if(auth.currentUser){
             getKit();

@@ -10,6 +10,7 @@ import { useTheme } from './theme/ThemeProvider';
 
 import { CurrentUserProvider } from './providers/CurrentUserProvider';
 import { BasketProvider } from './providers/BasketProvider';
+import { KitProvider } from './providers/KitProvider';
 
 
 //Stacks
@@ -65,7 +66,13 @@ export default function App() {
       <ThemeProvider>
         <CurrentUserProvider>
           
-            {isUser == 2 ? <BasketProvider><BottomTabs/></BasketProvider> : isUser == 0  ? <Loading /> : <LoginStack/> }
+            {isUser == 2 ? 
+              <BasketProvider>
+                <KitProvider>
+                  <BottomTabs/>
+                </KitProvider>
+              </BasketProvider> 
+              : isUser == 0  ? <Loading /> : <LoginStack/> }
           
         </CurrentUserProvider>
       </ThemeProvider>
