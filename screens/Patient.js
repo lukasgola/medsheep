@@ -28,10 +28,10 @@ export default function Patient({navigation}) {
 
   useEffect(() =>{
     setCumulation(0);
-    basket.map(item => (
+    kit.map(item => (
       setCumulation((cumulation) => (parseFloat(cumulation) + parseFloat(item.price)).toFixed(2))
     ))
-  },[basket])
+  },[kit])
 
   const OrderItem = ({item}) => {
     return(
@@ -77,7 +77,8 @@ export default function Patient({navigation}) {
             backgroundColor: colors.background,
             flexDirection: 'row',
             padding: 15,
-            alignItems: 'center'
+            alignItems: 'center',
+            borderColor: colors.grey
           }]}
         >
           <Image 
@@ -138,6 +139,7 @@ export default function Patient({navigation}) {
         
         <View style={[styles2.block,{
           backgroundColor: colors.background,
+          borderColor: colors.grey
         }]}>
           <Text style={{
               fontSize: 20,
@@ -148,7 +150,7 @@ export default function Patient({navigation}) {
           }}>Apteczka</Text>
 
           <FlatList
-            data={basket.slice(0,3)}
+            data={kit.slice(0,3)}
             renderItem={({item}) => <CartItem item={item.product} number={item.number} price={item.price} />}
             keyExtractor={item => item.id}
             scrollEnabled={false}
@@ -181,13 +183,22 @@ export default function Patient({navigation}) {
             }}>Zobacz więcej...</Text>
           </TouchableOpacity>
         </View>
-        <View style={[styles2.block, { marginBottom: 20}]}>
-          <TouchableOpacity
-            onPress={() => auth.signOut().then(() => console.log('User signed out!'))}
-          >
-            <Text>Wyloguj</Text>
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity
+          style={[styles2.block, {
+            height: 50,
+            borderColor: colors.grey,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: colors.background
+          }]}
+          onPress={() => auth.signOut().then(() => console.log('User signed out!'))}
+        >
+          <Text style={{
+            color: colors.text,
+            fontSize: 16,
+            fontWeight: 'bold'
+          }}>Wyloguj</Text>
+        </TouchableOpacity>
     </ScrollView>
   );
 }
@@ -195,11 +206,11 @@ export default function Patient({navigation}) {
 
 const styles2 = StyleSheet.create({
   block: {
-    ...styles.shadow,
     width: '100%',
-    borderRadius: 20,
+    borderRadius: 10,
     marginTop: 20,
     paddingHorizontal: 20,
+    borderWidth: 1,
   },
   viewMore:{
     width: '50%',
