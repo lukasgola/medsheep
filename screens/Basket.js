@@ -128,6 +128,7 @@ export default function Basket({navigation}) {
 
 
   const onOrder = async () => {
+    let index = 0
     basket.map(async(item) => {
       try {
         await addDoc(collection(db, `users/${auth.currentUser.uid}/kit`), {
@@ -135,8 +136,11 @@ export default function Basket({navigation}) {
             number: item.number,
             price: item.price
         }).then(function(docRef) {
-            setKit({id: docRef.id, product: item, number: number, price: price})
+            setKit({id: docRef.id, product: item.product, number: item.number, price: item.price})
         });
+
+        onDeleteClick({item,index})
+        index = index + 1;
         } catch (e) {
         console.error("Error adding document: ", e);
       }

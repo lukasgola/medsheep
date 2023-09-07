@@ -109,7 +109,7 @@ export async function addToBasket(product, number, price){
     try {
       await deleteDoc(doc(db, `users/${auth.currentUser.uid}/basket/${id}`))
     } catch (e) {
-      console.error("Error adding document: ", e);
+      console.error("Error deleting document: ", e);
     }
   }
 
