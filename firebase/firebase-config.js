@@ -165,7 +165,7 @@ export async function addToBasket(product, number, price){
 
   export async function setDates(id, event){
     try {
-      for(var i=event.startTimestamp; i <= event.endTimestamp; i+=86400000){
+      for(var i=event.startTimestamp; i <= event.endTimestamp; i+=((event.freq+1) * 86400000)){
         await addDoc(collection(db, `users/${auth.currentUser.uid}/events/${id}/calendar`), {
           id: i,
           taken: false

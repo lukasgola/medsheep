@@ -166,7 +166,7 @@ export default function AddToCalendar({navigation}){
     }, [title, time, freq, dateStart, dateEnd, customFreq, navigation]);
 
     const handleFreqConfirm = () => {
-        setFreqString(freq);
+        console.log(freq)
         if ( freq == 'Niestandardowe' && freqString != 'Niestandardowe'){
             setTimeout(() => {
                 springIn();
@@ -214,6 +214,7 @@ export default function AddToCalendar({navigation}){
 
 
     const onCreateEvent = () => {
+        console.log(freq)
         Alert.alert('New Event', 'Do you want to public this event?', [
         {
             text: 'Cancel',
@@ -232,15 +233,17 @@ export default function AddToCalendar({navigation}){
 
                 const takenArray = [];
 
-                for(var i=dateS.getTime(); i <= dateE.getTime(); i+=86400000){
+                for(var i=dateS.getTime(); i <= dateE.getTime(); i+=((freq+1) * 86400000)){
                     takenArray.push({
                         id: i,
                         taken: false
                     })
                 }
 
+                console.log(takenArray.length)
+
                 const event = {
-                    title: title,
+                    title: title == '' ? medString : title,
                     freq: freq,
                     dateStart: dateS,
                     dateEnd: dateE,
@@ -320,11 +323,12 @@ export default function AddToCalendar({navigation}){
                     testID="dateTimePicker"
                     value={time}
                     mode={'time'}
-                    is24Hour={false}
                     display="spinner"
                     onChange={onChangeTime}
                     textColor={colors.text}
-                    minuteInterval={15}
+                    minuteInterval={1}
+                    accentColor={colors.primary}
+                    locale='es-ES'
                 />
 
                 <TouchableOpacity 
@@ -371,22 +375,6 @@ export default function AddToCalendar({navigation}){
                         <Ionicons name={'chevron-forward-outline'} size={20} color={colors.grey_d}/>
 
                     </View>
-                    <BottomSheet 
-                        visible={isFreqPickerVisible} 
-                        setModalVisible={setFreqPickerVisible}
-                        text={'Podaj częstotliwość'}
-                        onConfirm={handleFreqConfirm}
-                    >
-                        <Picker
-                            selectedValue={freq}
-                            onValueChange={(itemValue, itemIndex) =>
-                                setFreq(itemValue)
-                            }>
-                                {frequencies.map((item) => (
-                                    <Picker.Item label={item.text.toString()} value={item.text} key={item.id} />
-                                ))}
-                        </Picker>
-                    </BottomSheet>
                     
                 </TouchableOpacity>
 
@@ -441,9 +429,11 @@ export default function AddToCalendar({navigation}){
                         onConfirm={handleFreqConfirm}
                     >
                         <Picker
-                            selectedValue={freq}
-                            onValueChange={(itemValue, itemIndex) =>
-                                setFreq(itemValue)
+                            selectedValue={freqString}
+                            onValueChange={(itemValue, itemIndex) =>{
+                                setFreq(itemIndex)
+                                setFreqString(itemValue)
+                            }
                             }>
                                 {frequencies.map((item) => (
                                     <Picker.Item label={item.text.toString()} value={item.text} key={item.id} />

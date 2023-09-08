@@ -93,11 +93,16 @@ export default function MainCalendar() {
       const item = updatedArray[index];
       const value = await getTakenArray(item.id, timestamp);
       updatedArray[index].taken = value;
+      if(value === 0){
+        updatedArray.splice(index, 1);
+        index--;
+        console.log(updatedArray);
+      }
     }
 
-    filtered.sort((a, b) => (a.timeHour < b.timeHour) ? -1 : (a.timeHour > b.timeHour) ? 1 : ((a.timeHour == b.timeHour) && (a.timeMinutes < b.timeMinutes) ? -1 : 0));
+    updatedArray.sort((a, b) => (a.timeHour < b.timeHour) ? -1 : (a.timeHour > b.timeHour) ? 1 : ((a.timeHour == b.timeHour) && (a.timeMinutes < b.timeMinutes) ? -1 : 0));
 
-    setEvents(filtered);
+    setEvents(updatedArray);
 
     let amount = 0;
     for( let i = 0; i<filtered.length;i++){
