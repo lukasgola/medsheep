@@ -2,7 +2,10 @@ import React, {useState, useEffect, useRef } from 'react';
 import {View, KeyboardAvoidingView, Alert, TouchableOpacity, Dimensions, ScrollView, Text, Animated, TextInput} from 'react-native';
 
 //Hooks
-import {useTheme} from '../theme/ThemeProvider';
+import { useTheme } from '../theme/ThemeProvider';
+import { useData } from '../providers/DataProvider';
+
+import { useIsFocused } from '@react-navigation/native';
 
 import BottomSheet from '../components/BottomSheet';
 
@@ -22,6 +25,9 @@ export default function AddToCalendar({navigation}){
     const width = Dimensions.get('window').width;
 
     const {colors} = useTheme();
+    const {data, setData} = useData();
+
+    const isFocused = useIsFocused();
 
     const frequencies = [
         {
@@ -123,6 +129,13 @@ export default function AddToCalendar({navigation}){
 
     const fontSize = 14;
 
+    useEffect(() => {
+        setData({});
+        if(data.name){
+            setMedString(data.name)
+        }
+    }, [isFocused])
+
     React.useLayoutEffect(() => {
         navigation.setOptions({
             headerRight: () => (
@@ -202,7 +215,6 @@ export default function AddToCalendar({navigation}){
 
 
     const onCreateEvent = () => {
-        console.log('time: ' + time.getHours())
         Alert.alert('New Event', 'Do you want to public this event?', [
         {
             text: 'Cancel',
@@ -330,7 +342,7 @@ export default function AddToCalendar({navigation}){
                         borderColor: '#e8e8e8',
                         borderWidth: 1,
                         
-                    }}>
+                }}>
                     <View
                         style={{
                             width: 40,
@@ -360,7 +372,6 @@ export default function AddToCalendar({navigation}){
                         <Ionicons name={'chevron-forward-outline'} size={20} color={colors.grey_d}/>
 
                     </View>
-
                     <BottomSheet 
                         visible={isFreqPickerVisible} 
                         setModalVisible={setFreqPickerVisible}
@@ -377,6 +388,7 @@ export default function AddToCalendar({navigation}){
                                 ))}
                         </Picker>
                     </BottomSheet>
+                    
                 </TouchableOpacity>
 
                 <TouchableOpacity 

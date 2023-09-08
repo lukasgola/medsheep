@@ -3,6 +3,7 @@ import { View, Text, FlatList, TouchableOpacity, Animated, StyleSheet, LayoutAni
 
 import { useKit } from '../providers/KitProvider';
 import { useTheme } from '../theme/ThemeProvider';
+import { useData } from '../providers/DataProvider';
 
 import CartItem from '../components/CartItem';
 import BottomSheet from '../components/BottomSheet';
@@ -18,6 +19,7 @@ export default function Kit({navigation, route}) {
 
   const { kit, setKit, setNewKit } = useKit();
   const { colors } = useTheme();
+  const { data, setData } = useData();
 
   //const [ kit, setKit ] = useState([]);
 
@@ -61,7 +63,8 @@ export default function Kit({navigation, route}) {
 
   const onSettingsClick = ({item, index}) => {
   if(route.params.chooseMode){
-    setSelectedItem(item)
+    setSelectedItem(item);
+    setData(item.product);
   }
   else{
     setItem(item)
