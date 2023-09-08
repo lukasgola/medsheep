@@ -200,6 +200,7 @@ export async function addToBasket(product, number, price, basket, setBasket, set
             console.error("Error adding document: ", e);
         }
     }
+    
   }
 
   export async function removeFromKit(id){
