@@ -174,7 +174,7 @@ export default function Patient({navigation}) {
           </View>
 
           <TouchableOpacity 
-            onPress={() => navigation.navigate('Apteczka')}
+            onPress={() => navigation.navigate('Apteczka', {chooseMode: false})}
             style={styles2.viewMore}>
             <Text style={{
               fontSize: 14,

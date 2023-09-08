@@ -99,8 +99,7 @@ export default function AddToCalendar({navigation}){
     ]
 
     const [ title, setTitle ] = useState('');
-
-    const [ med, setMed ] = useState({});
+    
     const [ medString, setMedString ] = useState('Wybierz')
 
     const [freq, setFreq] = useState(1);

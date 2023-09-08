@@ -91,17 +91,56 @@ export async function setPersonalData(uid, birth, height, weight, blood){
 
 
 
-export async function addToBasket(product, number, price){
-    try {
-      await addDoc(collection(db, `users/${auth.currentUser.uid}/basket`), {
-        product: product,
-        number: number,
-        price: price
-      }).then(function(docRef) {
-        console.log(docRef.id)
-      });
-    } catch (e) {
-      console.error("Error adding document: ", e);
+export async function addToBasket(product, number, price, basket, setBasket, setNewBasket){
+
+    const result = basket.filter((element) => element.product.name == product.name);
+        
+    if(result.length !== 0){
+        try {
+            const q = query(collection(db, "users", auth.currentUser.uid, "basket"), where("product", "==", product));
+            const querySnapshot = await getDocs(q);
+            querySnapshot.forEach((doc) => {
+                // doc.data() is never undefined for query doc snapshots
+                const data = {
+                    ...doc.data(),
+                    id: doc.id,
+                }
+
+                let tempBasket = [...basket];
+
+                for(let i = 0; i < tempBasket.length; i++){
+                    if(tempBasket[i].id == doc.id){
+                        tempBasket[i].number = parseFloat(data.number) + parseFloat(number);
+                        tempBasket[i].price = parseFloat(data.price) + parseFloat(price);
+                    }
+                }
+
+                setNewBasket(tempBasket);
+
+      
+                updateDoc(doc.ref, {
+                  number: parseFloat(data.number) + parseFloat(number),
+                  price: parseFloat(data.price) + parseFloat(price)
+                });
+                
+            });
+      
+          } catch (e) {
+            console.error("Error updating document: ", e);
+          }
+    }
+    else{
+        try {
+            await addDoc(collection(db, `users/${auth.currentUser.uid}/basket`), {
+                product: product,
+                number: number,
+                price: price
+            }).then(function(docRef) {
+                setBasket({id: docRef.id, product: product, number: number, price: price})
+            });
+            } catch (e) {
+            console.error("Error adding document: ", e);
+        }
     }
   }
 
@@ -113,17 +152,53 @@ export async function addToBasket(product, number, price){
     }
   }
 
-  export async function addToKit(product, number, price){
-    try {
-      await addDoc(collection(db, `users/${auth.currentUser.uid}/kit`), {
-        product: product,
-        number: number,
-        price: price
-      }).then(function(docRef) {
-        console.log(docRef.id)
-      });
-    } catch (e) {
-      console.error("Error adding document: ", e);
+  export async function addToKit(item, kit, setKit, setNewKit){
+
+    const result = kit.filter((element) => element.product.name == item.product.name);
+        
+    if(result.length !== 0){
+        try {
+            const q = query(collection(db, "users", auth.currentUser.uid, "kit"), where("product", "==", item.product));
+            const querySnapshot = await getDocs(q);
+            querySnapshot.forEach((doc) => {
+                // doc.data() is never undefined for query doc snapshots
+                const data = {
+                    ...doc.data(),
+                    id: doc.id,
+                }
+
+                let tempKit = [...kit];
+
+                for(let i = 0; i < tempKit.length; i++){
+                    if(tempKit[i].id == doc.id){
+                        tempKit[i].pillNumber = parseFloat(data.pillNumber) + (parseFloat(item.product.amount) * parseFloat(item.number));
+                    }
+                }
+
+                setNewKit(tempKit);
+
+      
+                updateDoc(doc.ref, {
+                  pillNumber: parseFloat(data.pillNumber) + (parseFloat(item.product.amount) * parseFloat(item.number)),
+                });
+                
+            });
+      
+          } catch (e) {
+            console.error("Error updating document: ", e);
+          }
+    }
+    else{
+        try {
+            await addDoc(collection(db, `users/${auth.currentUser.uid}/kit`), {
+                product: item.product,
+                pillNumber: item.product.amount * item.number,
+            }).then(function(docRef) {
+                setKit({id: docRef.id, product: item.product, pillNumber: item.product.amount * item.number})
+            });
+            } catch (e) {
+            console.error("Error adding document: ", e);
+        }
     }
   }
 

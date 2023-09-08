@@ -32,6 +32,8 @@ export default function Kit({navigation, route}) {
 
   const [ test, setTest ] = useState(null);
 
+  const [ chooseMode, setChooseMode ] = useState(route.params.chooseMode ? route.params.chooseMode : false)
+
   const goUp = (amount) => {
     setNumber(amount)
     setPrice((item.product.price*(number+1)).toFixed(2))
@@ -57,12 +59,8 @@ export default function Kit({navigation, route}) {
     },
   };
 
-  useEffect(() => {
-    console.log(data)
-  })
-
   const onSettingsClick = ({item, index}) => {
-  if(route.params.chooseMode){
+  if(chooseMode){
     setData(item.product);
   }
   else{
@@ -137,7 +135,7 @@ export default function Kit({navigation, route}) {
         trashClick={() => onDeleteClick({item, index})}
         closeRow={() => closeRow(index)}
         row={row}
-        chooseMode={route.params.chooseMode}
+        chooseMode={chooseMode}
         style={{
           width: '90%',
           height: 65,
@@ -158,52 +156,6 @@ export default function Kit({navigation, route}) {
 
   return (
     <View>
-      {!route.params.chooseMode ? 
-      <View style={{
-        position: 'absolute',
-        backgroundColor: colors.background,
-        width: '100%',
-        height: 70,
-        bottom: 0,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        paddingHorizontal: 10,
-        zIndex: 1
-      }}>
-        <View style={{
-          width: '50%',
-          justifyContent: 'center',
-          alignItems: 'center'
-        }}>
-          <Text style={{
-            fontSize: 20,
-          }}>{cumulation} zł</Text>
-          <Text style={{
-            fontSize: 12,
-            color: colors.grey_d
-          }}>{itemsNumber} produkty</Text>
-        </View>
-        
-        <TouchableOpacity 
-            style={{ 
-                width: '50%',
-                height: 50,
-                justifyContent: 'center', 
-                alignItems: 'center', 
-                borderRadius: 10,
-                backgroundColor: colors.primary,
-            }}>
-            <Text style={{
-                color: colors.background, 
-                fontWeight: 'bold',
-                fontSize: 16
-            }}>Zamów</Text>
-        </TouchableOpacity>
-      </View>
-       :
-       <View></View>
-     }
       <FlatList
         data={kit}
         renderItem={({item, index}) => KitItem({item, index})}

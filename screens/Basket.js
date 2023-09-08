@@ -12,7 +12,7 @@ import Swipe from '../components/Swipe';
 
 //Firebase
 import { query, collection, getDocs, where, updateDoc, addDoc  } from 'firebase/firestore';
-import { removeFromBasket, db, auth } from '../firebase/firebase-config';
+import { removeFromBasket, db, auth, addToKit } from '../firebase/firebase-config';
 
 export default function Basket({navigation}) {
 
@@ -128,27 +128,12 @@ export default function Basket({navigation}) {
 
 
   const onOrder = async () => {
-    let index = 0
     basket.map(async(item) => {
-      try {
-        await addDoc(collection(db, `users/${auth.currentUser.uid}/kit`), {
-            product: item.product,
-            number: item.number,
-            price: item.price
-        }).then(function(docRef) {
-            setKit({id: docRef.id, product: item.product, number: item.number, price: item.price})
-        });
-
-        onDeleteClick({item,index})
-        index = index + 1;
-        } catch (e) {
-        console.error("Error adding document: ", e);
-      }
+      addToKit(item, kit, setKit, setNewKit);
     })
   }
 
   const BasketItem = ({item, index}) => {
-    
     return(
       <Swipe
         index={index}

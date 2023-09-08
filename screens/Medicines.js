@@ -24,7 +24,7 @@ import { addToBasket } from '../firebase/firebase-config';
 export default function Medicines({navigation}) {
 
   const {colors} = useTheme();
-  const {basket, setBasket} = useBasket();
+  const {basket, setBasket, setNewBasket} = useBasket();
 
   const DATA = [
     {
@@ -346,8 +346,7 @@ export default function Medicines({navigation}) {
   }
 
   const onAddToBasket = () => {
-    setBasket({product: selectedItem, number: number, price: price});
-    addToBasket(selectedItem, number, price);
+      addToBasket(selectedItem, number, price, basket, setBasket, setNewBasket)
   }
 
   const MedItem = ({item}) => {
