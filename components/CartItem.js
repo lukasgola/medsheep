@@ -23,37 +23,66 @@ const CartItem = (props) => {
             height: 50
           }}
         />
+        {!props.pillNumber ? 
         <View style={{
-          paddingLeft: 10,
-          width: 90,
+          width: '100%',
+          flexDirection: 'row',
+          alignItems: 'center',
+          backgroundColor: 'red'
         }}>
-          <Text style={{
-            fontSize: 14,
-            color: colors.text,
-            fontWeight: 'bold',
-          }}>{props.item ? props.item.name : 'None'}</Text>
-          <Text style={{
-            fontSize: 14,
-            color: colors.text
-          }}>{props.item ? props.item.amount : 'None'} tab.</Text>
+          <View style={{
+            paddingLeft: 10,
+            width: 90,
+          }}>
+            <Text style={{
+              fontSize: 14,
+              color: colors.text,
+              fontWeight: 'bold',
+            }}>{props.item ? props.item.name : 'None'}</Text>
+            <Text style={{
+              fontSize: 14,
+              color: colors.text
+            }}>{props.item ? props.item.amount : 'None'} tab.</Text>
+          </View>
+          <View style={{
+            width: '55%',
+            paddingLeft: '15%',
+            justifyContent:'space-between',
+            flexDirection: 'row',
+          }}>
+            <Text style={{
+                fontSize: 14,
+                color: colors.text,
+            }}>x{props.number ? props.number : 0 }</Text>
+            <Text style={{
+              fontSize: 14,
+              color: colors.text,
+              marginLeft: '10%',
+
+          }}>{props.price ? props.price : 0} zł</Text>
+          </View>
         </View>
+        : 
         <View style={{
-          width: '55%',
-          paddingLeft: '15%',
-          justifyContent:'space-between',
+          width: '80%',
           flexDirection: 'row',
         }}>
+          <View style={{
+            paddingLeft: 10,
+            width: '70%',
+          }}>
+            <Text style={{
+              fontSize: 14,
+              color: colors.text,
+              fontWeight: 'bold',
+            }}>{props.item ? props.item.name : 'None'}</Text>
+          </View>
           <Text style={{
               fontSize: 14,
               color: colors.text,
-          }}>x{props.number ? props.number : 0 }</Text>
-          <Text style={{
-            fontSize: 14,
-            color: colors.text,
-            marginLeft: '10%',
-
-        }}>{props.price ? props.price : 0} zł</Text>
+          }}>{props.pillNumber ? props.pillNumber : 0 } tab.</Text>
         </View>
+        }
         
         
       </View>

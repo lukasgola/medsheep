@@ -21,9 +21,6 @@ export default function Kit({navigation, route}) {
   const { colors } = useTheme();
   const { data, setData } = useData();
 
-  const [ cumulation, setCumulation ] = useState(0);
-  const [ itemsNumber, setItemsNumber ] = useState(0);
-
   const [ modalVisible, setModalVisible ] = useState(false);
 
   const [ item, setItem ] = useState(null);
@@ -32,6 +29,7 @@ export default function Kit({navigation, route}) {
 
   const [ test, setTest ] = useState(null);
 
+  const [ kitMode, setKitMode ] = useState(route.params.kitMode ? route.params.kitMode : false)
   const [ chooseMode, setChooseMode ] = useState(route.params.chooseMode ? route.params.chooseMode : false)
 
   const goUp = (amount) => {
@@ -149,7 +147,7 @@ export default function Kit({navigation, route}) {
           borderColor: data == item.product ? colors.primary : colors.grey
         }}
       >
-        <CartItem item={item.product} number={item.number} price={item.price} />
+        <CartItem item={item.product} number={item.number} price={item.price} pillNumber={item.pillNumber} />
       </Swipe>
     ) 
   }

@@ -96,7 +96,6 @@ export default function MainCalendar() {
       if(value === 0){
         updatedArray.splice(index, 1);
         index--;
-        console.log(updatedArray);
       }
     }
 
