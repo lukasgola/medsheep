@@ -78,7 +78,7 @@ export default function Basket({navigation}) {
     a.splice(index, 1);
     setNewBasket([...a]);
     removeFromBasket(item.id);
-    LayoutAnimation.configureNext(layoutAnimConfig)
+    LayoutAnimation.configureNext(layoutAnimConfig);
   };
 
   let row = [];
@@ -88,7 +88,6 @@ export default function Basket({navigation}) {
     if (prevOpenedRow && prevOpenedRow !== row[index]) {
       prevOpenedRow.close();
     }
-    
     prevOpenedRow = row[index];
   };
 
@@ -127,10 +126,64 @@ export default function Basket({navigation}) {
   }
 
 
-  const onOrder = async () => {
+  const onOrder = () => {
+    let index = 0;
+    let tempItems = kit;
     basket.map(async(item) => {
-      addToKit(item, kit, setKit, setNewKit);
+      const result = tempItems.filter((element) => element.product.name == item.product.name);
+        
+    if(result.length !== 0){
+      console.log('dziala 1');
+        try {
+            const q = query(collection(db, "users", auth.currentUser.uid, "kit"), where("product", "==", item.product));
+            const querySnapshot = await getDocs(q);
+            querySnapshot.forEach((doc) => {
+                // doc.data() is never undefined for query doc snapshots
+                const data = {
+                    ...doc.data(),
+                    id: doc.id,
+                }
+
+                //let tempKit = [...kit];
+
+                for(let i = 0; i < tempItems.length; i++){
+                    if(tempItems[i].id == doc.id){
+                      tempItems[i].pillNumber = parseFloat(data.pillNumber) + (parseFloat(item.product.amount) * parseFloat(item.number));
+                    }
+                }
+
+                //setNewKit(tempKit);
+      
+                updateDoc(doc.ref, {
+                  pillNumber: parseFloat(data.pillNumber) + (parseFloat(item.product.amount) * parseFloat(item.number)),
+                });
+                
+            });
+      
+          } catch (e) {
+            console.error("Error updating document: ", e);
+          }
+    }
+    else{
+      console.log('dziala 2');
+        try {
+            await addDoc(collection(db, `users/${auth.currentUser.uid}/kit`), {
+                product: item.product,
+                pillNumber: item.product.amount * item.number,
+            }).then(function(docRef) {
+                tempItems.push({id: docRef.id, product: item.product, pillNumber: item.product.amount * item.number})
+                //setKit({id: docRef.id, product: item.product, pillNumber: item.product.amount * item.number})
+            });
+            } catch (e) {
+            console.error("Error adding document: ", e);
+        }
+    }
+
+      onDeleteClick({item, index});
     })
+
+    setNewKit(tempItems);
+    
   }
 
   const BasketItem = ({item, index}) => {

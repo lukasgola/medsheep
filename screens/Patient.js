@@ -25,14 +25,6 @@ export default function Patient({navigation}) {
 
   const [ cumulation, setCumulation ] = useState(0);
 
-
-  useEffect(() =>{
-    setCumulation(0);
-    kit.map(item => (
-      setCumulation((cumulation) => (parseFloat(cumulation) + parseFloat(item.price)).toFixed(2))
-    ))
-  },[kit])
-
   const OrderItem = ({item}) => {
     return(
       <View style={{

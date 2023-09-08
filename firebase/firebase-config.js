@@ -157,6 +157,7 @@ export async function addToBasket(product, number, price, basket, setBasket, set
     const result = kit.filter((element) => element.product.name == item.product.name);
         
     if(result.length !== 0){
+      console.log('dziala 1');
         try {
             const q = query(collection(db, "users", auth.currentUser.uid, "kit"), where("product", "==", item.product));
             const querySnapshot = await getDocs(q);
@@ -189,6 +190,7 @@ export async function addToBasket(product, number, price, basket, setBasket, set
           }
     }
     else{
+      console.log('dziala 2');
         try {
             await addDoc(collection(db, `users/${auth.currentUser.uid}/kit`), {
                 product: item.product,
