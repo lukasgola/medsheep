@@ -14,8 +14,6 @@ import Calendar from '../../screens/Calendar';
 import Doctor from '../../screens/Doctor';
 import Search from '../../screens/Search';
 import Results from '../../screens/Results';
-import AddToCalendar from '../../screens/AddToCalendar';
-import Kit from '../../screens/Kit';
 
 
 import ModalStack from './ModalStack';

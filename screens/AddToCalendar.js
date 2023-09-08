@@ -94,6 +94,9 @@ export default function AddToCalendar({navigation}){
 
     const [ title, setTitle ] = useState('');
 
+    const [ med, setMed ] = useState({});
+    const [ medString, setMedString ] = useState('Wybierz')
+
     const [freq, setFreq] = useState(1);
     const [freqString, setFreqString] = useState('Codziennie')
 
@@ -299,23 +302,7 @@ export default function AddToCalendar({navigation}){
                     }}>Wypełnij szczegóły</Text>
                 </View>
 
-                
-                <TouchableOpacity 
-                    onPress={() => navigation.navigate('Apteczka')}
-                    style={{
-                        width: '100%', 
-                        height: 50, 
-                        marginTop: 10,
-                        flexDirection: 'row',
-                        backgroundColor: colors.grey_l,
-                        borderRadius: 10,
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        borderColor: '#e8e8e8',
-                        borderWidth: 1
-                }}>
-
-                </TouchableOpacity>
+            
                 
 
                 <DateTimePicker
@@ -329,79 +316,130 @@ export default function AddToCalendar({navigation}){
                     minuteInterval={15}
                 />
 
-                <View style={{
-                    width: '100%',
-                    height: 50,
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    marginTop: 10
-                }}> 
-                    <View style={{width: '100%', height: '100%'}}>    
-                        <TouchableOpacity 
-                            onPress={() => setFreqPickerVisible(true)}
-                            style={{
-                                width: '100%', 
-                                height: '100%', 
-                                flexDirection: 'row',
-                                backgroundColor: colors.grey_l,
-                                borderTopLeftRadius: 10,
-                                borderTopRightRadius: 10,
-                                flexDirection: 'row',
-                                alignItems: 'center',
-                                borderColor: '#e8e8e8',
-                                borderWidth: 1
-                            }}>
-                            <View
-                                style={{
-                                    width: 40,
-                                    paddingLeft: 10,
-                                    justifyContent: 'center',
-                                }}
-                                >
-                                    <Ionicons name={'refresh-outline'} size={20} color={colors.grey_d}/>
-                            </View>
-
-                            <Text style={{
-                                color: colors.text,
-                                fontSize: fontSize,
-                            }}>Powtarzaj</Text>
-
-                            <View style={{
-                                flexDirection: 'row',
-                                position: 'absolute',
-                                right: 10,
-                                alignItems: 'center',
-                            }}>
-                                <Text style={{
-                                    color: colors.grey_d,
-                                    fontSize: fontSize
-                                }}>{freqString}</Text>
-
-                                <Ionicons name={'chevron-forward-outline'} size={20} color={colors.grey_d}/>
-
-                            </View>
-
-                            <BottomSheet 
-                                visible={isFreqPickerVisible} 
-                                setModalVisible={setFreqPickerVisible}
-                                text={'Podaj częstotliwość'}
-                                onConfirm={handleFreqConfirm}
-                            >
-                                <Picker
-                                    selectedValue={freq}
-                                    onValueChange={(itemValue, itemIndex) =>
-                                        setFreq(itemValue)
-                                    }>
-                                        {frequencies.map((item) => (
-                                            <Picker.Item label={item.text.toString()} value={item.text} key={item.id} />
-                                        ))}
-                                </Picker>
-                            </BottomSheet>
-                        </TouchableOpacity>
+                <TouchableOpacity 
+                    onPress={() => navigation.navigate('Apteczka', {chooseMode: true})}
+                    style={{
+                        width: '100%', 
+                        height: 50, 
+                        flexDirection: 'row',
+                        backgroundColor: colors.grey_l,
+                        borderTopLeftRadius: 10,
+                        borderTopRightRadius: 10,
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        borderColor: '#e8e8e8',
+                        borderWidth: 1,
+                        
+                    }}>
+                    <View
+                        style={{
+                            width: 40,
+                            paddingLeft: 10,
+                            justifyContent: 'center',
+                        }}
+                        >
+                            <Ionicons name={'medkit-outline'} size={20} color={colors.grey_d}/>
                     </View>
-                
-                </View>
+
+                    <Text style={{
+                        color: colors.text,
+                        fontSize: fontSize,
+                    }}>Lek</Text>
+
+                    <View style={{
+                        flexDirection: 'row',
+                        position: 'absolute',
+                        right: 10,
+                        alignItems: 'center',
+                    }}>
+                        <Text style={{
+                            color: colors.grey_d,
+                            fontSize: fontSize
+                        }}>{medString}</Text>
+
+                        <Ionicons name={'chevron-forward-outline'} size={20} color={colors.grey_d}/>
+
+                    </View>
+
+                    <BottomSheet 
+                        visible={isFreqPickerVisible} 
+                        setModalVisible={setFreqPickerVisible}
+                        text={'Podaj częstotliwość'}
+                        onConfirm={handleFreqConfirm}
+                    >
+                        <Picker
+                            selectedValue={freq}
+                            onValueChange={(itemValue, itemIndex) =>
+                                setFreq(itemValue)
+                            }>
+                                {frequencies.map((item) => (
+                                    <Picker.Item label={item.text.toString()} value={item.text} key={item.id} />
+                                ))}
+                        </Picker>
+                    </BottomSheet>
+                </TouchableOpacity>
+
+                <TouchableOpacity 
+                    onPress={() => setFreqPickerVisible(true)}
+                    style={{
+                        width: '100%', 
+                        height: 50, 
+                        flexDirection: 'row',
+                        backgroundColor: colors.grey_l,
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        borderColor: '#e8e8e8',
+                        borderWidth: 1,
+                        borderTopWidth: 0
+                        
+                    }}>
+                    <View
+                        style={{
+                            width: 40,
+                            paddingLeft: 10,
+                            justifyContent: 'center',
+                        }}
+                        >
+                            <Ionicons name={'refresh-outline'} size={20} color={colors.grey_d}/>
+                    </View>
+
+                    <Text style={{
+                        color: colors.text,
+                        fontSize: fontSize,
+                    }}>Powtarzaj</Text>
+
+                    <View style={{
+                        flexDirection: 'row',
+                        position: 'absolute',
+                        right: 10,
+                        alignItems: 'center',
+                    }}>
+                        <Text style={{
+                            color: colors.grey_d,
+                            fontSize: fontSize
+                        }}>{freqString}</Text>
+
+                        <Ionicons name={'chevron-forward-outline'} size={20} color={colors.grey_d}/>
+
+                    </View>
+
+                    <BottomSheet 
+                        visible={isFreqPickerVisible} 
+                        setModalVisible={setFreqPickerVisible}
+                        text={'Podaj częstotliwość'}
+                        onConfirm={handleFreqConfirm}
+                    >
+                        <Picker
+                            selectedValue={freq}
+                            onValueChange={(itemValue, itemIndex) =>
+                                setFreq(itemValue)
+                            }>
+                                {frequencies.map((item) => (
+                                    <Picker.Item label={item.text.toString()} value={item.text} key={item.id} />
+                                ))}
+                        </Picker>
+                    </BottomSheet>
+                </TouchableOpacity>
 
                 <Animated.View
                     style={{
@@ -530,177 +568,171 @@ export default function AddToCalendar({navigation}){
                 
                 </Animated.View>
 
-                <View style={{ width: '100%', height: 50, justifyContent: 'center', alignItems: 'center'}}>
+                <View
+                    style={{
+                    width: '100%',
+                    height: 50,
+                    backgroundColor: colors.grey_l,
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    borderColor: '#e8e8e8',
+                    borderWidth: 1,
+                    borderTopWidth: 0
+                    }}
+                >
                     <View
+                    style={{
+                        width: 40,
+                        justifyContent: 'center',
+                        flexDirection: 'row'
+                    }}
+                    >
+                        <Ionicons name={'code-working-outline'} size={20} color={colors.grey_d}/>
+                    </View>
+
+                    <Text style={{
+                        position: 'absolute',
+                        left: 40
+                    }}>Etykieta</Text>
+
+                    <TextInput
                         style={{
-                        width: '100%',
-                        height: '100%',
+                            width: '90%',
+                            height: '100%',
+                            fontSize: fontSize,
+                            color: colors.grey_d,
+                            paddingRight: 20
+                        }}
+                        value={title}
+                        onChangeText={setTitle}
+                        //onBlur={onBlur}
+                        placeholder={'Lek'}
+                        placeholderTextColor={colors.grey_d}
+                        selectionColor={colors.primary}
+                        textAlign='right'
+                    />
+                </View>
+
+                <TouchableOpacity 
+                    onPress={() => setDateStartPickerVisible(true)}
+                    style={{
+                        width: '100%', 
+                        height: 50, 
+                        flexDirection: 'row',
                         backgroundColor: colors.grey_l,
                         flexDirection: 'row',
                         alignItems: 'center',
                         borderColor: '#e8e8e8',
                         borderWidth: 1,
                         borderTopWidth: 0
-                        }}
-                    >
-                        <View
+                    }}>
+                    <View
                         style={{
                             width: 40,
-                            justifyContent: 'center',
-                            flexDirection: 'row'
+                            paddingLeft: 10,
+                            justifyContent: 'center'
                         }}
                         >
-                            <Ionicons name={'code-working-outline'} size={20} color={colors.grey_d}/>
-                        </View>
-
-                        <Text style={{
-                            position: 'absolute',
-                            left: 40
-                        }}>Etykieta</Text>
-
-                        <TextInput
-                            style={{
-                                width: '90%',
-                                height: '100%',
-                                fontSize: fontSize,
-                                color: colors.grey_d,
-                                paddingRight: 20
-                            }}
-                            value={title}
-                            onChangeText={setTitle}
-                            //onBlur={onBlur}
-                            placeholder={'Lek'}
-                            placeholderTextColor={colors.grey_d}
-                            selectionColor={colors.primary}
-                            textAlign='right'
-                        />
+                            <Ionicons name={'calendar-outline'} size={16} color={colors.grey_d}/>
                     </View>
-                </View>
 
-                <View style={{width: '100%', height: 50}}>  
-                    <TouchableOpacity 
-                        onPress={() => setDateStartPickerVisible(true)}
-                        style={{
-                            width: '100%', 
-                            height: 50, 
-                            flexDirection: 'row',
-                            backgroundColor: colors.grey_l,
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            borderColor: '#e8e8e8',
-                            borderWidth: 1,
-                            borderTopWidth: 0
-                        }}>
-                        <View
-                            style={{
-                                width: 40,
-                                paddingLeft: 10,
-                                justifyContent: 'center'
-                            }}
-                            >
-                                <Ionicons name={'calendar-outline'} size={16} color={colors.grey_d}/>
-                        </View>
+                    <Text style={{
+                        color: colors.text,
+                        fontSize: fontSize
+                    }}>Początek</Text>
 
+                    <View style={{
+                        flexDirection: 'row',
+                        position: 'absolute',
+                        right: 10,
+                        alignItems: 'center',
+                    }}>
                         <Text style={{
-                            color: colors.text,
+                            color: colors.grey_d,
                             fontSize: fontSize
-                        }}>Początek</Text>
+                        }}>{dateStartString}</Text>
+                        <Ionicons name={'chevron-forward-outline'} size={20} color={colors.grey_d}/>
 
-                        <View style={{
-                            flexDirection: 'row',
-                            position: 'absolute',
-                            right: 10,
-                            alignItems: 'center',
-                        }}>
-                            <Text style={{
-                                color: colors.grey_d,
-                                fontSize: fontSize
-                            }}>{dateStartString}</Text>
-                            <Ionicons name={'chevron-forward-outline'} size={20} color={colors.grey_d}/>
+                    </View>
 
-                        </View>
-
-                        <BottomSheet 
-                            visible={isDateStartPickerVisible}
-                            setModalVisible={setDateStartPickerVisible}
-                            text={'Podaj początek'}
-                            onConfirm={handleDateStartConfirm}
-                        >
-                            <DateTimePicker
-                                testID="dateTimePicker"
-                                value={dateStart}
-                                mode={'date'}
-                                is24Hour={true}
-                                display="spinner"
-                                onChange={onChangeDateStart}
-                                textColor={colors.text}
-                            />
-                        </BottomSheet>
-                    </TouchableOpacity>
-                </View>
-
-                <View style={{width: '100%', height: 50}}>    
-                    <TouchableOpacity 
-                        onPress={() => setDateEndPickerVisible(true)}
+                    <BottomSheet 
+                        visible={isDateStartPickerVisible}
+                        setModalVisible={setDateStartPickerVisible}
+                        text={'Podaj początek'}
+                        onConfirm={handleDateStartConfirm}
+                    >
+                        <DateTimePicker
+                            testID="dateTimePicker"
+                            value={dateStart}
+                            mode={'date'}
+                            is24Hour={true}
+                            display="spinner"
+                            onChange={onChangeDateStart}
+                            textColor={colors.text}
+                        />
+                    </BottomSheet>
+                </TouchableOpacity>
+  
+                <TouchableOpacity 
+                    onPress={() => setDateEndPickerVisible(true)}
+                    style={{
+                        width: '100%', 
+                        height: 50, 
+                        flexDirection: 'row',
+                        backgroundColor: colors.grey_l,
+                        borderBottomLeftRadius: 10,
+                        borderBottomRightRadius: 10,
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        borderColor: '#e8e8e8',
+                        borderWidth: 1,
+                        borderTopWidth: 0
+                    }}>
+                    <View
                         style={{
-                            width: '100%', 
-                            height: 50, 
-                            flexDirection: 'row',
-                            backgroundColor: colors.grey_l,
-                            borderBottomLeftRadius: 10,
-                            borderBottomRightRadius: 10,
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            borderColor: '#e8e8e8',
-                            borderWidth: 1,
-                            borderTopWidth: 0
-                        }}>
-                        <View
-                            style={{
-                                width: 40,
-                                paddingLeft: 10,
-                                justifyContent: 'center'
-                            }}
-                            >
-                                <Ionicons name={'time-outline'} size={16} color={colors.grey_d}/>
-                        </View>
-                        
-                        <Text style={{
-                            color: colors.text,
-                            fontSize: fontSize
-                        }}>Koniec</Text>
-
-                        <View style={{
-                            flexDirection: 'row',
-                            position: 'absolute',
-                            right: 10,
-                            alignItems: 'center',
-                        }}>
-                            <Text style={{
-                                color: colors.grey_d,
-                                fontSize: fontSize
-                            }}>{dateEndString}</Text>
-                            <Ionicons name={'chevron-forward-outline'} size={20} color={colors.grey_d}/>
-
-                        </View>
-                        <BottomSheet 
-                            visible={isDateEndPickerVisible} 
-                            setModalVisible={setDateEndPickerVisible}
-                            text={'Podaj koniec'}
-                            onConfirm={handleDateEndConfirm}
+                            width: 40,
+                            paddingLeft: 10,
+                            justifyContent: 'center'
+                        }}
                         >
-                            <DateTimePicker
-                                testID="dateTimePicker"
-                                value={dateEnd}
-                                mode={'date'}
-                                is24Hour={true}
-                                display="spinner"
-                                onChange={onChangeDateEnd}
-                                textColor={colors.text}
-                            />
-                        </BottomSheet>
-                    </TouchableOpacity>
-                </View>
+                            <Ionicons name={'time-outline'} size={16} color={colors.grey_d}/>
+                    </View>
+                    
+                    <Text style={{
+                        color: colors.text,
+                        fontSize: fontSize
+                    }}>Koniec</Text>
+
+                    <View style={{
+                        flexDirection: 'row',
+                        position: 'absolute',
+                        right: 10,
+                        alignItems: 'center',
+                    }}>
+                        <Text style={{
+                            color: colors.grey_d,
+                            fontSize: fontSize
+                        }}>{dateEndString}</Text>
+                        <Ionicons name={'chevron-forward-outline'} size={20} color={colors.grey_d}/>
+
+                    </View>
+                    <BottomSheet 
+                        visible={isDateEndPickerVisible} 
+                        setModalVisible={setDateEndPickerVisible}
+                        text={'Podaj koniec'}
+                        onConfirm={handleDateEndConfirm}
+                    >
+                        <DateTimePicker
+                            testID="dateTimePicker"
+                            value={dateEnd}
+                            mode={'date'}
+                            is24Hour={true}
+                            display="spinner"
+                            onChange={onChangeDateEnd}
+                            textColor={colors.text}
+                        />
+                    </BottomSheet>
+                </TouchableOpacity>
 
             </ScrollView>
         </KeyboardAvoidingView>

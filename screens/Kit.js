@@ -13,7 +13,7 @@ import Swipe from '../components/Swipe';
 import { query, collection, getDocs, where, updateDoc  } from 'firebase/firestore';
 import { removeFromKit, db, auth } from '../firebase/firebase-config';
 
-export default function Kit({navigation}) {
+export default function Kit({navigation, route}) {
 
 
   const { kit, setKit, setNewKit } = useKit();
@@ -32,6 +32,8 @@ export default function Kit({navigation}) {
 
   const [ test, setTest ] = useState(null);
 
+  const [ selectedItem, setSelectedItem ] = useState(null);
+
   const goUp = (amount) => {
     setNumber(amount)
     setPrice((item.product.price*(number+1)).toFixed(2))
@@ -43,19 +45,6 @@ export default function Kit({navigation}) {
 
   const onChangeText = (amount) => {
       setPrice((item.product.price*(amount)).toFixed(2))
-  }
-
-  const getKit = async () => {
-    const querySnapshot = await getDocs(collection(db, "users", auth.currentUser.uid, "kit"));
-    querySnapshot.forEach((doc) => {
-        // doc.data() is never undefined for query doc snapshots
-        const data = {
-            ...doc.data(),
-            id: doc.id,
-        }
-        setKit(old => [...old, data])
-    });
-    
   }
 
   const layoutAnimConfig = {
@@ -71,11 +60,17 @@ export default function Kit({navigation}) {
   };
 
   const onSettingsClick = ({item, index}) => {
+  if(route.params.chooseMode){
+    setSelectedItem(item)
+  }
+  else{
     setItem(item)
     setNumber(item.number)
     setPrice(item.price)
     setTest(prevOpenedRow)
     setModalVisible(true)
+  }
+
   }
 
   const onDeleteClick = ({ item, index }) => {
@@ -140,6 +135,7 @@ export default function Kit({navigation}) {
         trashClick={() => onDeleteClick({item, index})}
         closeRow={() => closeRow(index)}
         row={row}
+        chooseMode={route.params.chooseMode}
         style={{
           width: '90%',
           height: 65,
@@ -150,6 +146,7 @@ export default function Kit({navigation}) {
           marginLeft: '5%',
           flexDirection: 'row',
           paddingHorizontal: '3%',
+          borderColor: selectedItem == item ? colors.primary : colors.grey
         }}
       >
         <CartItem item={item.product} number={item.number} price={item.price} />
@@ -159,6 +156,7 @@ export default function Kit({navigation}) {
 
   return (
     <View>
+      {!route.params.chooseMode ? 
       <View style={{
         position: 'absolute',
         backgroundColor: colors.background,
@@ -201,6 +199,9 @@ export default function Kit({navigation}) {
             }}>Zamów</Text>
         </TouchableOpacity>
       </View>
+       :
+       <View></View>
+     }
       <FlatList
         data={kit}
         renderItem={({item, index}) => KitItem({item, index})}

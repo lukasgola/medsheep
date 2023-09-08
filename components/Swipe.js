@@ -3,8 +3,6 @@ import { Text, View, TouchableOpacity, Pressable } from 'react-native'
 
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 
-import styles from '../styles/styles';
-
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import { useTheme } from '../theme/ThemeProvider';
@@ -47,10 +45,10 @@ const Swipe = (props) => {
         >
           <Pressable 
             onPress={() => props.settingsClick()}
-            style={[props.style, {
+            style={[{
               borderWidth: 1,
               borderColor: colors.grey
-            }]}
+            },props.style]}
           >
             {props.children}
           </Pressable>
