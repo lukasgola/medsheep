@@ -6,6 +6,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import {useTheme} from '../../theme/ThemeProvider';
 
+import { TransitionPresets } from '@react-navigation/stack'
+
 //Screens
 import Main from '../../screens/Main';
 import Calendar from '../../screens/Calendar';
@@ -15,6 +17,8 @@ import Results from '../../screens/Results';
 import AddToCalendar from '../../screens/AddToCalendar';
 import Kit from '../../screens/Kit';
 
+
+import ModalStack from './ModalStack';
 
 const Stack = createNativeStackNavigator();
 
@@ -39,7 +43,7 @@ export default function HomeStack({navigation}) {
         options={{
           headerRight: () => (
             <TouchableOpacity
-              onPress={() => navigation.navigate('Nowy lek')}
+              onPress={() => navigation.navigate('modal')}
               title="Info"
               color="#fff"
             >
@@ -52,13 +56,14 @@ export default function HomeStack({navigation}) {
       <Stack.Screen name="Szukaj" component={Search} />
       <Stack.Screen name="Wyniki" component={Results} />
       <Stack.Screen 
-        name="Nowy lek" 
-        component={AddToCalendar}
+        name="modal" 
+        component={ModalStack}
         options={{
-          presentation: 'modal'        
+          headerShown: false,
+          presentation: 'modal',
         }}
-        />
-      <Stack.Screen name="Apteczka" component={Kit} />
+      />
+
     </Stack.Navigator>
-  );
+  );  
 }
