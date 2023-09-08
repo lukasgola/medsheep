@@ -21,8 +21,6 @@ export default function Kit({navigation, route}) {
   const { colors } = useTheme();
   const { data, setData } = useData();
 
-  //const [ kit, setKit ] = useState([]);
-
   const [ cumulation, setCumulation ] = useState(0);
   const [ itemsNumber, setItemsNumber ] = useState(0);
 
@@ -33,8 +31,6 @@ export default function Kit({navigation, route}) {
   const [ price, setPrice ] = useState(null);
 
   const [ test, setTest ] = useState(null);
-
-  const [ selectedItem, setSelectedItem ] = useState(null);
 
   const goUp = (amount) => {
     setNumber(amount)
@@ -61,9 +57,12 @@ export default function Kit({navigation, route}) {
     },
   };
 
+  useEffect(() => {
+    console.log(data)
+  })
+
   const onSettingsClick = ({item, index}) => {
   if(route.params.chooseMode){
-    setSelectedItem(item);
     setData(item.product);
   }
   else{
@@ -149,7 +148,7 @@ export default function Kit({navigation, route}) {
           marginLeft: '5%',
           flexDirection: 'row',
           paddingHorizontal: '3%',
-          borderColor: selectedItem == item ? colors.primary : colors.grey
+          borderColor: data == item.product ? colors.primary : colors.grey
         }}
       >
         <CartItem item={item.product} number={item.number} price={item.price} />

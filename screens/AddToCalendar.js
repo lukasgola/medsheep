@@ -130,7 +130,6 @@ export default function AddToCalendar({navigation}){
     const fontSize = 14;
 
     useEffect(() => {
-        setData({});
         if(data.name){
             setMedString(data.name)
         }

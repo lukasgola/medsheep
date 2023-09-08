@@ -5,6 +5,7 @@ import { TouchableOpacity, Text } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import {useTheme} from '../../theme/ThemeProvider';
+import { useData } from '../../providers/DataProvider';
 
 import { TransitionPresets } from '@react-navigation/stack'
 
@@ -23,6 +24,7 @@ const Stack = createNativeStackNavigator();
 export default function HomeStack({navigation}) {
 
   const {colors} = useTheme();
+  const { data, setData } = useData();
 
   return (
     <Stack.Navigator
@@ -41,7 +43,7 @@ export default function HomeStack({navigation}) {
         options={{
           headerRight: () => (
             <TouchableOpacity
-              onPress={() => navigation.navigate('modal')}
+              onPress={() => [navigation.navigate('modal'), setData({})]}
               title="Info"
               color="#fff"
             >
