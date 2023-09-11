@@ -102,7 +102,7 @@ export default function AddToCalendar({navigation}){
     
     const [ medString, setMedString ] = useState('Wybierz')
 
-    const [ freq, setFreq ] = useState(1);
+    const [ freq, setFreq ] = useState(0);
     const [ freqString, setFreqString ] = useState('Codziennie')
     const [ prevFreq, setPrevFreq ] = useState('');
 
