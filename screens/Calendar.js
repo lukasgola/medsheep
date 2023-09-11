@@ -143,11 +143,12 @@ export default function MainCalendar() {
   const onTakenClick = (item) => {
     setItem(item);
     setModalVisible(true);
+    console.log(item)
   }
 
   const confirmTake = () => {
     updateItemValue(item.id, true);
-    setTaken(item.id, day.timestamp);
+    setTaken(item.id, day.timestamp, item.itemId);
     setTakenAmount(takenAmount + 1);
   }
 
