@@ -165,8 +165,7 @@ export default function AddToCalendar({navigation}){
     }, [title, time, freq, dateStart, dateEnd, customFreq, navigation]);
 
     const handleFreqConfirm = () => {
-        console.log(freq)
-        if ( freq == 'Niestandardowe' && freqString != 'Niestandardowe'){
+        if ( freqString == 'Niestandardowe' && freqString != 'Niestandardowe'){
             setTimeout(() => {
                 springIn();
             }, 1000)
