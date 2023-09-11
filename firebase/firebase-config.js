@@ -232,6 +232,7 @@ export async function addToBasket(product, number, price, basket, setBasket, set
         dateEndString: event.dateEndString,
         startTimestamp: event.startTimestamp,
         endTimestamp: event.endTimestamp,
+        itemId: event.itemId
       }).then(function(docRef) {
         setDates(docRef.id, event)
     })

@@ -59,7 +59,10 @@ export default function Kit({navigation, route}) {
 
   const onSettingsClick = ({item, index}) => {
   if(chooseMode){
-    setData(item.product);
+    setData({
+      id: item.id,
+      product: item.product
+    });
   }
   else{
     setItem(item)
@@ -144,7 +147,7 @@ export default function Kit({navigation, route}) {
           marginLeft: '5%',
           flexDirection: 'row',
           paddingHorizontal: '3%',
-          borderColor: data == item.product ? colors.primary : colors.grey
+          borderColor: data.product == item.product ? colors.primary : colors.grey
         }}
       >
         <CartItem item={item.product} number={item.number} price={item.price} pillNumber={item.pillNumber} />

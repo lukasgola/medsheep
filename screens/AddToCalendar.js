@@ -102,10 +102,11 @@ export default function AddToCalendar({navigation}){
     
     const [ medString, setMedString ] = useState('Wybierz')
 
-    const [freq, setFreq] = useState(1);
-    const [freqString, setFreqString] = useState('Codziennie')
+    const [ freq, setFreq ] = useState(1);
+    const [ freqString, setFreqString ] = useState('Codziennie')
+    const [ prevFreq, setPrevFreq ] = useState('');
 
-    const [time, setTime] = useState(new Date(Date.now()))
+    const [ time, setTime ] = useState(new Date(Date.now()))
 
     const [ dateStart, setDateStart ] = useState(new Date())
     const [ dateStartString, setDateStartString ] = useState(new Date().getDate() + ' / ' + (new Date().getMonth()+1) + ' / ' + new Date().getFullYear())
@@ -129,8 +130,8 @@ export default function AddToCalendar({navigation}){
     const fontSize = 14;
 
     useEffect(() => {
-        if(data.name){
-            setMedString(data.name)
+        if(data.id){
+            setMedString(data.product.name)
         }
     }, [isFocused])
 
@@ -165,12 +166,12 @@ export default function AddToCalendar({navigation}){
     }, [title, time, freq, dateStart, dateEnd, customFreq, navigation]);
 
     const handleFreqConfirm = () => {
-        if ( freqString == 'Niestandardowe' && freqString != 'Niestandardowe'){
+        if ( freqString == 'Niestandardowe' && prevFreq != 'Niestandardowe'){
             setTimeout(() => {
                 springIn();
             }, 1000)
         }
-        if( freqString == 'Niestandardowe' && freq != 'Niestandardowe'){
+        if( prevFreq == 'Niestandardowe' && freqString != 'Niestandardowe'){
             setTimeout(() => {
                 springOut();
             }, 1000)
@@ -212,7 +213,6 @@ export default function AddToCalendar({navigation}){
 
 
     const onCreateEvent = () => {
-        console.log(freq)
         Alert.alert('New Event', 'Do you want to public this event?', [
         {
             text: 'Cancel',
@@ -238,8 +238,6 @@ export default function AddToCalendar({navigation}){
                     })
                 }
 
-                console.log(takenArray.length)
-
                 const event = {
                     title: title == '' ? medString : title,
                     freq: freq,
@@ -257,6 +255,7 @@ export default function AddToCalendar({navigation}){
                     dateEndString: dateEnd.getFullYear() + '-' + (dateEnd.getMonth() < 10 ? '0' + (dateEnd.getMonth()+1) : (dateEnd.getMonth()+1)) + '-' + (dateEnd.getDate() < 10 ? '0' + dateEnd.getDate() : dateEnd.getDate()),
                     startTimestamp: dateS.getTime(),
                     endTimestamp: dateE.getTime(),
+                    itemId: data.id
                 }
                 addToCalendar(event);
                 navigation.navigate('Kalendarz');
@@ -429,6 +428,7 @@ export default function AddToCalendar({navigation}){
                         <Picker
                             selectedValue={freqString}
                             onValueChange={(itemValue, itemIndex) =>{
+                                setPrevFreq(freqString)
                                 setFreq(itemIndex)
                                 setFreqString(itemValue)
                             }

@@ -1,7 +1,10 @@
 import * as React from 'react';
 
 export const DataContext = React.createContext({
-    data: {},
+    data: {
+        id: 'id',
+        product: {}
+    },
     setData: () => {}
 });
 
