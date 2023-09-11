@@ -143,7 +143,6 @@ export default function MainCalendar() {
   const onTakenClick = (item) => {
     setItem(item);
     setModalVisible(true);
-    console.log(item)
   }
 
   const confirmTake = () => {

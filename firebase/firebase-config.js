@@ -7,7 +7,7 @@ import {
 } from "firebase/auth";
 
 import { deleteDoc, getFirestore } from "firebase/firestore";
-import { collection, setDoc, getDocs, addDoc, doc, updateDoc, query, where } from "firebase/firestore"; 
+import { collection, setDoc, getDocs, addDoc, doc, updateDoc, query, where, increment } from "firebase/firestore"; 
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -257,23 +257,25 @@ export async function addToBasket(product, number, price, basket, setBasket, set
   }
 
 
-  export async function setTaken(id, takenId){
+  export async function setTaken(id, takenId, itemId){
     try {
       
       const q = query(collection(db, "users", auth.currentUser.uid, "events", id, "calendar"), where("id", "==", takenId));
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach((doc) => {
           // doc.data() is never undefined for query doc snapshots
-          const data = {
-              ...doc.data(),
-              id: doc.id,
-          }
 
           updateDoc(doc.ref, {
             taken: true
           });
           
       });
+
+      const q2 = doc(db, "users", auth.currentUser.uid, "kit", itemId);
+
+      await updateDoc(q2, {
+        pillNumber: increment(-1)
+    });
 
     } catch (e) {
       console.error("Error updating document: ", e);
