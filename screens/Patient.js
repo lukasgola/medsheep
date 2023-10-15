@@ -143,7 +143,7 @@ export default function Patient({navigation}) {
 
           <FlatList
             data={kit.slice(0,3)}
-            renderItem={({item}) => <CartItem item={item.product} number={item.number} price={item.price} />}
+            renderItem={({item}) => <CartItem item={item.product} number={item.number} price={item.price} pillNumber={item.pillNumber} />}
             keyExtractor={item => item.id}
             scrollEnabled={false}
 

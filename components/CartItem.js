@@ -13,7 +13,6 @@ const CartItem = (props) => {
         height: 50,
         flexDirection: 'row',
         alignItems: 'center',
-        //justifyContent: 'space-between',
       }}>
         <Image 
           source={props.item.img} 
@@ -25,10 +24,9 @@ const CartItem = (props) => {
         />
         {!props.pillNumber ? 
         <View style={{
-          width: '100%',
           flexDirection: 'row',
           alignItems: 'center',
-          backgroundColor: 'red'
+          justifyContent: 'space-between',
         }}>
           <View style={{
             paddingLeft: 10,
@@ -66,10 +64,11 @@ const CartItem = (props) => {
         <View style={{
           width: '80%',
           flexDirection: 'row',
+          justifyContent: 'space-between',
         }}>
           <View style={{
             paddingLeft: 10,
-            width: '70%',
+            //width: '70%',
           }}>
             <Text style={{
               fontSize: 14,
