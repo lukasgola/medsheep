@@ -11,12 +11,7 @@ import { collection, setDoc, getDocs, addDoc, doc, updateDoc, query, where, incr
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyCiMPdlJ45nfnTbu4iEHHY97-iqr7ABFEk",
-  authDomain: "medsheep-1888f.firebaseapp.com",
-  projectId: "medsheep-1888f",
-  storageBucket: "medsheep-1888f.appspot.com",
-  messagingSenderId: "1066926977537",
-  appId: "1:1066926977537:web:05074e5783cebe7d4fc600"
+  
 };
 
 // Initialize Firebase
