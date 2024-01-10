@@ -4,13 +4,23 @@
 
 ## Table of Contents
 - [Introduction](#introduction)
+- [Preview](#preview)
 - [Features](#features)
 - [Technologies Used](#technologies-used)
-- [Preview](#preview)
 - [Work in Progress](#work-in-progress)
 
 ## Introduction
 medsheep is a React Native-based application aimed at providing a convenient platform for ordering medications to users' homes and assisting in planning their treatment regimens.
+
+## Preview
+<div>
+  <img src='https://github.com/lukasgola/myportfolio/blob/main/src/assets/m-s1.png?raw=true' width=200 />
+  <img src='https://github.com/lukasgola/myportfolio/blob/main/src/assets/m-s2.png?raw=true' width=200 />
+  <img src='https://github.com/lukasgola/myportfolio/blob/main/src/assets/m-s3.png?raw=true' width=200 />
+  <img src='https://github.com/lukasgola/myportfolio/blob/main/src/assets/m-s4.png?raw=true' width=200 />
+  <img src='https://github.com/lukasgola/myportfolio/blob/main/src/assets/m-s5.png?raw=true' width=200 />
+  <img src='https://github.com/lukasgola/myportfolio/blob/main/src/assets/m-s7.png?raw=true' width=200 />
+</div>
 
 ## Features
 - **Medication Ordering**: Seamless ordering of medications with home delivery options.
@@ -22,13 +32,3 @@ medsheep is a React Native-based application aimed at providing a convenient pla
 - React Native: Frontend development framework.
 - Context API: State management for React components.
 - Firebase: Backend services for authentication, real-time database, and storage.
-
-## Preview
-<div>
-  <img src='https://github.com/lukasgola/myportfolio/blob/main/src/assets/m-s1.png?raw=true' width=200 />
-  <img src='https://github.com/lukasgola/myportfolio/blob/main/src/assets/m-s2.png?raw=true' width=200 />
-  <img src='https://github.com/lukasgola/myportfolio/blob/main/src/assets/m-s3.png?raw=true' width=200 />
-  <img src='https://github.com/lukasgola/myportfolio/blob/main/src/assets/m-s4.png?raw=true' width=200 />
-  <img src='https://github.com/lukasgola/myportfolio/blob/main/src/assets/m-s5.png?raw=true' width=200 />
-  <img src='https://github.com/lukasgola/myportfolio/blob/main/src/assets/m-s7.png?raw=true' width=200 />
-</div>
