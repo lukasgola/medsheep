@@ -1,6 +1,7 @@
 {
   "build": {
     "production": {
+      "channel": "production",
       "env": {
         "EXPO_PUBLIC_FIREBASE_API_KEY": "production_api_key",
         "EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN": "production_auth_domain",
@@ -11,6 +12,8 @@
       }
     },
     "test": {
+      "channel": "staging",
+      "distribution": "internal",
       "env": {
         "EXPO_PUBLIC_FIREBASE_API_KEY": "test_api_key",
         "EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN": "test_auth_domain",
