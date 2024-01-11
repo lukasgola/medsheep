@@ -59,15 +59,17 @@ export default function SignIn({navigation}){
                         fontWeight: 'bold',
                         color: colors.text
                     }}>Medsheep</Text>
-                </View>
-                <View style={{ width: '100%', height: 50, justifyContent: 'center', alignItems: 'center', marginTop: 20 }}>
                     <Text style={{
-                        fontWeight: 'bold'
+                        fontWeight: 'bold',
+                        marginTop: 10,
                     }}>Testowe konto</Text>
                     <Text>Email: jan@kowalski.pl</Text>
                     <Text style={{
                         marginBottom: 10
                     }}>Password: Sernik123</Text>
+                </View>
+                <View style={{ width: '100%', height: 50, justifyContent: 'center', alignItems: 'center', marginTop: 20 }}>
+    
                     <CustomInput
                         name="email"
                         control={control}
