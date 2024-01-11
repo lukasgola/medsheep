@@ -2,22 +2,22 @@
   "build": {
     "production": {
       "env": {
-        "REACT_NATIVE_FIREBASE_API_KEY": "your_api_key",
-        "REACT_NATIVE_FIREBASE_AUTH_DOMAIN": "your_auth_domain",
-        "REACT_NATIVE_FIREBASE_PROJECT_ID": "your_project_id",
-        "REACT_NATIVE_FIREBASE_STORAGE_BUCKET": "your_storage_bucket",
-        "REACT_NATIVE_FIREBASE_MESSAGING_SENDER_ID": "your_messaging_sender_id",
-        "REACT_NATIVE_FIREBASE_APP_ID": "your_app_id"
+        "EXPO_PUBLIC_FIREBASE_API_KEY": "production_api_key",
+        "EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN": "production_auth_domain",
+        "EXPO_PUBLIC_FIREBASE_PROJECT_ID": "production_project_id",
+        "EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET": "production_storage_bucket",
+        "EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID": "production_messaging_sender_id",
+        "EXPO_PUBLIC_FIREBASE_APP_ID": "production_app_id"
       }
     },
     "test": {
       "env": {
-        "REACT_NATIVE_FIREBASE_API_KEY": "your_api_key_test",
-        "REACT_NATIVE_FIREBASE_AUTH_DOMAIN": "your_auth_domain_test",
-        "REACT_NATIVE_FIREBASE_PROJECT_ID": "your_project_id_test",
-        "REACT_NATIVE_FIREBASE_STORAGE_BUCKET": "your_storage_bucket_test",
-        "REACT_NATIVE_FIREBASE_MESSAGING_SENDER_ID": "your_messaging_sender_id_test",
-        "REACT_NATIVE_FIREBASE_APP_ID": "your_app_id_test"
+        "EXPO_PUBLIC_FIREBASE_API_KEY": "test_api_key",
+        "EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN": "test_auth_domain",
+        "EXPO_PUBLIC_FIREBASE_PROJECT_ID": "test_project_id",
+        "EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET": "test_storage_bucket",
+        "EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID": "test_messaging_sender_id",
+        "EXPO_PUBLIC_FIREBASE_APP_ID": "test_app_id"
       }
     }
   }
