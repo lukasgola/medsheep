@@ -4,10 +4,10 @@
     "slug": "medsheep",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/medsheep.jpeg",
+    "icon": "./assets/medsheep.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/medsheep.jpeg",
+      "image": "./assets/medsheep.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
