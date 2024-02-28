@@ -14,12 +14,12 @@ medsheep is a React Native-based application aimed at providing a convenient pla
 
 ## Preview
 <div>
-  <img src='https://github.com/lukasgola/myportfolio/blob/main/src/assets/m-s1.png?raw=true' width=200 />
-  <img src='https://github.com/lukasgola/myportfolio/blob/main/src/assets/m-s2.png?raw=true' width=200 />
-  <img src='https://github.com/lukasgola/myportfolio/blob/main/src/assets/m-s3.png?raw=true' width=200 />
-  <img src='https://github.com/lukasgola/myportfolio/blob/main/src/assets/m-s4.png?raw=true' width=200 />
-  <img src='https://github.com/lukasgola/myportfolio/blob/main/src/assets/m-s5.png?raw=true' width=200 />
-  <img src='https://github.com/lukasgola/myportfolio/blob/main/src/assets/m-s7.png?raw=true' width=200 />
+  <img src='https://github.com/lukasgola/medsheep/blob/main/assets/m-s1.png' width=200 />
+  <img src='https://github.com/lukasgola/medsheep/blob/main/assets/m-s2.png' width=200 />
+  <img src='https://github.com/lukasgola/medsheep/blob/main/assets/m-s3.png' width=200 />
+  <img src='https://github.com/lukasgola/medsheep/blob/main/assets/m-s4.png' width=200 />
+  <img src='https://github.com/lukasgola/medsheep/blob/main/assets/m-s5.png' width=200 />
+  <img src='https://github.com/lukasgola/medsheep/blob/main/assets/m-s7.png' width=200 />
 </div>
 
 ## Features
