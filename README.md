@@ -20,10 +20,6 @@ medsheep is a React Native-based application aimed at providing a convenient pla
   <img src='https://github.com/lukasgola/medsheep/blob/main/assets/m-s4.png' width=200 />
   <img src='https://github.com/lukasgola/medsheep/blob/main/assets/m-s5.png' width=200 />
   <img src='https://github.com/lukasgola/medsheep/blob/main/assets/m-s7.png' width=200 />
-  <video width="320" height="240" controls>
-  <source src="https://github.com/lukasgola/medsheep/blob/main/assets/calendar-recording.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
 </div>
 
 ## Features
