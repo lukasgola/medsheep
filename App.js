@@ -1,4 +1,5 @@
 import 'react-native-gesture-handler';
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useState } from 'react';
 import { View, Image, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
@@ -63,6 +64,7 @@ export default function App() {
 
 
   return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
     <NavigationContainer>
       <ThemeProvider>
         <CurrentUserProvider>
@@ -80,5 +82,6 @@ export default function App() {
         </CurrentUserProvider>
       </ThemeProvider>
     </NavigationContainer>
+    </GestureHandlerRootView>
   );
 }
