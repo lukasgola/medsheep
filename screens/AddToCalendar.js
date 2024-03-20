@@ -131,6 +131,7 @@ export default function AddToCalendar({navigation}){
 
     useEffect(() => {
         if(data.id){
+            console.log("Nowe idd: " + data.id)
             setMedString(data.product.name)
         }
     }, [isFocused])
@@ -213,6 +214,7 @@ export default function AddToCalendar({navigation}){
 
 
     const onCreateEvent = () => {
+        console.log('Id: ' + data.id)
         Alert.alert('New Event', 'Do you want to public this event?', [
         {
             text: 'Cancel',

@@ -59,6 +59,7 @@ export default function Kit({navigation, route}) {
 
   const onSettingsClick = ({item, index}) => {
   if(chooseMode){
+    console.log(item)
     setData({
       id: item.id,
       product: item.product

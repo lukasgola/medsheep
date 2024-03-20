@@ -41,13 +41,18 @@ export default function HomeStack({navigation}) {
         component={Calendar} 
         options={{
           headerRight: () => (
-            <TouchableOpacity
-              onPress={() => [navigation.navigate('modal'), setData({})]}
-              title="Info"
-              color="#fff"
-            >
-              <Ionicons name={'add-outline'} size={25} color={colors.primary} style={{marginTop: 4}} />
-            </TouchableOpacity>
+            <View style={{
+              width: 30,
+              height: 30
+            }}>
+              <TouchableOpacity
+                onPress={() => [navigation.navigate('modal'), setData({})]}
+                title="Info"
+                color="#fff"
+              >
+                <Ionicons name={'add-outline'} size={25} color={colors.primary} style={{marginTop: 4}} />
+              </TouchableOpacity>
+            </View>
           )
         }}
       />
