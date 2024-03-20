@@ -386,16 +386,6 @@ export default function Medicines({navigation}) {
             fontWeight: 'bold',
             color: colors.text
           }}>{item.name}</Text>
-          <Text style={{
-            fontSize: 12,
-            marginTop: 5,
-            color: colors.grey_d
-          }}>{item.amount} tab.</Text>
-          <Text style={{
-            fontSize: 18,
-            marginTop: 5,
-            color: colors.text
-          }}>{item.price} zł</Text>
         </View>
         <TouchableOpacity style={{
           backgroundColor: colors.grey_l,

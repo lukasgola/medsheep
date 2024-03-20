@@ -152,6 +152,16 @@ export default function Patient({navigation}) {
             fontWeight: 'bold'
           }}>Wyloguj</Text>
         </TouchableOpacity>
+        <View style={{
+          width: '100%',
+          alignItems: 'center',
+          marginTop: 20
+        }}>
+          <Text style={{
+            color: colors.primary
+          }}>Usuń konto</Text>
+        </View>
+        
     </ScrollView>
   );
 }
