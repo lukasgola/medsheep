@@ -408,10 +408,9 @@ export default function Medicines({navigation}) {
           top: 10,
           right: 10
         }}
-          disabled={item.availability ? false : true}
           onPress={() => onItemChoice(item)}
         >
-          <Ionicons name={'add-outline'} size={25} style={{marginLeft: 8}} color={item.availability ? colors.text : colors.grey} />
+          <Ionicons name={'add-outline'} size={25} style={{marginLeft: 8}} color={colors.text} />
         </TouchableOpacity>
       </TouchableOpacity>
     )
