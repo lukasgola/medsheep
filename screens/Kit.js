@@ -29,8 +29,8 @@ export default function Kit({navigation, route}) {
 
   const [ test, setTest ] = useState(null);
 
-  const [ kitMode, setKitMode ] = useState(route.params.kitMode ? route.params.kitMode : false)
-  const [ chooseMode, setChooseMode ] = useState(route.params.chooseMode ? route.params.chooseMode : false)
+  //const [ kitMode, setKitMode ] = useState(route.params.kitMode ? route.params.kitMode : false)
+  const [ chooseMode, setChooseMode ] = useState(true)
 
   const goUp = (amount) => {
     setNumber(amount)

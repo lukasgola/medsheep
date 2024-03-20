@@ -6,6 +6,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import HomeStack from './stacks/HomeStack';
 import OrderStack from './stacks/OrderStack';
 import PatientStack from './stacks/PatientStack';
+import MedkitStack from './stacks/MedkitStack';
 
 import {useTheme} from '../theme/ThemeProvider';
 
@@ -66,11 +67,11 @@ export default function BottomTabs() {
       }}
     >
       <Tab.Screen 
-        name="OrderStack" 
-        component={OrderStack} 
+        name="MedkitStack" 
+        component={MedkitStack} 
         options={{
           tabBarIcon: ({focused}) => (
-            <Item focused={focused} icon='cart-outline' filled='cart' title='Zamów' />
+            <Item focused={focused} icon='cart-outline' filled='cart' title='Apteczka' />
           ),
         }}
       />

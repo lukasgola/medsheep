@@ -406,7 +406,7 @@ export default function Medicines({navigation}) {
           disabled={item.availability ? false : true}
           onPress={() => onItemChoice(item)}
         >
-          <Ionicons name={'cart-outline'} size={25} style={{marginLeft: 8}} color={item.availability ? colors.text : colors.grey} />
+          <Ionicons name={'add-outline'} size={25} style={{marginLeft: 8}} color={item.availability ? colors.text : colors.grey} />
         </TouchableOpacity>
       </TouchableOpacity>
     )

@@ -1,6 +1,6 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import { TouchableOpacity, Text } from 'react-native';
+import { TouchableOpacity, Text, View } from 'react-native';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -28,7 +28,7 @@ export default function HomeStack({navigation}) {
 
   return (
     <Stack.Navigator
-      initialRouteName='Główna'
+      initialRouteName='Kalendarz'
       screenOptions={{
         headerTintColor: colors.primary,
         headerTitleStyle: {
@@ -36,7 +36,6 @@ export default function HomeStack({navigation}) {
       },
       }}
     >
-      <Stack.Screen name="Medsheep" component={Main} />
       <Stack.Screen 
         name="Kalendarz" 
         component={Calendar} 
@@ -47,14 +46,11 @@ export default function HomeStack({navigation}) {
               title="Info"
               color="#fff"
             >
-              <Ionicons name={'add-outline'} size={28} color={colors.primary} style={{marginTop: 4}} />
+              <Ionicons name={'add-outline'} size={25} color={colors.primary} style={{marginTop: 4}} />
             </TouchableOpacity>
           )
         }}
       />
-      <Stack.Screen name="Lekarz" component={Doctor} />
-      <Stack.Screen name="Szukaj" component={Search} />
-      <Stack.Screen name="Wyniki" component={Results} />
       <Stack.Screen 
         name="modal" 
         component={ModalStack}

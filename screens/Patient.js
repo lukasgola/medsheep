@@ -25,6 +25,13 @@ export default function Patient({navigation}) {
 
   const [ cumulation, setCumulation ] = useState(0);
 
+
+  useEffect(() => {
+
+    console.log(currentUser)
+
+  }, [])
+
   const OrderItem = ({item}) => {
     return(
       <View style={{
@@ -129,52 +136,6 @@ export default function Patient({navigation}) {
           </View>
         </TouchableOpacity>
         
-        <View style={[styles2.block,{
-          backgroundColor: colors.background,
-          borderColor: colors.grey
-        }]}>
-          <Text style={{
-              fontSize: 20,
-              color: colors.text,
-              fontWeight: 'bold',
-              marginTop: 15,
-              marginBottom: 10
-          }}>Apteczka</Text>
-
-          <FlatList
-            data={kit.slice(0,3)}
-            renderItem={({item}) => <CartItem item={item.product} number={item.number} price={item.price} pillNumber={item.pillNumber} />}
-            keyExtractor={item => item.id}
-            scrollEnabled={false}
-
-          />
-
-          <View style={{
-            width: '100%',
-            marginTop: 10,
-            borderTopColor: colors.grey,
-            borderTopWidth: 1,
-            alignItems: 'flex-end',
-            padding: 5
-          }}>
-            <Text style={{
-              fontSize: 20,
-              color: colors.text,
-              fontWeight: 'bold',
-              marginTop: 5
-            }}>{cumulation}</Text>
-          </View>
-
-          <TouchableOpacity 
-            onPress={() => navigation.navigate('Apteczka', {chooseMode: false})}
-            style={styles2.viewMore}>
-            <Text style={{
-              fontSize: 14,
-              color: colors.text,
-              fontWeight: 'bold',
-            }}>Zobacz więcej...</Text>
-          </TouchableOpacity>
-        </View>
         <TouchableOpacity
           style={[styles2.block, {
             height: 50,
