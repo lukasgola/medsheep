@@ -193,10 +193,10 @@ export async function addToBasket(product, number, price, basket, setBasket, set
       console.log('dziala 2');
         try {
             await addDoc(collection(db, `users/${auth.currentUser.uid}/kit`), {
-                product: item.product,
-                pillNumber: item.product.amount * item.number,
+                product: item,
+                pillNumber: item.amount * item.number,
             }).then(function(docRef) {
-                setKit({id: docRef.id, product: item.product, pillNumber: item.product.amount * item.number})
+                setKit({id: docRef.id, product: item.product, pillNumber: item.amount * item.number})
             });
             } catch (e) {
             console.error("Error adding document: ", e);

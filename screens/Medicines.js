@@ -11,6 +11,7 @@ import Animated from 'react-native-reanimated';
 //Providers
 import { useTheme } from '../theme/ThemeProvider';
 import { useBasket } from '../providers/BasketProvider';
+import { useKit } from '../providers/KitProvider';
 
 //Components
 import BottomSheet from '../components/BottomSheet';
@@ -19,12 +20,14 @@ import CartItem from '../components/CartItem';
 
 
 //Firebase
-import { addToBasket } from '../firebase/firebase-config';
+import { addToBasket, addToKit } from '../firebase/firebase-config';
 
 export default function Medicines({navigation}) {
 
   const {colors} = useTheme();
   const {basket, setBasket, setNewBasket} = useBasket();
+
+  const {kit, setKit, setNewKit} = useKit();
 
   const DATA = [
     {
@@ -339,14 +342,16 @@ export default function Medicines({navigation}) {
   }
 
   const onItemChoice = (item) => {
+    console.log(item)
     setSelectedItem(item)
     setPrice(item.price)
     setNumber(1)
     setModalVisible(true)
   }
 
-  const onAddToBasket = () => {
-      addToBasket(selectedItem, number, price, basket, setBasket, setNewBasket)
+  const onAddToKit = () => {
+      addToKit(selectedItem, kit, setKit, setNewKit)
+      //addToBasket(selectedItem, number, price, basket, setBasket, setNewBasket)
   }
 
   const MedItem = ({item}) => {
@@ -424,7 +429,7 @@ export default function Medicines({navigation}) {
         visible={modalVisible} 
         setModalVisible={setModalVisible}
         text={'Dodaj do apteczki'}
-        onConfirm={onAddToBasket}
+        onConfirm={onAddToKit}
       >
         <View style={{
           width: '100%',
