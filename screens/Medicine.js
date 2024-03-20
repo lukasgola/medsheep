@@ -14,15 +14,17 @@ import Amounter from '../components/Amounter';
 import CartItem from '../components/CartItem';
 
 //Firebase
-import { addToBasket } from '../firebase/firebase-config';
+import { addToBasket, addToKit } from '../firebase/firebase-config';
 import { addDoc, collection, query, where, updateDoc, getDocs } from 'firebase/firestore';
 import { auth, db } from '../firebase/firebase-config';
+import { useKit } from '../providers/KitProvider';
 
 export default function Medicine({route, navigation}) {
 
     const {item} = route.params;
     const {colors} = useTheme();
     const {basket, setBasket, setNewBasket} = useBasket();
+    const {kit, setKit, setNewKit} = useKit();
 
     const [liked, setLiked] = useState(false)
     const [modalVisible, setModalVisible] = useState(false)
@@ -42,8 +44,9 @@ export default function Medicine({route, navigation}) {
         setPrice((item.price*(amount)).toFixed(2))
     }
 
-    const onAddToBasket = async () => {
-        addToBasket(item, number, price, basket, setBasket, setNewBasket)
+    const onAddToKit = async () => {
+        addToKit(item, number, kit, setKit, setNewKit)
+        //addToBasket(item, number, price, basket, setBasket, setNewBasket)
     }
 
 
@@ -65,7 +68,7 @@ export default function Medicine({route, navigation}) {
             visible={modalVisible} 
             setModalVisible={setModalVisible}
             text={'Dodaj do apteczki'}
-            onConfirm={onAddToBasket}
+            onConfirm={onAddToKit}
         >
             <CartItem item={item} number={number} price={price} />
         </BottomSheet>
