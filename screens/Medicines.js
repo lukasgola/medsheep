@@ -350,7 +350,7 @@ export default function Medicines({navigation}) {
   }
 
   const onAddToKit = () => {
-      addToKit(selectedItem, kit, setKit, setNewKit)
+      addToKit(selectedItem, number, kit, setKit, setNewKit)
       //addToBasket(selectedItem, number, price, basket, setBasket, setNewBasket)
   }
 

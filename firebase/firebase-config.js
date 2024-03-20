@@ -152,14 +152,14 @@ export async function addToBasket(product, number, price, basket, setBasket, set
     }
   }
 
-  export async function addToKit(item, kit, setKit, setNewKit){
+  export async function addToKit(item, amount, kit, setKit, setNewKit){
 
-    const result = kit.filter((element) => element.product.name == item.product.name);
+    const result = kit.filter((element) => element.product.name == item.name);
         
     if(result.length !== 0){
       console.log('dziala 1');
         try {
-            const q = query(collection(db, "users", auth.currentUser.uid, "kit"), where("product", "==", item.product));
+            const q = query(collection(db, "users", auth.currentUser.uid, "kit"), where("product", "==", item));
             const querySnapshot = await getDocs(q);
             querySnapshot.forEach((doc) => {
                 // doc.data() is never undefined for query doc snapshots
@@ -172,7 +172,7 @@ export async function addToBasket(product, number, price, basket, setBasket, set
 
                 for(let i = 0; i < tempKit.length; i++){
                     if(tempKit[i].id == doc.id){
-                        tempKit[i].pillNumber = parseFloat(data.pillNumber) + (parseFloat(item.product.amount) * parseFloat(item.number));
+                        tempKit[i].pillNumber = parseFloat(data.pillNumber) + amount;
                     }
                 }
 
@@ -180,7 +180,7 @@ export async function addToBasket(product, number, price, basket, setBasket, set
 
       
                 updateDoc(doc.ref, {
-                  pillNumber: parseFloat(data.pillNumber) + (parseFloat(item.product.amount) * parseFloat(item.number)),
+                  pillNumber: parseFloat(data.pillNumber) + amount,
                 });
                 
             });
@@ -194,9 +194,9 @@ export async function addToBasket(product, number, price, basket, setBasket, set
         try {
             await addDoc(collection(db, `users/${auth.currentUser.uid}/kit`), {
                 product: item,
-                pillNumber: item.amount * item.number,
+                pillNumber: amount,
             }).then(function(docRef) {
-                setKit({id: docRef.id, product: item.product, pillNumber: item.amount * item.number})
+                setKit({id: docRef.id, product: item, pillNumber: amount})
             });
             } catch (e) {
             console.error("Error adding document: ", e);
