@@ -64,7 +64,7 @@ export default function Medicine({route, navigation}) {
         <BottomSheet 
             visible={modalVisible} 
             setModalVisible={setModalVisible}
-            text={'Dodaj do koszyka'}
+            text={'Dodaj do apteczki'}
             onConfirm={onAddToBasket}
         >
             <CartItem item={item} number={number} price={price} />
@@ -87,7 +87,7 @@ export default function Medicine({route, navigation}) {
                 color: colors.background, 
                 fontWeight: 'bold',
                 fontSize: 16
-            }}>Dodaj do koszyka</Text>
+            }}>Dodaj do apteczki</Text>
         </TouchableOpacity>
         
         <ScrollView

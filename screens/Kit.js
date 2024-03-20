@@ -166,6 +166,19 @@ export default function Kit({navigation, route}) {
           height: '100%',
           paddingTop: 10,
         }}
+        ListEmptyComponent={
+          <View style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            width: '100%',
+            height: '100%',
+            marginTop: '50%',
+          }}>
+            <Text style={{
+              color: colors.grey_d
+            }}>Nie ma żadnych leków</Text>
+          </View>
+        }
       />
       <BottomSheet 
         visible={modalVisible} 

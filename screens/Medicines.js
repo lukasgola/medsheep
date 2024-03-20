@@ -423,7 +423,7 @@ export default function Medicines({navigation}) {
       <BottomSheet 
         visible={modalVisible} 
         setModalVisible={setModalVisible}
-        text={'Dodaj do koszyka'}
+        text={'Dodaj do apteczki'}
         onConfirm={onAddToBasket}
       >
         <View style={{

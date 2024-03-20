@@ -346,7 +346,7 @@ export default function MainCalendar() {
               }}>
                 <Text style={{
                   color: colors.grey_d
-                }}>Nie ma zadnych leków</Text>
+                }}>Nie ma żadnych leków</Text>
               </View>
             }
           />
