@@ -396,7 +396,7 @@ export default function MainCalendar() {
               borderColor: colors.grey,
               borderWidth: 1,
             }}>
-              <CartItem item={kitItem?.product} number={kitItem?.pillNumber} />
+              <CartItem item={kitItem?.product} />
             </View>
         </BottomSheet>
 
