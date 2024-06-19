@@ -226,7 +226,7 @@ export default function Medicines({navigation}) {
   }
 
   const onAddToKit = () => {
-      addToKit(selectedItem, number, kit, setKit, setNewKit)
+      addToKit(selectedItem, number*selectedItem.amount, kit, setKit, setNewKit)
       //addToBasket(selectedItem, number, price, basket, setBasket, setNewBasket)
   }
 
@@ -305,7 +305,7 @@ export default function Medicines({navigation}) {
             borderColor: colors.grey,
             borderWidth: 1,
           }}>
-            <CartItem item={selectedItem} pillNumber={number} price={price} /> 
+            <CartItem item={selectedItem} pillNumber={number*selectedItem.amount} price={price} /> 
           </View>
           <View style={{
             paddingTop: 20
