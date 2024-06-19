@@ -8,6 +8,8 @@ import OrderStack from './stacks/OrderStack';
 import PatientStack from './stacks/PatientStack';
 import MedkitStack from './stacks/MedkitStack';
 
+import Notifications from '../screens/Notificaition';
+
 import {useTheme} from '../theme/ThemeProvider';
 
 const Tab = createMaterialTopTabNavigator();
@@ -90,6 +92,15 @@ export default function BottomTabs() {
         options={{
           tabBarIcon: ({focused}) => (
             <Item focused={focused} icon='person-outline' filled='person' title='Pacjent' />
+          ),
+        }}
+      />
+      <Tab.Screen 
+        name="Notifications" 
+        component={Notifications} 
+        options={{
+          tabBarIcon: ({focused}) => (
+            <Item focused={focused} icon='notifications-outline' filled='person' title='Powiadomienia' />
           ),
         }}
       />

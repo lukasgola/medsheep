@@ -1,5 +1,5 @@
 import React, { useState, useRef, useLayoutEffect } from 'react';
-import { View, Modal, KeyboardAvoidingView, Text, TouchableOpacity, Animated, Pressable } from 'react-native';
+import { View, Modal, KeyboardAvoidingView, Text, TouchableOpacity, Animated, Pressable, Platform } from 'react-native';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
