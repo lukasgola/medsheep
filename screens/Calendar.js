@@ -248,7 +248,7 @@ export default function MainCalendar() {
             <Text style={{
               color: colors.primary,
               fontWeight: 'bold'
-            }}>1 tabletka</Text>
+            }}>{item.dose + ' ' + item.doseUnit} </Text>
           </View>
         </View>
         <TouchableOpacity 

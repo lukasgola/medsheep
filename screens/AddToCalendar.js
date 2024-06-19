@@ -98,6 +98,29 @@ export default function AddToCalendar({navigation}){
         },
     ]
 
+    const doses = [
+        {
+            id: 1,
+            text: 'tabletka',
+        },
+        {
+            id: 2,
+            text: 'łyzeczka',
+        },
+        {
+            id: 3,
+            text: 'saszetka',
+        },
+        {
+            id: 4,
+            text: 'ampułka',
+        },
+        {
+            id: 5,
+            text: 'porcja'
+        }
+    ]
+
     const [ title, setTitle ] = useState('');
     
     const [ medString, setMedString ] = useState('Wybierz')
@@ -105,6 +128,14 @@ export default function AddToCalendar({navigation}){
     const [ freq, setFreq ] = useState(0);
     const [ freqString, setFreqString ] = useState('Codziennie')
     const [ prevFreq, setPrevFreq ] = useState('');
+
+    const [doseArray, setDoseArray] = useState([])
+
+    const [ dose, setDose ] = useState(1);
+
+    const [ doseUnit, setDoseUnit ] = useState('tabletka')
+    const [ prevDoseUnit, setPrevDoseUnit] = useState('')
+    const [ doseUnitString, setDoseUnitString] = useState('tabletka')
 
     const [ time, setTime ] = useState(new Date(Date.now()))
 
@@ -125,6 +156,7 @@ export default function AddToCalendar({navigation}){
     const [isDateEndPickerVisible, setDateEndPickerVisible] = useState(false);
     const [isCustomFreqPickerVisible, setCustomFreqPickerVisible] = useState(false);
     const [isCustomFreqPeriodPickerVisible, setCustomFreqPeriodPickerVisible] = useState(false);
+    const [isDosePickerVisible, setDosePickerVisible] = useState(false);
 
 
     const fontSize = 14;
@@ -134,7 +166,14 @@ export default function AddToCalendar({navigation}){
             console.log("Nowe idd: " + data.id)
             setMedString(data.product.name)
         }
+        
     }, [isFocused])
+
+    useEffect(() => {
+        for(let i = 1; i < 5; i++){
+            setDoseArray(oldArray => [...oldArray, i]);
+        }
+    }, [])
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
@@ -257,7 +296,9 @@ export default function AddToCalendar({navigation}){
                     dateEndString: dateEnd.getFullYear() + '-' + (dateEnd.getMonth() < 10 ? '0' + (dateEnd.getMonth()+1) : (dateEnd.getMonth()+1)) + '-' + (dateEnd.getDate() < 10 ? '0' + dateEnd.getDate() : dateEnd.getDate()),
                     startTimestamp: dateS.getTime(),
                     endTimestamp: dateE.getTime(),
-                    itemId: data.id
+                    itemId: data.id,
+                    dose: dose,
+                    doseUnit: doseUnitString
                 }
                 addToCalendar(event);
                 navigation.navigate('Kalendarz');
@@ -439,6 +480,98 @@ export default function AddToCalendar({navigation}){
                                     <Picker.Item label={item.text.toString()} value={item.text} key={item.id} />
                                 ))}
                         </Picker>
+                    </BottomSheet>
+                </TouchableOpacity>
+
+                {/* Dawka */}
+
+                <TouchableOpacity 
+                    onPress={() => setDosePickerVisible(true)}
+                    style={{
+                        width: '100%', 
+                        height: 50, 
+                        flexDirection: 'row',
+                        backgroundColor: colors.grey_l,
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        borderColor: '#e8e8e8',
+                        borderWidth: 1,
+                        borderTopWidth: 0
+                        
+                    }}>
+                    <View
+                        style={{
+                            width: 40,
+                            paddingLeft: 10,
+                            justifyContent: 'center',
+                        }}
+                        >
+                            <Ionicons name={'refresh-outline'} size={20} color={colors.grey_d}/>
+                    </View>
+
+                    <Text style={{
+                        color: colors.text,
+                        fontSize: fontSize,
+                    }}>Dawka</Text>
+
+                    <View style={{
+                        flexDirection: 'row',
+                        position: 'absolute',
+                        right: 10,
+                        alignItems: 'center',
+                    }}>
+                        <Text style={{
+                            color: colors.grey_d,
+                            fontSize: fontSize
+                        }}>{ dose + ' ' + doseUnitString}</Text>
+
+                        <Ionicons name={'chevron-forward-outline'} size={20} color={colors.grey_d}/>
+
+                    </View>
+
+                    <BottomSheet 
+                        visible={isDosePickerVisible} 
+                        setModalVisible={setDosePickerVisible}
+                        text={'Podaj dawkę'}
+                        onConfirm={handleFreqConfirm}
+                    >
+                        <View style={{
+                            width: '100%',
+                            flexDirection: 'row',
+                            justifyContent: 'space-between'
+                        }}>
+                            <View style={{
+                                width: '50%'
+                            }}>
+                            <Picker
+                                selectedValue={dose}
+                                onValueChange={(itemValue, itemIndex) =>{
+                                    setDose(itemValue)
+                                }
+                                }>
+                                    {doseArray.map((item) => (
+                                        <Picker.Item label={item.toString()} value={item} key={item} />
+                                    ))}
+                            </Picker>
+                            </View>
+                            <View style={{
+                                width: '50%'
+                            }}>
+                            <Picker
+                                selectedValue={doseUnitString}
+                                onValueChange={(itemValue, itemIndex) =>{
+                                    setPrevDoseUnit(doseUnitString)
+                                    setDoseUnit(itemIndex)
+                                    setDoseUnitString(itemValue)
+                                }
+                                }>
+                                    {doses.map((item) => (
+                                        <Picker.Item label={item.text.toString()} value={item.text} key={item.id} />
+                                    ))}
+                            </Picker>
+                            </View>
+                        </View>
+                        
                     </BottomSheet>
                 </TouchableOpacity>
 
