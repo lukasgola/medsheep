@@ -26,6 +26,12 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "1cf57790-dddc-4038-9840-40ca88556314"
+      }
+    },
+    "owner": "lukasgola"
   }
 }
