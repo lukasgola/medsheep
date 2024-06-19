@@ -19,7 +19,7 @@ export default function SignIn({navigation}){
     const width = Dimensions.get('window').width;
 
     const {colors} = useTheme();
-    const { control, clearErrors, handleSubmit, formState: {errors}, trigger } = useForm();
+    const { control, clearErrors, setError, handleSubmit, formState: {errors}, trigger } = useForm();
 
     const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
@@ -29,9 +29,15 @@ export default function SignIn({navigation}){
     const onSignIn = async data => {
         setIsLogging(true);
         const { email, password } = data;
-        await signIn(email, password);
-        setIsLogging(false);
-        
+        try {
+            await signIn(email, password);
+        } catch(error) {
+            console.log(error)
+            setError('email', { type: 'manual', message: 'Nieprawidłowe dane logowania' });
+            setError('password', { type: 'manual', message: 'Nieprawidłowe dane logowania' });
+        } finally {
+            setIsLogging(false);
+        }
     };
 
     const onSignUp = () => {

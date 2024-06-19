@@ -54,7 +54,8 @@ export async function signIn(email, password) {
         .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
-            console.log(errorMessage)
+            throw new Error(errorCode)
+            //console.log(errorMessage)
         })
     )
 }
