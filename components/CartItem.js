@@ -31,7 +31,7 @@ const CartItem = (props) => {
               fontSize: 14,
               color: colors.text,
               fontWeight: 'bold',
-            }}>{props.item ? props.item.name : 'None'}</Text>
+            }}>{props.name ? props.name : props.item.name}</Text>
           </View>
 
         <View>

@@ -165,6 +165,7 @@ export default function MainCalendar() {
 
   const onTakenClick = async (item) => {
     setItem(item);
+    console.log(item);
     setKitItem(item.kitItem);
     setModalVisible(true);
   }
@@ -396,7 +397,7 @@ export default function MainCalendar() {
               borderColor: colors.grey,
               borderWidth: 1,
             }}>
-              <CartItem item={kitItem?.product} />
+              <CartItem item={kitItem?.product} name={item.title} />
             </View>
         </BottomSheet>
 
