@@ -242,8 +242,8 @@ export default function MainCalendar() {
             borderRadius: 5,
             paddingVertical: 5,
             backgroundColor: '#FFE1E1',
-            width: 90,
-            alignItems: 'center'
+            alignItems: 'center',
+            paddingHorizontal: 10
           }}>
             <Text style={{
               color: colors.primary,
@@ -392,17 +392,36 @@ export default function MainCalendar() {
           >
             <View style={{
               width: '100%',
-              paddingHorizontal: 15,
-              borderRadius: 10,
-              borderColor: colors.grey,
-              borderWidth: 1,
+              paddingHorizontal: '2.5%',
+              flexDirection: 'row',
+              alignItems: 'center',
             }}>
-              <CartItem item={kitItem?.product} name={item?.title} pillNumber={kitItem?.pillNumber} />
+              <Text style={{
+                fontSize: 18,
+                fontWeight: '700',
+                width: '50%'
+              }}>{item?.title}</Text>
+              <View style={{
+                width: '50%',
+                borderRadius: 5,
+                paddingVertical: 5,
+                backgroundColor: '#FFE1E1',
+                alignItems: 'center',
+                paddingHorizontal: 10
+              }}>
+                <Text style={{
+                  color: colors.primary,
+                  fontWeight: 'bold'
+                }}>{item?.dose + ' ' + item?.doseUnit} </Text>
+              </View>
             </View>
+            <Text style={{
+              paddingHorizontal: '2.5%',
+            }}>{kitItem?.pillNumber} tab.</Text>
             <Text style={{
               fontSize: 16,
               fontWeight: 'bold',
-              color: colors.text,
+              color: colors.grey_d,
               marginTop: 20,
               marginLeft: '2.5%'
             }}>Odłóz</Text>
