@@ -135,7 +135,7 @@ const BottomSheet = (props) => {
                 flex: 1,
                 borderTopLeftRadius: 15,
                 borderTopRightRadius: 15,
-                paddingHorizontal: '5%',
+                paddingHorizontal: '2.5%',
                 paddingVertical: 10,
             }}>
                 
@@ -146,6 +146,7 @@ const BottomSheet = (props) => {
                     alignItems: 'center',
                     justifyContent: 'space-between',
                     marginBottom: 20,
+                    paddingHorizontal: '2.5%'
                 }}>
                     <Text style={{
                         fontSize: 18,

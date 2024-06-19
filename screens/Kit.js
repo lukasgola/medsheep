@@ -3,12 +3,11 @@ import { View, Text, FlatList, TouchableOpacity, Animated, StyleSheet, LayoutAni
 
 import { useKit } from '../providers/KitProvider';
 import { useTheme } from '../theme/ThemeProvider';
-import { useData } from '../providers/DataProvider';
 
+import Swipe from '../components/Swipe';
 import CartItem from '../components/CartItem';
 import BottomSheet from '../components/BottomSheet';
 import Amounter from '../components/Amounter';
-import Swipe from '../components/Swipe';
 
 //Firebase
 import { query, collection, getDocs, where, updateDoc  } from 'firebase/firestore';
@@ -100,11 +99,25 @@ export default function Kit({navigation, route}) {
 
   }
 
-  const KitItem = ({item}) => {
+  let row = [];
+  let prevOpenedRow;
+
+  const closeRow = (index) => {
+    if (prevOpenedRow && prevOpenedRow !== row[index]) {
+      prevOpenedRow.close();
+    }
+    
+    prevOpenedRow = row[index];
+  };
+
+  const KitItem = ({item, index}) => {
     
     return(
-      <TouchableOpacity
-        onPress={() => onSettingsClick(item)}
+      <Swipe
+        index={index}
+        trashClick={() => onDeleteClick({item, index})}
+        closeRow={() => closeRow(index)}
+        row={row}
         style={{
           width: '90%',
           height: 65,
@@ -117,11 +130,17 @@ export default function Kit({navigation, route}) {
           paddingHorizontal: '3%',
           borderColor: colors.grey,
           borderWidth: 1,
-          marginTop: 10
+        }}
+      >
+      <TouchableOpacity
+        onPress={() => onSettingsClick(item)}
+        style={{
+          flex: 1
         }}
       >
         <CartItem item={item.product} number={item.number} price={item.price} pillNumber={item.pillNumber} />
       </TouchableOpacity>
+      </Swipe>
     ) 
   }
 
@@ -129,7 +148,7 @@ export default function Kit({navigation, route}) {
     <View>
       <FlatList
         data={kit}
-        renderItem={({item, index}) => KitItem({item})}
+        renderItem={({item, index}) => KitItem({item, index})}
         keyExtractor={item => item.id}
         style={{
           width: '100%',
@@ -162,7 +181,15 @@ export default function Kit({navigation, route}) {
           alignItems: 'center',
           justifyContent: 'center'
         }}>
-          <CartItem item={item.product} number={number} price={price} /> 
+          <View style={{
+            width: '100%',
+            paddingHorizontal: 15,
+            borderRadius: 10,
+            borderColor: colors.grey,
+            borderWidth: 1,
+          }}>
+            <CartItem item={item.product} pillNumber={number} price={price} /> 
+          </View>
           <View style={{
             paddingTop: 20
           }}>
