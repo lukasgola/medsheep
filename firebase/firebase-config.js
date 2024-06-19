@@ -37,6 +37,7 @@ export async function createUser(name, lastName, email, password) {
             const errorCode = error.code;
             const errorMessage = error.message;
             console.log(errorMessage)
+            throw new Error(errorCode)
             // ..
         })
     )
