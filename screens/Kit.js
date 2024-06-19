@@ -19,7 +19,6 @@ export default function Kit({navigation, route}) {
 
   const { kit, setKit, setNewKit } = useKit();
   const { colors } = useTheme();
-  const { data, setData } = useData();
 
   const [ modalVisible, setModalVisible ] = useState(false);
 
@@ -27,10 +26,7 @@ export default function Kit({navigation, route}) {
   const [ number, setNumber ] = useState(null);
   const [ price, setPrice ] = useState(null);
 
-  const [ test, setTest ] = useState(null);
 
-  //const [ kitMode, setKitMode ] = useState(route.params.kitMode ? route.params.kitMode : false)
-  const [ chooseMode, setChooseMode ] = useState(true)
 
   const goUp = (amount) => {
     setNumber(amount)
@@ -57,22 +53,11 @@ export default function Kit({navigation, route}) {
     },
   };
 
-  const onSettingsClick = ({item, index}) => {
-  if(chooseMode){
-    console.log(item)
-    setData({
-      id: item.id,
-      product: item.product
-    });
-  }
-  else{
+  const onSettingsClick = (item) => {
     setItem(item)
-    setNumber(item.number)
+    setNumber(item.pillNumber)
     setPrice(item.price)
-    setTest(prevOpenedRow)
     setModalVisible(true)
-  }
-
   }
 
   const onDeleteClick = ({ item, index }) => {
@@ -81,17 +66,6 @@ export default function Kit({navigation, route}) {
     setNewKit([...a]);
     removeFromKit(item.id);
     LayoutAnimation.configureNext(layoutAnimConfig)
-  };
-
-  let row = [];
-  let prevOpenedRow;
-
-  const closeRow = (index) => {
-    if (prevOpenedRow && prevOpenedRow !== row[index]) {
-      prevOpenedRow.close();
-    }
-    
-    prevOpenedRow = row[index];
   };
 
 
@@ -106,7 +80,7 @@ export default function Kit({navigation, route}) {
 
         for(let i = 0; i < tempKit.length; i++){
             if(tempKit[i].id == doc.id){
-                tempKit[i].number = number;
+                tempKit[i].pillNumber = number;
                 tempKit[i].price = price;
             }
         }
@@ -114,7 +88,7 @@ export default function Kit({navigation, route}) {
         setNewKit(tempKit);
         
         updateDoc(doc.ref, {
-          number: number,
+          pillNumber: number,
           price: price
         });
           
@@ -124,20 +98,13 @@ export default function Kit({navigation, route}) {
       console.error("Error updating document: ", e);
     }
 
-    test.close();
-
   }
 
-  const KitItem = ({item, index}) => {
+  const KitItem = ({item}) => {
     
     return(
-      <Swipe
-        index={index}
-        settingsClick={() => onSettingsClick({item, index})}
-        trashClick={() => onDeleteClick({item, index})}
-        closeRow={() => closeRow(index)}
-        row={row}
-        chooseMode={chooseMode}
+      <TouchableOpacity
+        onPress={() => onSettingsClick(item)}
         style={{
           width: '90%',
           height: 65,
@@ -148,11 +115,13 @@ export default function Kit({navigation, route}) {
           marginLeft: '5%',
           flexDirection: 'row',
           paddingHorizontal: '3%',
-          borderColor: data.product == item.product ? colors.primary : colors.grey
+          borderColor: colors.grey,
+          borderWidth: 1,
+          marginTop: 10
         }}
       >
         <CartItem item={item.product} number={item.number} price={item.price} pillNumber={item.pillNumber} />
-      </Swipe>
+      </TouchableOpacity>
     ) 
   }
 
@@ -160,7 +129,7 @@ export default function Kit({navigation, route}) {
     <View>
       <FlatList
         data={kit}
-        renderItem={({item, index}) => KitItem({item, index})}
+        renderItem={({item, index}) => KitItem({item})}
         keyExtractor={item => item.id}
         style={{
           width: '100%',
@@ -203,7 +172,7 @@ export default function Kit({navigation, route}) {
                 goUp={goUp}
                 goDown={goDown}
                 onChangeText={onChangeText}
-                number={item.number}
+                number={item.pillNumber}
             />
           </View>
           

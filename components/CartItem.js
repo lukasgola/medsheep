@@ -30,7 +30,6 @@ const CartItem = (props) => {
         }}>
           <View style={{
             paddingLeft: 10,
-            width: 90,
           }}>
             <Text style={{
               fontSize: 14,
@@ -39,7 +38,6 @@ const CartItem = (props) => {
             }}>{props.item ? props.item.name : 'None'}</Text>
           </View>
           <View style={{
-            width: '55%',
             paddingLeft: '45%',
             justifyContent:'space-between',
             flexDirection: 'row',
