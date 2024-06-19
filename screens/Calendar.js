@@ -397,8 +397,59 @@ export default function MainCalendar() {
               borderColor: colors.grey,
               borderWidth: 1,
             }}>
-              <CartItem item={kitItem?.product} name={item.title} />
+              <CartItem item={kitItem?.product} name={item?.title} pillNumber={kitItem?.pillNumber} />
             </View>
+            <Text style={{
+              fontSize: 16,
+              fontWeight: 'bold',
+              color: colors.text,
+              marginTop: 20,
+              marginLeft: '2.5%'
+            }}>Odłóz</Text>
+            <View style={{
+              width: '100%',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              marginTop: 10
+            }}>
+              <TouchableOpacity 
+                onPress={() => console.log('odloz')}
+                activeOpacity={0.2}
+                style={{
+                    width: '48%',
+                    paddingVertical: 10,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    backgroundColor: colors.grey_l,
+                    borderRadius: 10,
+                    borderWidth: 1,
+                    borderColor: colors.grey
+              }}>
+                  <Text style={{
+                      fontSize: 16,
+                      color: colors.text
+                  }}>+30 min</Text>
+              </TouchableOpacity>
+              <TouchableOpacity 
+                onPress={() => console.log('odloz')}
+                activeOpacity={0.2}
+                style={{
+                    width: '48%',
+                    paddingVertical: 10,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    backgroundColor: colors.grey_l,
+                    borderRadius: 10,
+                    borderWidth: 1,
+                    borderColor: colors.grey
+              }}>
+                  <Text style={{
+                      fontSize: 16,
+                      color: colors.text
+                  }}>+1 godz</Text>
+              </TouchableOpacity>
+            </View>
+            
         </BottomSheet>
 
 

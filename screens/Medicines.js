@@ -263,6 +263,11 @@ export default function Medicines({navigation}) {
             fontWeight: 'bold',
             color: colors.text
           }}>{item.name}</Text>
+          <Text style={{
+            fontSize: 14,
+            color: colors.grey_d,
+            marginTop: 2
+          }}>{item.amount} tabletek</Text>
         </View>
         <TouchableOpacity style={{
           backgroundColor: colors.grey_l,
