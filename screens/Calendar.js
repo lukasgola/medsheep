@@ -16,10 +16,11 @@ import { useIsFocused } from "@react-navigation/native";
 //Components
 import BottomSheet from '../components/BottomSheet';
 import Swipe from '../components/Swipe';
+import CartItem from '../components/CartItem';
 
 
 //Firebase
-import { auth, db, setTaken } from '../firebase/firebase-config';
+import { auth, db, getKitItem, setTaken } from '../firebase/firebase-config';
 import { getDocs, collection, where, query } from "firebase/firestore";
 
 
@@ -62,6 +63,8 @@ export default function MainCalendar() {
   const [ item, setItem ] = useState();
   const [ takenAmount, setTakenAmount ] = useState(0);
 
+  const [kitItem, setKitItem] = useState();
+
   const [ modalVisible, setModalVisible ] = useState(false);
   const [ modalVisible2, setModalVisible2 ] = useState(false);
   const [ modalVisible3, setModalVisible3 ] = useState(false);
@@ -73,19 +76,39 @@ export default function MainCalendar() {
     const q2 = query(collection(db, "users", auth.currentUser.uid, "events", id, "calendar" ), where("id", "==", timestamp));
     const querySnapshot2 = await getDocs(q2);
     querySnapshot2.forEach((doc) => {
-        const data = {
+      //const kitItem = getKitItem(data.itemId);
+        const item = {
           ...doc.data(),
-          id: doc.id
+          id: doc.id,
+          //kitItem: kitItem
         }
-      takenItem = data.taken;
+      takenItem = item.taken;
     });
     return takenItem;
+  }
+
+  async function fetchDataWithKitItems(querySnapshot) {
+    const fetchedData = [];
+  
+    for (const doc of querySnapshot.docs) {
+      const data = doc.data();
+      const kitItem = await getKitItem(data.itemId); // Await the async function
+      const item = {
+        ...data,
+        id: doc.id,
+        kitItem: kitItem,
+        taken: false // Add the taken field with the default value of false
+      };
+      fetchedData.push(item); // Add the transformed item to the fetchedData array
+    }
+  
+    return fetchedData;
   }
 
   const getDayEvents = async (timestamp) => {
     const q = query(collection(db, "users", auth.currentUser.uid, "events"), where("endTimestamp", ">=", timestamp));
     const querySnapshot = await getDocs(q);
-    const fetchedData = querySnapshot.docs.map( doc => ({id: doc.id, ...doc.data(), taken: false}));
+    const fetchedData = await fetchDataWithKitItems(querySnapshot);
     const filtered = fetchedData.filter((item) => item.startTimestamp <= timestamp);
     const updatedArray = [...filtered];
   
@@ -140,8 +163,9 @@ export default function MainCalendar() {
     getDayEvents(day.timestamp);
   }
 
-  const onTakenClick = (item) => {
+  const onTakenClick = async (item) => {
     setItem(item);
+    setKitItem(item.kitItem);
     setModalVisible(true);
   }
 
@@ -365,33 +389,17 @@ export default function MainCalendar() {
             text={'Czy wziąłeś'}
             onConfirm={confirmTake}
           >
-              <View style={{
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}>
-                <Text style={{
-                  fontSize: 18,
-                  fontWeight: 'bold'
-                }}>{item ? item.title : 'None'}</Text>
-              </View>
+            <View style={{
+              width: '100%',
+              paddingHorizontal: 15,
+              borderRadius: 10,
+              borderColor: colors.grey,
+              borderWidth: 1,
+            }}>
+              <CartItem item={kitItem?.product} number={kitItem?.pillNumber} />
+            </View>
         </BottomSheet>
 
-        <BottomSheet 
-            visible={modalVisible2} 
-            setModalVisible={setModalVisible2}
-            text={'Edytuj'}
-            onConfirm={confirmTake}
-          >
-              <View style={{
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}>
-                <Text style={{
-                  fontSize: 18,
-                  fontWeight: 'bold'
-                }}>{item ? item.title : 'None'}</Text>
-              </View>
-        </BottomSheet>
 
         <BottomSheet 
             visible={modalVisible3} 

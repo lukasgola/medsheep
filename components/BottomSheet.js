@@ -207,7 +207,7 @@ const BottomSheet = (props) => {
                     <Text style={{
                         fontSize: 20,
                         color: colors.primary
-                    }}>Wybierz</Text>
+                    }}>Potwierdź</Text>
                 </TouchableOpacity>
             </View>
             

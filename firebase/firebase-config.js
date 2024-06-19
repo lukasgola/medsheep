@@ -7,7 +7,7 @@ import {
 } from "firebase/auth";
 
 import { deleteDoc, getFirestore } from "firebase/firestore";
-import { collection, setDoc, getDocs, addDoc, doc, updateDoc, query, where, increment } from "firebase/firestore"; 
+import { collection, setDoc, getDoc, getDocs, addDoc, doc, updateDoc, query, where, increment } from "firebase/firestore"; 
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -282,4 +282,28 @@ export async function addToBasket(product, number, price, basket, setBasket, set
     } catch (e) {
       console.error("Error updating document: ", e);
     }
+  }
+
+
+  export async function getKitItem(itemId){
+      try {
+          // Create a reference to the document
+          const docRef = doc(db, `/users/${auth.currentUser.uid}/kit/`, itemId);
+          
+          // Get the document
+          const docSnap = await getDoc(docRef);
+  
+          // Check if the document exists
+          if (docSnap.exists()) {
+              // Document data
+              return docSnap.data();
+          } else {
+              // Document does not exist
+              throw new Error("No such document!");
+          }
+      } catch (error) {
+          // Handle any errors
+          console.error("Error getting document:", error);
+          throw error;
+      }
   }

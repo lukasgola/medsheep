@@ -3,6 +3,7 @@ import { View, Text, FlatList, TouchableOpacity, Animated, StyleSheet, LayoutAni
 
 import { useKit } from '../providers/KitProvider';
 import { useTheme } from '../theme/ThemeProvider';
+import { useData } from '../providers/DataProvider';
 
 import Swipe from '../components/Swipe';
 import CartItem from '../components/CartItem';
@@ -19,12 +20,15 @@ export default function Kit({navigation, route}) {
   const { kit, setKit, setNewKit } = useKit();
   const { colors } = useTheme();
 
+  const {data, setData} = useData();
+
   const [ modalVisible, setModalVisible ] = useState(false);
 
   const [ item, setItem ] = useState(null);
   const [ number, setNumber ] = useState(null);
   const [ price, setPrice ] = useState(null);
 
+  const [ chooseMode, setChooseMode ] = useState(route.params?.chooseMode)
 
 
   const goUp = (amount) => {
@@ -53,10 +57,18 @@ export default function Kit({navigation, route}) {
   };
 
   const onSettingsClick = (item) => {
-    setItem(item)
-    setNumber(item.pillNumber)
-    setPrice(item.price)
-    setModalVisible(true)
+    if(chooseMode){
+      setData({
+        id: item.id,
+        product: item.product
+      });
+    } else {
+      setItem(item)
+      setNumber(item.pillNumber)
+      setPrice(item.price)
+      setModalVisible(true)
+    }
+    
   }
 
   const onDeleteClick = ({ item, index }) => {
@@ -128,8 +140,8 @@ export default function Kit({navigation, route}) {
           marginLeft: '5%',
           flexDirection: 'row',
           paddingHorizontal: '3%',
-          borderColor: colors.grey,
           borderWidth: 1,
+          borderColor: data.product == item.product ? colors.primary : colors.grey
         }}
       >
       <TouchableOpacity
