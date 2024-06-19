@@ -294,24 +294,32 @@ export default function Medicines({navigation}) {
         text={'Dodaj do apteczki'}
         onConfirm={onAddToKit}
       >
-        <View style={{
-          width: '100%',
-          alignItems: 'center'
+         <View style={{
+          alignItems: 'center',
+          justifyContent: 'center'
         }}>
-          
-          <CartItem item={selectedItem} number={number} price={price} />
-          
           <View style={{
-            marginVertical: 20,
+            width: '100%',
+            paddingHorizontal: 15,
+            borderRadius: 10,
+            borderColor: colors.grey,
+            borderWidth: 1,
+          }}>
+            <CartItem item={selectedItem} pillNumber={number} price={price} /> 
+          </View>
+          <View style={{
+            paddingTop: 20
           }}>
             <Amounter 
-              item={selectedItem} 
-              setModalVisible={setModalVisible} 
-              goUp={goUp}
-              goDown={goDown}
-              onChangeText={onChangeText}
+                item={selectedItem} 
+                setModalVisible={setModalVisible} 
+                goUp={goUp}
+                goDown={goDown}
+                onChangeText={onChangeText}
+                number={selectedItem.pillNumber}
             />
           </View>
+          
         </View>
         
       </BottomSheet>
