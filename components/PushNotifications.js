@@ -3,7 +3,7 @@ import { Text, View, Button, Platform } from 'react-native';
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import Constants from 'expo-constants';
-
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -13,8 +13,29 @@ Notifications.setNotificationHandler({
   }),
 });
 
+async function scheduleNotification(date, title, body) {
+  const localDate = new Date(date);
+  console.log("Date: " + localDate.getHours() + ":" + localDate.getMinutes())
+  await Notifications.scheduleNotificationAsync({
+    content: {
+      title: title,
+      body: body,
+    },
+    trigger: {
+      hour: localDate.getHours(),
+      minute: localDate.getMinutes() + 1,
+      repeats: true,  // Ustawienie na true, jeśli chcesz, aby powiadomienia się powtarzały codziennie
+    },
+  });
+}
 
-// Can use this function below or use Expo's Push Notification Tool from: https://expo.dev/notifications
+const scheduleMedReminder = async (date) => {
+  const array = await Notifications.getAllScheduledNotificationsAsync();
+  console.log(array);
+  console.log(date);
+  scheduleNotification(date, "Pora na leki", "Pamiętaj, aby wziąć swoje leki.");
+};
+
 async function sendPushNotification(expoPushToken) {
   const message = {
     to: expoPushToken,
@@ -66,7 +87,7 @@ async function registerForPushNotificationsAsync() {
     alert('Must use physical device for Push Notifications');
   }
 
-  return token.data;
+  return token?.data;
 }
 
 export default function PushNotifications() {
@@ -74,6 +95,9 @@ export default function PushNotifications() {
   const [notification, setNotification] = useState(false);
   const notificationListener = useRef();
   const responseListener = useRef();
+
+  const [date, setDate] = useState(new Date());
+  const [show, setShow] = useState(false);
 
   useEffect(() => {
     registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
@@ -92,6 +116,12 @@ export default function PushNotifications() {
     };
   }, []);
 
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    setShow(Platform.OS === 'ios');
+    setDate(currentDate);
+  };
+
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'space-around' }}>
       <Text>Your expo push token: {expoPushToken}</Text>
@@ -106,6 +136,18 @@ export default function PushNotifications() {
           await sendPushNotification(expoPushToken);
         }}
       />
+      <Button title="Wybierz godzinę" onPress={() => setShow(true)} />
+      {show && (
+        <DateTimePicker
+          testID="dateTimePicker"
+          value={date}
+          mode={'time'}
+          is24Hour={true}
+          display="default"
+          onChange={onChange}
+        />
+      )}
+      <Button title="Zaplanuj powiadomienie" onPress={() => scheduleMedReminder(date)} />
     </View>
   );
 }
