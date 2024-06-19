@@ -19,7 +19,7 @@ export default function SignIn({navigation}){
     const width = Dimensions.get('window').width;
 
     const {colors} = useTheme();
-    const { control, handleSubmit, formState: {errors} } = useForm();
+    const { control, clearErrors, handleSubmit, formState: {errors}, trigger } = useForm();
 
     const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
@@ -29,7 +29,9 @@ export default function SignIn({navigation}){
     const onSignIn = async data => {
         setIsLogging(true);
         const { email, password } = data;
-        signIn(email, password).then(() => setIsLogging(false));
+        await signIn(email, password);
+        setIsLogging(false);
+        
     };
 
     const onSignUp = () => {
@@ -82,6 +84,8 @@ export default function SignIn({navigation}){
                         color={colors.grey_l} 
                         icon={'mail-outline'}
                         keyboardType={'email-address'}
+                        trigger={trigger}
+                        clearErrors={clearErrors} // Pass clearErrors as a prop
                     />
                 </View>
                 <View style={{ width: '100%', height: 50, justifyContent: 'center', alignItems: 'center', marginTop: 20 }}>
@@ -100,6 +104,8 @@ export default function SignIn({navigation}){
                         size={12} 
                         color={colors.grey_l} 
                         icon={'lock-closed-outline'}
+                        trigger={trigger}
+                        clearErrors={clearErrors} // Pass clearErrors as a prop
                     />
                 </View>
                 <TouchableOpacity 
