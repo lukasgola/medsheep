@@ -28,8 +28,8 @@ import Constants from 'expo-constants';
 Notifications.setNotificationHandler({
     handleNotification: async () => ({
         shouldShowAlert: true,
-        shouldPlaySound: false,
-        shouldSetBadge: false,
+        shouldPlaySound: true,
+        shouldSetBadge: true,
     }),
 });
 
@@ -41,6 +41,7 @@ async function scheduleNotification(date, title, body) {
         content: {
             title: title,
             body: body,
+            sound: 'default',
         },
         trigger: {
             hour: date.getHours(),
@@ -89,15 +90,15 @@ async function registerForPushNotificationsAsync() {
         const { status: existingStatus } = await Notifications.getPermissionsAsync();
         let finalStatus = existingStatus;
         if (existingStatus !== 'granted') {
-        const { status } = await Notifications.requestPermissionsAsync();
-        finalStatus = status;
+            const { status } = await Notifications.requestPermissionsAsync();
+            finalStatus = status;
         }
         if (finalStatus !== 'granted') {
-        alert('Failed to get push token for push notification!');
-        return;
+            alert('Failed to get push token for push notification!');
+            return;
         }
         token = await Notifications.getExpoPushTokenAsync({
-        projectId: Constants.expoConfig.extra.eas.projectId,
+            projectId: Constants.expoConfig.extra.eas.projectId,
         });
         console.log(token);
     } else {
