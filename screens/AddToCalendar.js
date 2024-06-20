@@ -402,7 +402,7 @@ export default function AddToCalendar({navigation}){
 
                     console.log(date)
 
-                    scheduleNotification(date, title == '' ? medString : title, 'Pora wziąc lek!')
+                    scheduleNotification(date, title == '' ? medString : title, 'Pora wziąc lek! 💊')
 
 
                 }
