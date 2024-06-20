@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef } from 'react';
-import {View, KeyboardAvoidingView, Alert, TouchableOpacity, Dimensions, ScrollView, Text, Animated, TextInput} from 'react-native';
+import {View, KeyboardAvoidingView, Alert, TouchableOpacity, Dimensions, ScrollView, Text, Animated, TextInput, Platform} from 'react-native';
 
 //Hooks
 import { useTheme } from '../theme/ThemeProvider';
@@ -18,6 +18,94 @@ import {Picker} from '@react-native-picker/picker';
 import { addToCalendar } from '../firebase/firebase-config';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
+
+
+// Expo
+import * as Device from 'expo-device';
+import * as Notifications from 'expo-notifications';
+import Constants from 'expo-constants';
+
+Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+        shouldShowAlert: true,
+        shouldPlaySound: false,
+        shouldSetBadge: false,
+    }),
+});
+
+async function scheduleNotification(date, title, body) {
+    
+    console.log("Not date: " + date.getDate() + "-" + (date.getMonth()+1) + "-" + date.getFullYear() + "   " + date.getHours() + ":" + date.getMinutes())
+
+    await Notifications.scheduleNotificationAsync({
+        content: {
+            title: title,
+            body: body,
+        },
+        trigger: {
+            hour: date.getHours(),
+            minute: date.getMinutes(),
+            day: date.getDate(),
+            month: date.getMonth()+1,
+            year: date.getFullYear(),
+            repeats: false, 
+        },
+    });
+}
+
+async function sendPushNotification(expoPushToken) {
+    const message = {
+        to: expoPushToken,
+        sound: 'default',
+        title: 'Original Title',
+        body: 'And here is the body!',
+        data: { someData: 'goes here' },
+    };
+
+    await fetch('https://exp.host/--/api/v2/push/send', {
+        method: 'POST',
+        headers: {
+        Accept: 'application/json',
+        'Accept-encoding': 'gzip, deflate',
+        'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(message),
+    });
+}
+
+async function registerForPushNotificationsAsync() {
+    let token;
+
+    if (Platform.OS === 'android') {
+        Notifications.setNotificationChannelAsync('default', {
+        name: 'default',
+        importance: Notifications.AndroidImportance.MAX,
+        vibrationPattern: [0, 250, 250, 250],
+        lightColor: '#FF231F7C',
+        });
+    }
+
+    if (Device.isDevice) {
+        const { status: existingStatus } = await Notifications.getPermissionsAsync();
+        let finalStatus = existingStatus;
+        if (existingStatus !== 'granted') {
+        const { status } = await Notifications.requestPermissionsAsync();
+        finalStatus = status;
+        }
+        if (finalStatus !== 'granted') {
+        alert('Failed to get push token for push notification!');
+        return;
+        }
+        token = await Notifications.getExpoPushTokenAsync({
+        projectId: Constants.expoConfig.extra.eas.projectId,
+        });
+        console.log(token);
+    } else {
+        alert('Must use physical device for Push Notifications');
+    }
+
+    return token?.data;
+}
 
 
 export default function AddToCalendar({navigation}){
@@ -161,6 +249,34 @@ export default function AddToCalendar({navigation}){
 
     const fontSize = 14;
 
+
+
+    {/* Push Notifications */}
+
+    const [expoPushToken, setExpoPushToken] = useState('');
+    const [notification, setNotification] = useState(false);
+    const notificationListener = useRef();
+    const responseListener = useRef();
+
+    useEffect(() => {
+        registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+
+        notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+            setNotification(notification);
+        });
+
+        responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+            console.log(response);
+        });
+
+        return () => {
+            Notifications.removeNotificationSubscription(notificationListener.current);
+            Notifications.removeNotificationSubscription(responseListener.current);
+        };
+    }, []);
+
+
+
     useEffect(() => {
         if(data.id){
             console.log("Nowe idd: " + data.id)
@@ -267,8 +383,8 @@ export default function AddToCalendar({navigation}){
                 const dateS = dateStart;
                 const dateE = dateEnd;
 
-                dateS.setHours(2,0,0,0);
-                dateE.setHours(2,0,0,0);
+                dateS.setHours(2,0,0,0)
+                dateE.setHours(2,0,0,0)
 
                 const takenArray = [];
 
@@ -277,6 +393,18 @@ export default function AddToCalendar({navigation}){
                         id: i,
                         taken: false
                     })
+
+                    {/* Schedule notification */}
+
+                    const date = new Date(i);
+                    date.setHours(time.getHours())
+                    date.setMinutes(time.getMinutes());
+
+                    console.log(date)
+
+                    scheduleNotification(date, title == '' ? medString : title, 'Pora wziąc lek!')
+
+
                 }
 
                 const event = {
