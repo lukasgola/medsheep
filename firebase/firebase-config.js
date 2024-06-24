@@ -215,7 +215,7 @@ export async function addToBasket(product, number, price, basket, setBasket, set
     }
   }
 
-  export async function addToCalendar(event){
+  export async function addToCalendar(event, takenArray){
     try {
       await addDoc(collection(db, `users/${auth.currentUser.uid}/events`), {
         title: event.title,
@@ -236,9 +236,9 @@ export async function addToBasket(product, number, price, basket, setBasket, set
         endTimestamp: event.endTimestamp,
         itemId: event.itemId,
         dose: event.dose,
-        doseUnit: event.doseUnit
+        doseUnit: event.doseUnit,
       }).then(function(docRef) {
-        setDates(docRef.id, event)
+        setDates(docRef.id, takenArray)
     })
     } catch (e) {
       console.error("Error adding document: ", e);
@@ -246,12 +246,13 @@ export async function addToBasket(product, number, price, basket, setBasket, set
   }
 
 
-  export async function setDates(id, event){
+  export async function setDates(id, takenArray){
     try {
-      for(var i=event.startTimestamp; i <= event.endTimestamp; i+=((event.freq+1) * 86400000)){
+      for(let i = 0; i < takenArray.length; i++){
         await addDoc(collection(db, `users/${auth.currentUser.uid}/events/${id}/calendar`), {
-          id: i,
-          taken: false
+          id: takenArray[i].id,
+          taken: false,
+          notID: takenArray[i].notID
         });
       }
     }

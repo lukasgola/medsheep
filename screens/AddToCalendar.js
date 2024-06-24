@@ -37,7 +37,7 @@ async function scheduleNotification(date, title, body) {
     
     console.log("Not date: " + date.getDate() + "-" + (date.getMonth()+1) + "-" + date.getFullYear() + "   " + date.getHours() + ":" + date.getMinutes())
 
-    await Notifications.scheduleNotificationAsync({
+    const notID = await Notifications.scheduleNotificationAsync({
         content: {
             title: title,
             body: body,
@@ -52,6 +52,8 @@ async function scheduleNotification(date, title, body) {
             repeats: false, 
         },
     });
+
+    return notID
 }
 
 async function registerForPushNotificationsAsync() {
@@ -359,7 +361,7 @@ export default function AddToCalendar({navigation}){
         },
         {
             text: 'Yes',
-            onPress: () => {
+            onPress: async () => {
                 
                 const dateS = dateStart;
                 const dateE = dateEnd;
@@ -370,11 +372,6 @@ export default function AddToCalendar({navigation}){
                 const takenArray = [];
 
                 for(var i=dateS.getTime(); i <= dateE.getTime(); i+=((freq+1) * 86400000)){
-                    takenArray.push({
-                        id: i,
-                        taken: false
-                    })
-
                     {/* Schedule notification */}
 
                     const date = new Date(i);
@@ -383,7 +380,14 @@ export default function AddToCalendar({navigation}){
 
                     console.log(date)
 
-                    scheduleNotification(date, title == '' ? medString : title, 'Pora wziąc lek! 💊')
+                    const notID = await scheduleNotification(date, title == '' ? medString : title, 'Pora wziąc lek! 💊')
+                    
+                    
+                    takenArray.push({
+                        id: i,
+                        taken: false,
+                        notID: notID
+                    })
 
 
                 }
@@ -407,9 +411,9 @@ export default function AddToCalendar({navigation}){
                     endTimestamp: dateE.getTime(),
                     itemId: data.id,
                     dose: dose,
-                    doseUnit: doseUnitString
+                    doseUnit: doseUnitString,
                 }
-                addToCalendar(event);
+                addToCalendar(event, takenArray);
                 navigation.navigate('Kalendarz');
             }},
         ]);
