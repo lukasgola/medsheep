@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Image } from 'react-native';
 
 import { useTheme } from '../theme/ThemeProvider';
@@ -6,6 +6,10 @@ import { useTheme } from '../theme/ThemeProvider';
 const CartItem = (props) => {
 
     const {colors} = useTheme();
+
+    useEffect(() => {
+      console.log(props.item.img)
+    }, [])
 
     return(
       <View style={{
@@ -16,7 +20,7 @@ const CartItem = (props) => {
         justifyContent: 'space-between',
       }}>
         <Image 
-          source={props.item.img} 
+          source={{uri: props.item.img}} 
           resizeMode='contain' 
           style={{
             width: 50,

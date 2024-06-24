@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Text, View, Image, TouchableOpacity, Dimensions, FlatList, Modal, TextInput, KeyboardAvoidingView, ScrollView } from 'react-native';
+import { Text, View, Image, TouchableOpacity, Platform, FlatList, Modal, TextInput, KeyboardAvoidingView, ScrollView } from 'react-native';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -118,7 +118,7 @@ export default function Medicine({route, navigation}) {
                 <Ionicons name={liked ? 'heart' : 'heart-outline'} size={25} color={liked ? colors.primary : colors.text} />
             </TouchableOpacity>
             <Animated.Image 
-                source={item.img} 
+                source={{uri: item.img}} 
                 resizeMode='contain' 
                 style={{width: '60%', height: 300, marginLeft: '20%'}} 
             />

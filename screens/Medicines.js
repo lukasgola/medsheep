@@ -19,6 +19,8 @@ import Amounter from '../components/Amounter';
 import CartItem from '../components/CartItem';
 
 
+import { DATA } from '../assets/data';
+
 //Firebase
 import { addToBasket, addToKit } from '../firebase/firebase-config';
 
@@ -28,133 +30,6 @@ export default function Medicines({navigation}) {
   const {basket, setBasket, setNewBasket} = useBasket();
 
   const {kit, setKit, setNewKit} = useKit();
-
-  const DATA = [
-    {
-      id: 1,
-      name: 'Apap Noc',
-      desc: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-      availability: true,
-      price: 12.99,
-      img: require('../assets/med/apap_noc.jpg'),
-      amount: 30,
-      symptoms: [
-        {
-          id: 1,
-          name: 'Ból głowy'
-        },
-        {
-          id: 2,
-          name: 'Ból gardła'
-        },
-        {
-          id: 3,
-          name: 'Gorączka'
-        },
-        {
-          id: 4,
-          name: 'Ból mięśni'
-        },
-        {
-          id: 5,
-          name: 'Bóle miesiączkowe'
-        },
-      ]
-    },
-    {
-      id: 2,
-      name: 'Rutinoscorbin',
-      desc: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-      availability: true,
-      price: 23.99,
-      img: require('../assets/med/rutino.png'),
-      amount: 90,
-      symptoms: [
-        {
-          id: 1,
-          name: 'Ból głowy'
-        },
-        {
-          id: 2,
-          name: 'Ból gardła'
-        },
-        {
-          id: 3,
-          name: 'Gorączka'
-        },
-        {
-          id: 4,
-          name: 'Ból mięśni'
-        },
-        {
-          id: 5,
-          name: 'Bóle miesiączkowe'
-        },
-      ]
-    },
-    {
-      id: 3,
-      name: 'Etopiryna',
-      desc: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-      availability: false,
-      price: 19.99,
-      img: require('../assets/med/eopiryna.jpg'),
-      amount: 30,
-      symptoms: [
-        {
-          id: 1,
-          name: 'Ból głowy'
-        },
-        {
-          id: 2,
-          name: 'Ból gardła'
-        },
-        {
-          id: 3,
-          name: 'Gorączka'
-        },
-        {
-          id: 4,
-          name: 'Ból mięśni'
-        },
-        {
-          id: 5,
-          name: 'Bóle miesiączkowe'
-        },
-      ]
-    },
-    {
-      id: 4,
-      name: 'Ibum Express Forte',
-      desc: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-      availability: true,
-      price: 49.99,
-      img: require('../assets/med/apap_noc.jpg'),
-      amount: 30,
-      symptoms: [
-        {
-          id: 1,
-          name: 'Ból głowy'
-        },
-        {
-          id: 2,
-          name: 'Ból gardła'
-        },
-        {
-          id: 3,
-          name: 'Gorączka'
-        },
-        {
-          id: 4,
-          name: 'Ból mięśni'
-        },
-        {
-          id: 5,
-          name: 'Bóle miesiączkowe'
-        },
-      ]
-    }
-  ]
 
   const [filteredData, setFilteredData] = useState(DATA);
   const [selectedItem, setSelectedItem] = useState({name: 'None'});
@@ -254,7 +129,7 @@ export default function Medicines({navigation}) {
           borderRadius: 10,
         }}
           resizeMode='contain'
-          source={item.img}
+          source={{uri: item.img}}
           sharedTransitionTag="tag"
         />
         <View style={{flex: 1, marginLeft: 20, justifyContent: 'center'}}>
