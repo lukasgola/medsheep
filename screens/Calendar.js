@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { SafeAreaView, Text, View, Dimensions, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native';
+import { SafeAreaView, Text, View, Dimensions, TouchableOpacity, FlatList, ActivityIndicator, Platform } from 'react-native';
 
 //Ionicons
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -50,6 +50,76 @@ LocaleConfig.locales['pl'] = {
 
 LocaleConfig.defaultLocale = 'pl';
 
+// Expo
+import * as Device from 'expo-device';
+import * as Notifications from 'expo-notifications';
+import Constants from 'expo-constants';
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+      shouldShowAlert: true,
+      shouldPlaySound: true,
+      shouldSetBadge: true,
+  }),
+});
+
+async function scheduleNotification(date, title, body) {
+  
+  console.log("Not date: " + date.getDate() + "-" + (date.getMonth()+1) + "-" + date.getFullYear() + "   " + date.getHours() + ":" + date.getMinutes())
+
+  await Notifications.scheduleNotificationAsync({
+      content: {
+          title: title,
+          body: body,
+          sound: 'default',
+      },
+      trigger: {
+          hour: date.getHours(),
+          minute: date.getMinutes(),
+          day: date.getDate(),
+          month: date.getMonth()+1,
+          year: date.getFullYear(),
+          repeats: false, 
+      },
+  });
+}
+
+async function registerForPushNotificationsAsync() {
+  let token;
+
+  if (Platform.OS === 'android') {
+      Notifications.setNotificationChannelAsync('default', {
+      name: 'default',
+      importance: Notifications.AndroidImportance.MAX,
+      vibrationPattern: [0, 250, 250, 250],
+      lightColor: '#FF231F7C',
+      });
+  }
+
+  if (Device.isDevice) {
+      const { status: existingStatus } = await Notifications.getPermissionsAsync();
+      let finalStatus = existingStatus;
+      if (existingStatus !== 'granted') {
+          const { status } = await Notifications.requestPermissionsAsync();
+          finalStatus = status;
+      }
+      if (finalStatus !== 'granted') {
+          alert('Failed to get push token for push notification!');
+          return;
+      }
+      token = await Notifications.getExpoPushTokenAsync({
+          projectId: Constants.expoConfig.extra.eas.projectId,
+      });
+      console.log(token);
+  } else {
+      alert('Must use physical device for Push Notifications');
+  }
+
+  return token?.data;
+}
+
+
+
 export default function MainCalendar() {
 
   const width = Dimensions.get('screen').width;
@@ -70,6 +140,34 @@ export default function MainCalendar() {
   const [ modalVisible3, setModalVisible3 ] = useState(false);
 
   const ref = useRef(null);
+
+
+
+  {/* Push Notifications */}
+
+  const [expoPushToken, setExpoPushToken] = useState('');
+  const [notification, setNotification] = useState(false);
+  const notificationListener = useRef();
+  const responseListener = useRef();
+
+  useEffect(() => {
+      registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+
+      notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+          setNotification(notification);
+      });
+
+      responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+          console.log(response);
+      });
+
+      return () => {
+          Notifications.removeNotificationSubscription(notificationListener.current);
+          Notifications.removeNotificationSubscription(responseListener.current);
+      };
+  }, []);
+
+
 
   const getTakenArray = async (id, timestamp) => {
     let takenItem = 0;
@@ -174,6 +272,21 @@ export default function MainCalendar() {
     updateItemValue(item.id, true);
     setTaken(item.id, day.timestamp, item.itemId);
     setTakenAmount(takenAmount + 1);
+  }
+
+
+  const onDelay = async (delay) => {
+    let date = new Date();  // Get the current date and time
+    console.log("Original date and time:", date);
+
+    date.setMinutes(date.getMinutes() + delay);  // Add the specified delay to the current date and time
+    console.log("Updated date and time:", date);
+
+    const title = title === '' ? medString : title;  // Determine the title
+    scheduleNotification(date, title, 'Pora wziąc lek! 💊');  // Schedule the notification
+    const not = await Notifications.getAllScheduledNotificationsAsync()
+    console.log(not)
+    setModalVisible(false)
   }
 
 
@@ -432,7 +545,7 @@ export default function MainCalendar() {
               marginTop: 10
             }}>
               <TouchableOpacity 
-                onPress={() => console.log('odloz')}
+                onPress={() => onDelay(30)}
                 activeOpacity={0.2}
                 style={{
                     width: '48%',
@@ -450,7 +563,7 @@ export default function MainCalendar() {
                   }}>+30 min</Text>
               </TouchableOpacity>
               <TouchableOpacity 
-                onPress={() => console.log('odloz')}
+                onPress={() => onDelay(60)}
                 activeOpacity={0.2}
                 style={{
                     width: '48%',

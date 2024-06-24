@@ -122,8 +122,20 @@ export default function PushNotifications() {
     setDate(currentDate);
   };
 
-  async function scheduleAndCancel() {
-    await Notifications.cancelScheduledNotificationAsync();
+  async function cancelAllPushNotifications() {
+    // Get all scheduled notifications
+    const allNotifications = await Notifications.getAllScheduledNotificationsAsync();
+  
+    // Loop through each notification and cancel it
+    for (const notification of allNotifications) {
+      await Notifications.cancelScheduledNotificationAsync(notification.identifier);
+    }
+  }
+
+
+  async function getAllNot(){
+    const result = await Notifications.getAllScheduledNotificationsAsync()
+    console.log(result)
   }
 
   return (
@@ -134,26 +146,9 @@ export default function PushNotifications() {
         <Text>Body: {notification && notification.request.content.body}</Text>
         <Text>Data: {notification && JSON.stringify(notification.request.content.data)}</Text>
       </View>
-      <Button
-        title="Press to Send Notification"
-        onPress={async () => {
-          await sendPushNotification(expoPushToken);
-        }}
-      />
-      <Button title="Wybierz godzinę" onPress={() => setShow(true)} />
-      {show && (
-        <DateTimePicker
-          testID="dateTimePicker"
-          value={date}
-          mode={'time'}
-          is24Hour={true}
-          display="default"
-          onChange={onChange}
-        />
-      )}
-      <Button title="Zaplanuj powiadomienie" onPress={() => scheduleMedReminder(date)} />
 
-      <Button title="Wyczyść powiadomienia" onPress={() => scheduleAndCancel()} />
+      <Button title="Pokaz powiadomienia" onPress={() => getAllNot()} />
+      <Button title="Wyczyść powiadomienia" onPress={() => cancelAllPushNotifications()} />
     </View>
   );
 }
