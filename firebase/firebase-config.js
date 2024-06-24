@@ -7,7 +7,7 @@ import {
 } from "firebase/auth";
 
 import { deleteDoc, getFirestore } from "firebase/firestore";
-import { collection, setDoc, getDoc, getDocs, addDoc, doc, updateDoc, query, where, increment } from "firebase/firestore"; 
+import { collection, setDoc, getDoc, getDocs, addDoc, doc, updateDoc, query, where, increment, writeBatch } from "firebase/firestore"; 
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -242,6 +242,52 @@ export async function addToBasket(product, number, price, basket, setBasket, set
     })
     } catch (e) {
       console.error("Error adding document: ", e);
+    }
+  }
+
+
+  export async function getNotID(id){
+    const result = []
+    const q = query(collection(db, "users", auth.currentUser.uid, "events", id, "calendar"));
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+          
+        const data = doc.data();
+
+        result.push(data.notID)
+          
+      });
+
+      return result
+  }
+
+
+  export async function removeEvent(eventId) {
+    const user = auth.currentUser;
+    if (!user) {
+      throw new Error('No user is currently authenticated.');
+    }
+  
+    const eventRef = doc(db, `users/${user.uid}/events/${eventId}`);
+    const subcollectionRef = collection(db, `users/${user.uid}/events/${eventId}/calendar`);
+  
+    try {
+      // Step 1: Delete all documents in the subcollection
+      const subcollectionSnapshot = await getDocs(subcollectionRef);
+      const batch = writeBatch(db);
+  
+      subcollectionSnapshot.forEach((doc) => {
+        batch.delete(doc.ref);
+      });
+  
+      await batch.commit();
+  
+      // Step 2: Delete the event document itself
+      await deleteDoc(eventRef);
+  
+      console.log(`Event with ID ${eventId} and its subcollection have been deleted successfully`);
+    } catch (e) {
+      console.error('Error deleting event and its subcollection: ', e);
     }
   }
 

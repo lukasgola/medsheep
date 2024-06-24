@@ -278,7 +278,7 @@ export default function AddToCalendar({navigation}){
         navigation.setOptions({
             headerRight: () => (
                 <TouchableOpacity
-                    onPress={() => onCreateEvent()}
+                    onPress={() => data.id ? onCreateEvent() : emptyData()}
                     title="Info"
                     color="#fff"
                 >
@@ -303,6 +303,15 @@ export default function AddToCalendar({navigation}){
               )
         });
     }, [title, time, freq, dateStart, dateEnd, customFreq, navigation]);
+
+    const emptyData = () => {
+        Alert.alert('Nie wybrano leku', 'Wybierz lek ?', [
+        {
+            text: 'OK',
+            onPress: () => {},
+            style: 'cancel',
+        }])
+    }
 
     const handleFreqConfirm = () => {
         if ( freqString == 'Niestandardowe' && prevFreq != 'Niestandardowe'){
@@ -353,14 +362,14 @@ export default function AddToCalendar({navigation}){
 
     const onCreateEvent = () => {
         console.log('Id: ' + data.id)
-        Alert.alert('New Event', 'Do you want to public this event?', [
+        Alert.alert('Nowe przypomnienie', 'Na pewno chcesz dodać przypomnienie ?', [
         {
-            text: 'Cancel',
+            text: 'Anuluj',
             onPress: () => {},
             style: 'cancel',
         },
         {
-            text: 'Yes',
+            text: 'Dodaj',
             onPress: async () => {
                 
                 const dateS = dateStart;
@@ -409,7 +418,7 @@ export default function AddToCalendar({navigation}){
                     dateEndString: dateEnd.getFullYear() + '-' + (dateEnd.getMonth() < 10 ? '0' + (dateEnd.getMonth()+1) : (dateEnd.getMonth()+1)) + '-' + (dateEnd.getDate() < 10 ? '0' + dateEnd.getDate() : dateEnd.getDate()),
                     startTimestamp: dateS.getTime(),
                     endTimestamp: dateE.getTime(),
-                    itemId: data.id,
+                    itemId: data.id ? data.id : null,
                     dose: dose,
                     doseUnit: doseUnitString,
                 }

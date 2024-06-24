@@ -20,7 +20,7 @@ import CartItem from '../components/CartItem';
 
 
 //Firebase
-import { auth, db, getKitItem, setTaken } from '../firebase/firebase-config';
+import { auth, db, getKitItem, getNotID, removeEvent, setTaken } from '../firebase/firebase-config';
 import { getDocs, collection, where, query } from "firebase/firestore";
 
 
@@ -226,13 +226,10 @@ export default function MainCalendar() {
 
     let amount = 0;
     for( let i = 0; i<filtered.length;i++){
-      if(filtered[i].taken == false) {
-          scrollToIndex(i);
-          break;
-      }
-      else{
+      if(filtered[i].taken == true){
         amount = amount + 1;
       }
+
     }
     setTakenAmount(amount);
     setIsLoading(false);
@@ -248,11 +245,6 @@ export default function MainCalendar() {
     setEvents(updatedItems);
   };
 
-  const scrollToIndex = (index) => {
-    if (ref.current) {
-      ref.current.scrollToIndex({ index, animated: true });
-    }
-  }
 
   const onDayClick = (day) => {
     setIsLoading(true);
@@ -271,6 +263,17 @@ export default function MainCalendar() {
     updateItemValue(item.id, true);
     setTaken(item.id, day.timestamp, item.itemId);
     setTakenAmount(takenAmount + 1);
+  }
+
+  const confirmDelete = async () => {
+    notArray = await getNotID(item.id);
+
+    for (const notification of notArray) {
+      await Notifications.cancelScheduledNotificationAsync(notification);
+    }
+
+    await removeEvent(item.id)
+
   }
 
 
@@ -403,7 +406,7 @@ export default function MainCalendar() {
     setDay(actDay);
     setSelected(actDay.dateString);
     getDayEvents(actDay.timestamp);
-  }, [isFocused])
+  }, [isFocused, modalVisible3])
 
   return (
     <SafeAreaView style={{
@@ -586,7 +589,7 @@ export default function MainCalendar() {
             visible={modalVisible3} 
             setModalVisible={setModalVisible3}
             text={'Czy na pewno chcesz usunąć?'}
-            onConfirm={confirmTake}
+            onConfirm={confirmDelete}
           >
               <View style={{
                 alignItems: 'center',
