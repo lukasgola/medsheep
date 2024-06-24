@@ -142,6 +142,8 @@ export default function MainCalendar() {
   const ref = useRef(null);
 
 
+  const actDate = new Date()
+
 
   {/* Push Notifications */}
 
@@ -380,9 +382,11 @@ export default function MainCalendar() {
           }}
             disabled={item.taken}
           >
-            {item.taken ? 
+            {item.taken && 
             <Ionicons name={'checkmark-circle-outline'} style={{marginLeft: 4}} size={40} color={colors.primary} />
-            : <View></View>
+            }
+            {item.taken == false && (day.timestamp + 86400000 ) < actDate.getTime() && 
+              <Text>P</Text>
             }
         </TouchableOpacity>
 
