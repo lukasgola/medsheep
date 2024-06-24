@@ -263,7 +263,6 @@ export default function MainCalendar() {
 
   const onTakenClick = async (item) => {
     setItem(item);
-    console.log(item);
     setKitItem(item.kitItem);
     setModalVisible(true);
   }
@@ -284,8 +283,6 @@ export default function MainCalendar() {
 
     const title = title === '' ? medString : title;  // Determine the title
     scheduleNotification(date, title, 'Pora wziąc lek! 💊');  // Schedule the notification
-    const not = await Notifications.getAllScheduledNotificationsAsync()
-    console.log(not)
     setModalVisible(false)
   }
 
