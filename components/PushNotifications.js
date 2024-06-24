@@ -122,6 +122,10 @@ export default function PushNotifications() {
     setDate(currentDate);
   };
 
+  async function scheduleAndCancel() {
+    await Notifications.cancelScheduledNotificationAsync();
+  }
+
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'space-around' }}>
       <Text>Your expo push token: {expoPushToken}</Text>
@@ -148,6 +152,8 @@ export default function PushNotifications() {
         />
       )}
       <Button title="Zaplanuj powiadomienie" onPress={() => scheduleMedReminder(date)} />
+
+      <Button title="Wyczyść powiadomienia" onPress={() => scheduleAndCancel()} />
     </View>
   );
 }
