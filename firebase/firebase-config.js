@@ -308,7 +308,7 @@ export async function addToBasket(product, number, price, basket, setBasket, set
   }
 
 
-  export async function setTaken(id, takenId, itemId){
+  export async function setTaken(id, takenId, itemId, dose){
     try {
       
       const q = query(collection(db, "users", auth.currentUser.uid, "events", id, "calendar"), where("id", "==", takenId));
@@ -325,7 +325,7 @@ export async function addToBasket(product, number, price, basket, setBasket, set
       const q2 = doc(db, "users", auth.currentUser.uid, "kit", itemId);
 
       await updateDoc(q2, {
-        pillNumber: increment(-1)
+        pillNumber: dose
       });
 
     } catch (e) {
@@ -360,13 +360,10 @@ export async function addToBasket(product, number, price, basket, setBasket, set
 
   export async function getKit() {
     const querySnapshot = await getDocs(collection(db, "users", auth.currentUser.uid, "kit"));
-    querySnapshot.forEach((doc) => {
-        // doc.data() is never undefined for query doc snapshots
-        const data = {
-            ...doc.data(),
-            id: doc.id,
-        }
+    const data = querySnapshot.docs.map(doc => ({
+        ...doc.data(),
+        id: doc.id,
+    }));
 
-        return data
-    });
-}
+    return data;
+  }

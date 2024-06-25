@@ -21,7 +21,7 @@ import CartItem from '../components/CartItem';
 
 
 //Firebase
-import { auth, db, getKit, getKitItem, getNotID, removeEvent, setTaken } from '../firebase/firebase-config';
+import { auth, db, getKit, getKitItem, getNotID, removeEvent, setTaken, updateKit } from '../firebase/firebase-config';
 import { getDocs, collection, where, query } from "firebase/firestore";
 
 
@@ -270,12 +270,12 @@ export default function MainCalendar() {
     setModalVisible(true);
   }
 
-  const confirmTake = () => {
+  const confirmTake = async () => {
     updateItemValue(item.id, true);
-    setTaken(item.id, day.timestamp, item.itemId);
+    setTaken(item.id, day.timestamp, item.itemId, item.kitItem.pillNumber-item.dose );
     setTakenAmount(takenAmount + 1);
-    const data = getKit()
-    setNewKit([...data])
+    const data = await getKit();
+    setNewKit(data);
   }
 
   const confirmDelete = async () => {
@@ -547,7 +547,7 @@ export default function MainCalendar() {
             </View>
             <Text style={{
               paddingHorizontal: '2.5%',
-            }}>{kitItem?.pillNumber} tab.</Text>
+            }}>{kitItem?.pillNumber} {kitItem?.product.unit}</Text>
 
             {item?.taken == false && (day.timestamp + 86400000 ) > actDate.getTime() && 
             <View>
