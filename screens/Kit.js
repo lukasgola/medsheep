@@ -31,7 +31,30 @@ export default function Kit({navigation, route}) {
   const [ number, setNumber ] = useState(null);
   const [ price, setPrice ] = useState(null);
 
+  const [ chosenItem, setChosenItem ] = useState(data.id != null);
+
   const [ chooseMode, setChooseMode ] = useState(route.params?.chooseMode)
+
+
+  React.useLayoutEffect(() => {
+    if(chosenItem && chooseMode){
+        navigation.setOptions({
+          headerRight: () => 
+              <TouchableOpacity
+                  onPress={() => navigation.goBack()}
+                  title="Info"
+                  color="#fff"
+              >
+                  <Text style={{
+                  color: colors.primary,
+                  fontSize: 18,
+                  fontWeight: 'bold'
+                  }}>Ok</Text>
+              </TouchableOpacity>
+      });
+    }
+   
+  }, [chooseMode, chosenItem]);
 
 
   const goUp = (amount) => {
@@ -65,6 +88,7 @@ export default function Kit({navigation, route}) {
         id: item.id,
         product: item.product
       });
+      setChosenItem(true)
     } else {
       setItem(item)
       setNumber(item.pillNumber)
