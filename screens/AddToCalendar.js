@@ -203,6 +203,7 @@ export default function AddToCalendar({navigation}){
     const [ freq, setFreq ] = useState(0);
     const [ freqString, setFreqString ] = useState('Codziennie')
     const [ prevFreq, setPrevFreq ] = useState('');
+    const [ prevFreqString, setPrevFreqString ] = useState(freqString)
 
     const [doseArray, setDoseArray] = useState([])
 
@@ -320,7 +321,7 @@ export default function AddToCalendar({navigation}){
 
     const handleFreqConfirm = () => {
         setFreq(prevFreq)
-        setFreqString(prevFreq)
+        setFreqString(prevFreqString)
 
         if(prevFreq == 'Niestandardowe'){
             springIn()
@@ -376,8 +377,7 @@ export default function AddToCalendar({navigation}){
 
     const onCreateEvent = () => {
         console.log('Id: ' + data.id)
-        console.log("Dose: " + dose)
-        console.log("Unit: " + doseUnitString)
+        console.log("Freq: " + freq)
 
         Alert.alert('Nowe przypomnienie', 'Na pewno chcesz dodać przypomnienie?', [
         {
@@ -708,9 +708,10 @@ export default function AddToCalendar({navigation}){
                         onConfirm={handleFreqConfirm}
                     >
                         <Picker
-                            selectedValue={prevFreq}
+                            selectedValue={prevFreqString}
                             onValueChange={(itemValue, itemIndex) =>{
-                                setPrevFreq(itemValue)
+                                setPrevFreq(itemIndex)
+                                setPrevFreqString(itemValue)
                             }
                             }>
                                 {frequencies.map((item) => (

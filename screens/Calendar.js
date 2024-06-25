@@ -333,7 +333,7 @@ export default function MainCalendar() {
         index={index}
         closeRow={() => closeRow(index)}
         row={row}
-        settingsClick={() => onSettingsClick({item, index})}
+        onSettingsClick={() => onSettingsClick({item, index})}
         trashClick={() => onDeleteClick({item, index})}
 
         style={{
