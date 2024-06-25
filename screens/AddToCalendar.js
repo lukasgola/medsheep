@@ -317,6 +317,13 @@ export default function AddToCalendar({navigation}){
     const handleFreqConfirm = () => {
         setFreq(prevFreq)
         setFreqString(prevFreq)
+
+        if(prevFreq == 'Niestandardowe'){
+            springIn()
+        }
+        if(prevFreq != 'Niestandardowe' && springAnim !== 0 ){
+            springOut()
+        }
     }
 
     const handleDoseConfirm = () => {
@@ -459,7 +466,9 @@ export default function AddToCalendar({navigation}){
             style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: colors.background }}>
             <ScrollView 
                 showsVerticalScrollIndicator={false}
-                style={{width: width*0.9}}
+                style={{
+                    width: width*0.9,
+                }}
             >
                 <View style={{width: '100%', alignItems: 'center', flexDirection: 'row', justifyContent: 'center', marginTop: 60, marginBottom: 10}}>
                     <Text style={{
@@ -717,7 +726,7 @@ export default function AddToCalendar({navigation}){
                         fontSize: fontSize,
                         fontWeight: 'bold',
                         color: colors.text,
-                        marginTop: 20,
+                        marginTop: 5,
                     }}>Powtarza się co...</Text>
                     <View style={{
                         width: '100%',
@@ -949,7 +958,8 @@ export default function AddToCalendar({navigation}){
                         alignItems: 'center',
                         borderColor: '#e8e8e8',
                         borderWidth: 1,
-                        borderTopWidth: 0
+                        borderTopWidth: 0,
+                        marginBottom: 50
                     }}>
                     <View
                         style={{
