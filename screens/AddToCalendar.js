@@ -203,6 +203,7 @@ export default function AddToCalendar({navigation}){
     const [doseArray, setDoseArray] = useState([])
 
     const [ dose, setDose ] = useState(1);
+    const [ prevDose, setPrevDose] = useState(1)
 
     const [ doseUnit, setDoseUnit ] = useState('tabletka')
     const [ prevDoseUnit, setPrevDoseUnit] = useState('')
@@ -305,7 +306,7 @@ export default function AddToCalendar({navigation}){
     }, [title, time, freq, dateStart, dateEnd, customFreq, navigation]);
 
     const emptyData = () => {
-        Alert.alert('Nie wybrano leku', 'Wybierz lek ?', [
+        Alert.alert('Nie wybrano leku', 'Wybierz lek', [
         {
             text: 'OK',
             onPress: () => {},
@@ -324,6 +325,13 @@ export default function AddToCalendar({navigation}){
                 springOut();
             }, 1000)
         }
+    }
+
+    const handleDoseConfirm = () => {
+        setDose(prevDose)
+        setDoseUnit(prevDoseUnit)
+        console.log(prevDoseUnit)
+        setDoseUnitString(prevDoseUnit)
     }
 
 
@@ -540,6 +548,101 @@ export default function AddToCalendar({navigation}){
                     
                 </TouchableOpacity>
 
+                {/* Dawka */}
+
+                <TouchableOpacity 
+                    onPress={() => {
+                        setDosePickerVisible(true)
+                        setPrevDose(dose)
+                        setPrevDoseUnit(doseUnit)
+                    }}
+                    style={{
+                        width: '100%', 
+                        height: 50, 
+                        flexDirection: 'row',
+                        backgroundColor: colors.grey_l,
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        borderColor: '#e8e8e8',
+                        borderWidth: 1,
+                        borderTopWidth: 0
+                        
+                    }}>
+                    <View
+                        style={{
+                            width: 40,
+                            paddingLeft: 10,
+                            justifyContent: 'center',
+                        }}
+                        >
+                            <Ionicons name={'refresh-outline'} size={20} color={colors.grey_d}/>
+                    </View>
+
+                    <Text style={{
+                        color: colors.text,
+                        fontSize: fontSize,
+                    }}>Dawka</Text>
+
+                    <View style={{
+                        flexDirection: 'row',
+                        position: 'absolute',
+                        right: 10,
+                        alignItems: 'center',
+                    }}>
+                        <Text style={{
+                            color: colors.grey_d,
+                            fontSize: fontSize
+                        }}>{ dose + ' ' + doseUnitString}</Text>
+
+                        <Ionicons name={'chevron-forward-outline'} size={20} color={colors.grey_d}/>
+
+                    </View>
+
+                    <BottomSheet 
+                        visible={isDosePickerVisible} 
+                        setModalVisible={setDosePickerVisible}
+                        text={'Podaj dawkę'}
+                        onConfirm={handleDoseConfirm}
+                    >
+                        <View style={{
+                            width: '100%',
+                            flexDirection: 'row',
+                            justifyContent: 'space-between'
+                        }}>
+                            <View style={{
+                                width: '50%'
+                            }}>
+                            <Picker
+                                selectedValue={prevDose}
+                                onValueChange={(itemValue, itemIndex) =>{
+                                    setPrevDose(itemValue)
+                                }
+                                }>
+                                    {doseArray.map((item) => (
+                                        <Picker.Item label={item.toString()} value={item} key={item} />
+                                    ))}
+                            </Picker>
+                            </View>
+                            <View style={{
+                                width: '50%'
+                            }}>
+                            <Picker
+                                selectedValue={prevDoseUnit}
+                                onValueChange={(itemValue, itemIndex) =>{
+                                    setPrevDoseUnit(itemValue)
+                                }
+                                }>
+                                    {doses.map((item) => (
+                                        <Picker.Item label={item.text.toString()} value={item.text} key={item.id} />
+                                    ))}
+                            </Picker>
+                            </View>
+                        </View>
+                        
+                    </BottomSheet>
+                </TouchableOpacity>
+
+
                 <TouchableOpacity 
                     onPress={() => setFreqPickerVisible(true)}
                     style={{
@@ -602,98 +705,6 @@ export default function AddToCalendar({navigation}){
                                     <Picker.Item label={item.text.toString()} value={item.text} key={item.id} />
                                 ))}
                         </Picker>
-                    </BottomSheet>
-                </TouchableOpacity>
-
-                {/* Dawka */}
-
-                <TouchableOpacity 
-                    onPress={() => setDosePickerVisible(true)}
-                    style={{
-                        width: '100%', 
-                        height: 50, 
-                        flexDirection: 'row',
-                        backgroundColor: colors.grey_l,
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        borderColor: '#e8e8e8',
-                        borderWidth: 1,
-                        borderTopWidth: 0
-                        
-                    }}>
-                    <View
-                        style={{
-                            width: 40,
-                            paddingLeft: 10,
-                            justifyContent: 'center',
-                        }}
-                        >
-                            <Ionicons name={'refresh-outline'} size={20} color={colors.grey_d}/>
-                    </View>
-
-                    <Text style={{
-                        color: colors.text,
-                        fontSize: fontSize,
-                    }}>Dawka</Text>
-
-                    <View style={{
-                        flexDirection: 'row',
-                        position: 'absolute',
-                        right: 10,
-                        alignItems: 'center',
-                    }}>
-                        <Text style={{
-                            color: colors.grey_d,
-                            fontSize: fontSize
-                        }}>{ dose + ' ' + doseUnitString}</Text>
-
-                        <Ionicons name={'chevron-forward-outline'} size={20} color={colors.grey_d}/>
-
-                    </View>
-
-                    <BottomSheet 
-                        visible={isDosePickerVisible} 
-                        setModalVisible={setDosePickerVisible}
-                        text={'Podaj dawkę'}
-                        onConfirm={handleFreqConfirm}
-                    >
-                        <View style={{
-                            width: '100%',
-                            flexDirection: 'row',
-                            justifyContent: 'space-between'
-                        }}>
-                            <View style={{
-                                width: '50%'
-                            }}>
-                            <Picker
-                                selectedValue={dose}
-                                onValueChange={(itemValue, itemIndex) =>{
-                                    setDose(itemValue)
-                                }
-                                }>
-                                    {doseArray.map((item) => (
-                                        <Picker.Item label={item.toString()} value={item} key={item} />
-                                    ))}
-                            </Picker>
-                            </View>
-                            <View style={{
-                                width: '50%'
-                            }}>
-                            <Picker
-                                selectedValue={doseUnitString}
-                                onValueChange={(itemValue, itemIndex) =>{
-                                    setPrevDoseUnit(doseUnitString)
-                                    setDoseUnit(itemIndex)
-                                    setDoseUnitString(itemValue)
-                                }
-                                }>
-                                    {doses.map((item) => (
-                                        <Picker.Item label={item.text.toString()} value={item.text} key={item.id} />
-                                    ))}
-                            </Picker>
-                            </View>
-                        </View>
-                        
                     </BottomSheet>
                 </TouchableOpacity>
 
