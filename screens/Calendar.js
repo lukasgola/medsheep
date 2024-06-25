@@ -364,7 +364,7 @@ export default function MainCalendar({navigation}) {
           }}>{item.timeHour + ':' + (item.timeMinutes < 10 ? '0'+item.timeMinutes : item.timeMinutes)}</Text>
         </View>
         <View style={{
-          width: '40%',
+          width: '55%',
           height: '100%',
           justifyContent:'space-around',
           paddingVertical: 10,
@@ -379,7 +379,8 @@ export default function MainCalendar({navigation}) {
             paddingVertical: 5,
             backgroundColor: '#FFE1E1',
             alignItems: 'center',
-            paddingHorizontal: 10
+            paddingHorizontal: 10,
+            width: '50%'
           }}>
             <Text style={{
               color: colors.primary,
