@@ -315,16 +315,8 @@ export default function AddToCalendar({navigation}){
     }
 
     const handleFreqConfirm = () => {
-        if ( freqString == 'Niestandardowe' && prevFreq != 'Niestandardowe'){
-            setTimeout(() => {
-                springIn();
-            }, 1000)
-        }
-        if( prevFreq == 'Niestandardowe' && freqString != 'Niestandardowe'){
-            setTimeout(() => {
-                springOut();
-            }, 1000)
-        }
+        setFreq(prevFreq)
+        setFreqString(prevFreq)
     }
 
     const handleDoseConfirm = () => {
@@ -355,6 +347,8 @@ export default function AddToCalendar({navigation}){
     const handleDateStartConfirm = () => {
         let month = dateStart.getMonth()+1;
         setDateStartString(dateStart.getDate() + ' / ' + month + ' / ' + dateStart.getFullYear())
+        setDateEnd(dateStart)
+        setDateEndString(dateStart.getDate() + ' / ' + month + ' / ' + dateStart.getFullYear())
     };
 
     const onChangeDateEnd = (event, selectedDate) => {
@@ -644,7 +638,10 @@ export default function AddToCalendar({navigation}){
 
 
                 <TouchableOpacity 
-                    onPress={() => setFreqPickerVisible(true)}
+                    onPress={() => {
+                        setFreqPickerVisible(true)
+                        setPrevFreq(freq)
+                    }}
                     style={{
                         width: '100%', 
                         height: 50, 
@@ -694,11 +691,9 @@ export default function AddToCalendar({navigation}){
                         onConfirm={handleFreqConfirm}
                     >
                         <Picker
-                            selectedValue={freqString}
+                            selectedValue={prevFreq}
                             onValueChange={(itemValue, itemIndex) =>{
-                                setPrevFreq(freqString)
-                                setFreq(itemIndex)
-                                setFreqString(itemValue)
+                                setPrevFreq(itemValue)
                             }
                             }>
                                 {frequencies.map((item) => (
@@ -998,7 +993,7 @@ export default function AddToCalendar({navigation}){
                             display="spinner"
                             onChange={onChangeDateEnd}
                             textColor={colors.text}
-                            minimumDate={time}
+                            minimumDate={dateStart}
                         />
                     </BottomSheet>
                 </TouchableOpacity>
