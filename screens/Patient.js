@@ -26,12 +26,6 @@ export default function Patient({navigation}) {
   const [ cumulation, setCumulation ] = useState(0);
 
 
-  useEffect(() => {
-
-    console.log(currentUser)
-
-  }, [])
-
   const OrderItem = ({item}) => {
     return(
       <View style={{
@@ -80,15 +74,20 @@ export default function Patient({navigation}) {
             borderColor: colors.grey
           }]}
         >
-          <Image 
-            source={require('../assets/user_img.jpeg')} 
-            resizeMode='contain'
-            style={{
-              width: 100,
-              height: 100,
-              borderRadius: 50,
-            }}
-          />
+          <TouchableOpacity
+            onPress={() => navigation.navigate('Avatar')}
+          >
+            <Image 
+              source={{uri: currentUser.avatar}} 
+              resizeMode='contain'
+              style={{
+                width: 100,
+                height: 100,
+                borderRadius: 50,
+              }}
+            />
+          </TouchableOpacity>
+          
           <View>
             <Text style={{
               fontSize: 20,

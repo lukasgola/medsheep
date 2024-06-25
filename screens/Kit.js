@@ -169,7 +169,7 @@ export default function Kit({navigation, route}) {
           flexDirection: 'row',
           paddingHorizontal: '3%',
           borderWidth: 1,
-          borderColor: data.product == item.product && route.params?.chooseMode ? colors.primary : colors.grey
+          borderColor: data.id == item.id && route.params?.chooseMode ? colors.primary : colors.grey
         }}
       >
         <CartItem item={item.product} number={item.number} price={item.price} pillNumber={item.pillNumber} />
