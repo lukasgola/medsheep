@@ -19,6 +19,8 @@ import Amounter from '../components/Amounter';
 import CartItem from '../components/CartItem';
 
 
+import { DATA } from '../assets/data';
+
 //Firebase
 import { addToBasket, addToKit } from '../firebase/firebase-config';
 
@@ -28,257 +30,6 @@ export default function Medicines({navigation}) {
   const {basket, setBasket, setNewBasket} = useBasket();
 
   const {kit, setKit, setNewKit} = useKit();
-
-  const DATA = [
-    {
-      id: 1,
-      name: 'Apap Noc',
-      desc: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-      availability: true,
-      price: 12.99,
-      img: require('../assets/med/apap_noc.jpg'),
-      amount: 30,
-      symptoms: [
-        {
-          id: 1,
-          name: 'Ból głowy'
-        },
-        {
-          id: 2,
-          name: 'Ból gardła'
-        },
-        {
-          id: 3,
-          name: 'Gorączka'
-        },
-        {
-          id: 4,
-          name: 'Ból mięśni'
-        },
-        {
-          id: 5,
-          name: 'Bóle miesiączkowe'
-        },
-      ]
-    },
-    {
-      id: 2,
-      name: 'Rutinoscorbin',
-      desc: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-      availability: true,
-      price: 23.99,
-      img: require('../assets/med/rutino.png'),
-      amount: 90,
-      symptoms: [
-        {
-          id: 1,
-          name: 'Ból głowy'
-        },
-        {
-          id: 2,
-          name: 'Ból gardła'
-        },
-        {
-          id: 3,
-          name: 'Gorączka'
-        },
-        {
-          id: 4,
-          name: 'Ból mięśni'
-        },
-        {
-          id: 5,
-          name: 'Bóle miesiączkowe'
-        },
-      ]
-    },
-    {
-      id: 3,
-      name: 'Etopiryna',
-      desc: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-      availability: false,
-      price: 19.99,
-      img: require('../assets/med/eopiryna.jpg'),
-      amount: 30,
-      symptoms: [
-        {
-          id: 1,
-          name: 'Ból głowy'
-        },
-        {
-          id: 2,
-          name: 'Ból gardła'
-        },
-        {
-          id: 3,
-          name: 'Gorączka'
-        },
-        {
-          id: 4,
-          name: 'Ból mięśni'
-        },
-        {
-          id: 5,
-          name: 'Bóle miesiączkowe'
-        },
-      ]
-    },
-    {
-      id: 4,
-      name: 'Ibum Express Forte',
-      desc: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-      availability: true,
-      price: 49.99,
-      img: require('../assets/med/apap_noc.jpg'),
-      amount: 30,
-      symptoms: [
-        {
-          id: 1,
-          name: 'Ból głowy'
-        },
-        {
-          id: 2,
-          name: 'Ból gardła'
-        },
-        {
-          id: 3,
-          name: 'Gorączka'
-        },
-        {
-          id: 4,
-          name: 'Ból mięśni'
-        },
-        {
-          id: 5,
-          name: 'Bóle miesiączkowe'
-        },
-      ]
-    },
-    {
-      id: 5,
-      name: 'Apap Noc',
-      desc: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-      availability: true,
-      price: 12.99,
-      img: require('../assets/med/apap_noc.jpg'),
-      amount: 30,
-      symptoms: [
-        {
-          id: 1,
-          name: 'Ból głowy'
-        },
-        {
-          id: 2,
-          name: 'Ból gardła'
-        },
-        {
-          id: 3,
-          name: 'Gorączka'
-        },
-        {
-          id: 4,
-          name: 'Ból mięśni'
-        },
-        {
-          id: 5,
-          name: 'Bóle miesiączkowe'
-        },
-      ]
-    },
-    {
-      id: 6,
-      name: 'Rutinoscorbin',
-      desc: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-      availability: true,
-      price: 23.99,
-      img: require('../assets/med/rutino.png'),
-      amount: 90,
-      symptoms: [
-        {
-          id: 1,
-          name: 'Ból głowy'
-        },
-        {
-          id: 2,
-          name: 'Ból gardła'
-        },
-        {
-          id: 3,
-          name: 'Gorączka'
-        },
-        {
-          id: 4,
-          name: 'Ból mięśni'
-        },
-        {
-          id: 5,
-          name: 'Bóle miesiączkowe'
-        },
-      ]
-    },
-    {
-      id: 7,
-      name: 'Etopiryna',
-      desc: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-      availability: false,
-      price: 19.99,
-      img: require('../assets/med/eopiryna.jpg'),
-      amount: 30,
-      symptoms: [
-        {
-          id: 1,
-          name: 'Ból głowy'
-        },
-        {
-          id: 2,
-          name: 'Ból gardła'
-        },
-        {
-          id: 3,
-          name: 'Gorączka'
-        },
-        {
-          id: 4,
-          name: 'Ból mięśni'
-        },
-        {
-          id: 5,
-          name: 'Bóle miesiączkowe'
-        },
-      ]
-    },
-    {
-      id: 8,
-      name: 'Ibum Express Forte',
-      desc: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-      availability: true,
-      price: 49.99,
-      img: require('../assets/med/apap_noc.jpg'),
-      amount: 30,
-      symptoms: [
-        {
-          id: 1,
-          name: 'Ból głowy'
-        },
-        {
-          id: 2,
-          name: 'Ból gardła'
-        },
-        {
-          id: 3,
-          name: 'Gorączka'
-        },
-        {
-          id: 4,
-          name: 'Ból mięśni'
-        },
-        {
-          id: 5,
-          name: 'Bóle miesiączkowe'
-        },
-      ]
-    }
-  ]
 
   const [filteredData, setFilteredData] = useState(DATA);
   const [selectedItem, setSelectedItem] = useState({name: 'None'});
@@ -350,7 +101,7 @@ export default function Medicines({navigation}) {
   }
 
   const onAddToKit = () => {
-      addToKit(selectedItem, number, kit, setKit, setNewKit)
+      addToKit(selectedItem, number*selectedItem.amount, kit, setKit, setNewKit)
       //addToBasket(selectedItem, number, price, basket, setBasket, setNewBasket)
   }
 
@@ -361,46 +112,49 @@ export default function Medicines({navigation}) {
       style={[{
         backgroundColor: colors.background,
         width: '90%',
-        height: 100,
+        height: 65,
         marginLeft: '5%',
         borderRadius: 10,
         marginTop: 10,
         flexDirection: 'row',
         borderWidth: 1,
-        borderColor: colors.grey
+        borderColor: colors.grey,
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingHorizontal: 15
       }]}>
         <Animated.Image style={{
-          width: 70,
-          height: 70,
+          width: 50,
+          height: 50,
           borderRadius: 10,
-          marginLeft: 15,
-          marginTop: 15,
         }}
           resizeMode='contain'
-          source={item.img}
+          source={{uri: item.img}}
           sharedTransitionTag="tag"
         />
-        <View style={{marginLeft: 20, justifyContent: 'center'}}>
+        <View style={{flex: 1, marginLeft: 20, justifyContent: 'center'}}>
           <Text style={{
             fontSize: 16,
             fontWeight: 'bold',
             color: colors.text
           }}>{item.name}</Text>
+          <Text style={{
+            fontSize: 14,
+            color: colors.grey_d,
+            marginTop: 2
+          }}>{item.amount} tabletek</Text>
         </View>
         <TouchableOpacity style={{
           backgroundColor: colors.grey_l,
-          width: 80,
-          height: 80,
+          width: 45,
+          height: 45,
           justifyContent: 'center',
           alignItems: 'center',
           borderRadius: 10,
-          position: 'absolute',
-          top: 10,
-          right: 10
         }}
           onPress={() => onItemChoice(item)}
         >
-          <Ionicons name={'add-outline'} size={25} style={{marginLeft: 8}} color={colors.text} />
+          <Ionicons name={'add-outline'} size={25} style={{marginLeft: 3}} color={colors.text} />
         </TouchableOpacity>
       </TouchableOpacity>
     )
@@ -415,29 +169,37 @@ export default function Medicines({navigation}) {
       }}
     >
       <BottomSheet 
-        visible={modalVisible} 
+        visible={modalVisible}
         setModalVisible={setModalVisible}
         text={'Dodaj do apteczki'}
         onConfirm={onAddToKit}
       >
-        <View style={{
-          width: '100%',
-          alignItems: 'center'
+         <View style={{
+          alignItems: 'center',
+          justifyContent: 'center'
         }}>
-          
-          <CartItem item={selectedItem} number={number} price={price} />
-          
           <View style={{
-            marginVertical: 20,
+            width: '100%',
+            paddingHorizontal: 15,
+            borderRadius: 10,
+            borderColor: colors.grey,
+            borderWidth: 1,
+          }}>
+            <CartItem item={selectedItem} pillNumber={number*selectedItem.amount} price={price} /> 
+          </View>
+          <View style={{
+            paddingTop: 20
           }}>
             <Amounter 
-              item={selectedItem} 
-              setModalVisible={setModalVisible} 
-              goUp={goUp}
-              goDown={goDown}
-              onChangeText={onChangeText}
+                item={selectedItem} 
+                setModalVisible={setModalVisible} 
+                goUp={goUp}
+                goDown={goDown}
+                onChangeText={onChangeText}
+                number={selectedItem.pillNumber}
             />
           </View>
+          
         </View>
         
       </BottomSheet>

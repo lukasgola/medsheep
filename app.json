@@ -20,12 +20,28 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/medsheep.png",
         "backgroundColor": "#ffffff"
       }
     },
     "web": {
-      "favicon": "./assets/favicon.png"
-    }
+      "favicon": "./assets/medsheep.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "1cf57790-dddc-4038-9840-40ca88556314"
+      }
+    },
+    "owner": "lukasgola",
+    "plugins": [
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/medsheep.png",
+          "color": "#ffffff",
+          "defaultChannel": "default"
+        }
+      ]
+    ]
   }
 }

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Text, View, Image, TouchableOpacity, Dimensions, FlatList, Modal, TextInput, KeyboardAvoidingView, ScrollView } from 'react-native';
+import { Text, View, Image, TouchableOpacity, Platform, FlatList, Modal, TextInput, KeyboardAvoidingView, ScrollView } from 'react-native';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -118,10 +118,9 @@ export default function Medicine({route, navigation}) {
                 <Ionicons name={liked ? 'heart' : 'heart-outline'} size={25} color={liked ? colors.primary : colors.text} />
             </TouchableOpacity>
             <Animated.Image 
-                source={item.img} 
+                source={{uri: item.img}} 
                 resizeMode='contain' 
                 style={{width: '60%', height: 300, marginLeft: '20%'}} 
-                sharedTransitionTag="tag"
             />
             <Text style={{
                 color: colors.text,
@@ -134,31 +133,20 @@ export default function Medicine({route, navigation}) {
                 marginTop: 10,
             }}>{item.amount} tabletek</Text>
 
-            <Text style={{
-                color: colors.grey_d,
-                fontSize: 16,
-                marginTop: 5,
-                width: '100%',
-                textAlign: 'right',
-            }}>{price} zł</Text>
 
             <KeyboardAvoidingView
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
                 keyboardVerticalOffset={200} 
                 style={{
                 width: '100%',
-                height: 50,
                 backgroundColor: colors.background,
                 flexDirection: 'row',
                 justifyContent: 'center',
                 marginTop: 10,
                 alignItems: 'center',
-                justifyContent: 'space-between',
+                justifyContent: 'center',
+                paddingVertical: 20
             }}>
-
-                <Text style={{
-                    fontSize: 30,
-                }}>{item.price} zł</Text>
                 
                 <Amounter 
                     item={item} 

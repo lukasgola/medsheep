@@ -1,5 +1,5 @@
 import React, { useState, useRef, useLayoutEffect } from 'react';
-import { View, Modal, KeyboardAvoidingView, Text, TouchableOpacity, Animated, Pressable } from 'react-native';
+import { View, Modal, KeyboardAvoidingView, Text, TouchableOpacity, Animated, Pressable, Platform } from 'react-native';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -135,7 +135,7 @@ const BottomSheet = (props) => {
                 flex: 1,
                 borderTopLeftRadius: 15,
                 borderTopRightRadius: 15,
-                paddingHorizontal: '5%',
+                paddingHorizontal: '2.5%',
                 paddingVertical: 10,
             }}>
                 
@@ -146,6 +146,7 @@ const BottomSheet = (props) => {
                     alignItems: 'center',
                     justifyContent: 'space-between',
                     marginBottom: 20,
+                    paddingHorizontal: '2.5%'
                 }}>
                     <Text style={{
                         fontSize: 18,
@@ -206,7 +207,7 @@ const BottomSheet = (props) => {
                     <Text style={{
                         fontSize: 20,
                         color: colors.primary
-                    }}>Wybierz</Text>
+                    }}>Potwierdź</Text>
                 </TouchableOpacity>
             </View>
             

@@ -7,7 +7,7 @@ import {
 } from "firebase/auth";
 
 import { deleteDoc, getFirestore } from "firebase/firestore";
-import { collection, setDoc, getDocs, addDoc, doc, updateDoc, query, where, increment } from "firebase/firestore"; 
+import { collection, setDoc, getDoc, getDocs, addDoc, doc, updateDoc, query, where, increment, writeBatch } from "firebase/firestore"; 
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -37,6 +37,7 @@ export async function createUser(name, lastName, email, password) {
             const errorCode = error.code;
             const errorMessage = error.message;
             console.log(errorMessage)
+            throw new Error(errorCode)
             // ..
         })
     )
@@ -54,7 +55,8 @@ export async function signIn(email, password) {
         .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
-            console.log(errorMessage)
+            throw new Error(errorCode)
+            //console.log(errorMessage)
         })
     )
 }
@@ -213,7 +215,7 @@ export async function addToBasket(product, number, price, basket, setBasket, set
     }
   }
 
-  export async function addToCalendar(event){
+  export async function addToCalendar(event, takenArray){
     try {
       await addDoc(collection(db, `users/${auth.currentUser.uid}/events`), {
         title: event.title,
@@ -232,9 +234,11 @@ export async function addToBasket(product, number, price, basket, setBasket, set
         dateEndString: event.dateEndString,
         startTimestamp: event.startTimestamp,
         endTimestamp: event.endTimestamp,
-        itemId: event.itemId
+        itemId: event.itemId,
+        dose: event.dose,
+        doseUnit: event.doseUnit,
       }).then(function(docRef) {
-        setDates(docRef.id, event)
+        setDates(docRef.id, takenArray)
     })
     } catch (e) {
       console.error("Error adding document: ", e);
@@ -242,12 +246,59 @@ export async function addToBasket(product, number, price, basket, setBasket, set
   }
 
 
-  export async function setDates(id, event){
+  export async function getNotID(id){
+    const result = []
+    const q = query(collection(db, "users", auth.currentUser.uid, "events", id, "calendar"));
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+          
+        const data = doc.data();
+
+        result.push(data.notID)
+          
+      });
+
+      return result
+  }
+
+
+  export async function removeEvent(eventId) {
+    const user = auth.currentUser;
+    if (!user) {
+      throw new Error('No user is currently authenticated.');
+    }
+  
+    const eventRef = doc(db, `users/${user.uid}/events/${eventId}`);
+    const subcollectionRef = collection(db, `users/${user.uid}/events/${eventId}/calendar`);
+  
     try {
-      for(var i=event.startTimestamp; i <= event.endTimestamp; i+=((event.freq+1) * 86400000)){
+      // Step 1: Delete all documents in the subcollection
+      const subcollectionSnapshot = await getDocs(subcollectionRef);
+      const batch = writeBatch(db);
+  
+      subcollectionSnapshot.forEach((doc) => {
+        batch.delete(doc.ref);
+      });
+  
+      await batch.commit();
+  
+      // Step 2: Delete the event document itself
+      await deleteDoc(eventRef);
+  
+      console.log(`Event with ID ${eventId} and its subcollection have been deleted successfully`);
+    } catch (e) {
+      console.error('Error deleting event and its subcollection: ', e);
+    }
+  }
+
+
+  export async function setDates(id, takenArray){
+    try {
+      for(let i = 0; i < takenArray.length; i++){
         await addDoc(collection(db, `users/${auth.currentUser.uid}/events/${id}/calendar`), {
-          id: i,
-          taken: false
+          id: takenArray[i].id,
+          taken: false,
+          notID: takenArray[i].notID
         });
       }
     }
@@ -281,3 +332,41 @@ export async function addToBasket(product, number, price, basket, setBasket, set
       console.error("Error updating document: ", e);
     }
   }
+
+
+  export async function getKitItem(itemId){
+      try {
+          // Create a reference to the document
+          const docRef = doc(db, `/users/${auth.currentUser.uid}/kit/`, itemId);
+          
+          // Get the document
+          const docSnap = await getDoc(docRef);
+  
+          // Check if the document exists
+          if (docSnap.exists()) {
+              // Document data
+              return docSnap.data();
+          } else {
+              // Document does not exist
+              throw new Error("No such document!");
+          }
+      } catch (error) {
+          // Handle any errors
+          console.error("Error getting document:", error);
+          throw error;
+      }
+  }
+
+
+  export async function getKit() {
+    const querySnapshot = await getDocs(collection(db, "users", auth.currentUser.uid, "kit"));
+    querySnapshot.forEach((doc) => {
+        // doc.data() is never undefined for query doc snapshots
+        const data = {
+            ...doc.data(),
+            id: doc.id,
+        }
+
+        return data
+    });
+}

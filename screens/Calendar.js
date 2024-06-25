@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { SafeAreaView, Text, View, Dimensions, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native';
+import { SafeAreaView, Text, View, Dimensions, TouchableOpacity, FlatList, ActivityIndicator, Platform } from 'react-native';
 
 //Ionicons
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -9,6 +9,7 @@ import { Calendar, LocaleConfig,} from 'react-native-calendars';
 
 //Providers
 import { useTheme } from '../theme/ThemeProvider';
+import { useKit } from '../providers/KitProvider';
 
 //Hooks
 import { useIsFocused } from "@react-navigation/native";
@@ -16,10 +17,11 @@ import { useIsFocused } from "@react-navigation/native";
 //Components
 import BottomSheet from '../components/BottomSheet';
 import Swipe from '../components/Swipe';
+import CartItem from '../components/CartItem';
 
 
 //Firebase
-import { auth, db, setTaken } from '../firebase/firebase-config';
+import { auth, db, getKitItem, getNotID, removeEvent, setTaken } from '../firebase/firebase-config';
 import { getDocs, collection, where, query } from "firebase/firestore";
 
 
@@ -49,11 +51,82 @@ LocaleConfig.locales['pl'] = {
 
 LocaleConfig.defaultLocale = 'pl';
 
+// Expo
+import * as Device from 'expo-device';
+import * as Notifications from 'expo-notifications';
+import Constants from 'expo-constants';
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+      shouldShowAlert: true,
+      shouldPlaySound: true,
+      shouldSetBadge: true,
+  }),
+});
+
+async function scheduleNotification(date, title, body) {
+  
+  console.log("Not date: " + date.getDate() + "-" + (date.getMonth()+1) + "-" + date.getFullYear() + "   " + date.getHours() + ":" + date.getMinutes())
+
+  await Notifications.scheduleNotificationAsync({
+      content: {
+          title: title,
+          body: body,
+          sound: 'default',
+      },
+      trigger: {
+          hour: date.getHours(),
+          minute: date.getMinutes(),
+          day: date.getDate(),
+          month: date.getMonth()+1,
+          year: date.getFullYear(),
+          repeats: false, 
+      },
+  });
+}
+
+async function registerForPushNotificationsAsync() {
+  let token;
+
+  if (Platform.OS === 'android') {
+      Notifications.setNotificationChannelAsync('default', {
+      name: 'default',
+      importance: Notifications.AndroidImportance.MAX,
+      vibrationPattern: [0, 250, 250, 250],
+      lightColor: '#FF231F7C',
+      });
+  }
+
+  if (Device.isDevice) {
+      const { status: existingStatus } = await Notifications.getPermissionsAsync();
+      let finalStatus = existingStatus;
+      if (existingStatus !== 'granted') {
+          const { status } = await Notifications.requestPermissionsAsync();
+          finalStatus = status;
+      }
+      if (finalStatus !== 'granted') {
+          alert('Failed to get push token for push notification!');
+          return;
+      }
+      token = await Notifications.getExpoPushTokenAsync({
+          projectId: Constants.expoConfig.extra.eas.projectId,
+      });
+      console.log(token);
+  } else {
+      alert('Must use physical device for Push Notifications');
+  }
+
+  return token?.data;
+}
+
+
+
 export default function MainCalendar() {
 
   const width = Dimensions.get('screen').width;
   const {colors} = useTheme();
   const isFocused = useIsFocused();
+  const { kit, setKit, setNewKit } = useKit();
 
   const [ selected, setSelected ] = useState();
   const [ day, setDay ] = useState();
@@ -62,30 +135,90 @@ export default function MainCalendar() {
   const [ item, setItem ] = useState();
   const [ takenAmount, setTakenAmount ] = useState(0);
 
+  const [kitItem, setKitItem] = useState();
+
   const [ modalVisible, setModalVisible ] = useState(false);
   const [ modalVisible2, setModalVisible2 ] = useState(false);
   const [ modalVisible3, setModalVisible3 ] = useState(false);
 
   const ref = useRef(null);
 
+
+  const actDate = new Date()
+
+
+  {/* Push Notifications */}
+
+  const [expoPushToken, setExpoPushToken] = useState('');
+  const [notification, setNotification] = useState(false);
+  const notificationListener = useRef();
+  const responseListener = useRef();
+
+  useEffect(() => {
+      registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+
+      notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+          setNotification(notification);
+      });
+
+      responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+          console.log(response);
+      });
+
+      return () => {
+          Notifications.removeNotificationSubscription(notificationListener.current);
+          Notifications.removeNotificationSubscription(responseListener.current);
+      };
+  }, []);
+
+
+
   const getTakenArray = async (id, timestamp) => {
     let takenItem = 0;
     const q2 = query(collection(db, "users", auth.currentUser.uid, "events", id, "calendar" ), where("id", "==", timestamp));
     const querySnapshot2 = await getDocs(q2);
     querySnapshot2.forEach((doc) => {
-        const data = {
+      //const kitItem = getKitItem(data.itemId);
+        const item = {
           ...doc.data(),
-          id: doc.id
+          id: doc.id,
+          //kitItem: kitItem
         }
-      takenItem = data.taken;
+      takenItem = item.taken;
     });
     return takenItem;
+  }
+
+  async function fetchDataWithKitItems(querySnapshot) {
+    const fetchedData = [];
+    const newKit = []
+  
+    for (const doc of querySnapshot.docs) {
+      const data = doc.data();
+      const kitItem = await getKitItem(data.itemId); // Await the async function
+      
+      const item = {
+        ...data,
+        id: doc.id,
+        kitItem: kitItem,
+        taken: false // Add the taken field with the default value of false
+      };
+
+      const newKitItem = {
+        id: data.itemId,
+        ...kitItem
+      }
+      newKit.push(newKitItem)
+      fetchedData.push(item); // Add the transformed item to the fetchedData array
+    }
+    setNewKit([...newKit])
+    return fetchedData;
   }
 
   const getDayEvents = async (timestamp) => {
     const q = query(collection(db, "users", auth.currentUser.uid, "events"), where("endTimestamp", ">=", timestamp));
     const querySnapshot = await getDocs(q);
-    const fetchedData = querySnapshot.docs.map( doc => ({id: doc.id, ...doc.data(), taken: false}));
+    const fetchedData = await fetchDataWithKitItems(querySnapshot);
     const filtered = fetchedData.filter((item) => item.startTimestamp <= timestamp);
     const updatedArray = [...filtered];
   
@@ -105,13 +238,10 @@ export default function MainCalendar() {
 
     let amount = 0;
     for( let i = 0; i<filtered.length;i++){
-      if(filtered[i].taken == false) {
-          scrollToIndex(i);
-          break;
-      }
-      else{
+      if(filtered[i].taken == true){
         amount = amount + 1;
       }
+
     }
     setTakenAmount(amount);
     setIsLoading(false);
@@ -127,11 +257,6 @@ export default function MainCalendar() {
     setEvents(updatedItems);
   };
 
-  const scrollToIndex = (index) => {
-    if (ref.current) {
-      ref.current.scrollToIndex({ index, animated: true });
-    }
-  }
 
   const onDayClick = (day) => {
     setIsLoading(true);
@@ -140,8 +265,9 @@ export default function MainCalendar() {
     getDayEvents(day.timestamp);
   }
 
-  const onTakenClick = (item) => {
+  const onTakenClick = async (item) => {
     setItem(item);
+    setKitItem(item.kitItem);
     setModalVisible(true);
   }
 
@@ -149,6 +275,32 @@ export default function MainCalendar() {
     updateItemValue(item.id, true);
     setTaken(item.id, day.timestamp, item.itemId);
     setTakenAmount(takenAmount + 1);
+  }
+
+  const confirmDelete = async () => {
+    notArray = await getNotID(item.id);
+
+    for (const notification of notArray) {
+      await Notifications.cancelScheduledNotificationAsync(notification);
+    }
+
+    await removeEvent(item.id)
+
+    getDayEvents(day.timestamp);
+
+  }
+
+
+  const onDelay = async (delay) => {
+    let date = new Date();  // Get the current date and time
+    console.log("Original date and time:", date);
+
+    date.setMinutes(date.getMinutes() + delay);  // Add the specified delay to the current date and time
+    console.log("Updated date and time:", date);
+
+    const title = title === '' ? medString : title;  // Determine the title
+    scheduleNotification(date, title, 'Pora wziąc lek! 💊');  // Schedule the notification
+    setModalVisible(false)
   }
 
 
@@ -217,13 +369,13 @@ export default function MainCalendar() {
             borderRadius: 5,
             paddingVertical: 5,
             backgroundColor: '#FFE1E1',
-            width: 90,
-            alignItems: 'center'
+            alignItems: 'center',
+            paddingHorizontal: 10
           }}>
             <Text style={{
               color: colors.primary,
               fontWeight: 'bold'
-            }}>1 tabletka</Text>
+            }}>{item.dose + ' ' + item.doseUnit} </Text>
           </View>
         </View>
         <TouchableOpacity 
@@ -242,9 +394,11 @@ export default function MainCalendar() {
           }}
             disabled={item.taken}
           >
-            {item.taken ? 
+            {item.taken && 
             <Ionicons name={'checkmark-circle-outline'} style={{marginLeft: 4}} size={40} color={colors.primary} />
-            : <View></View>
+            }
+            {item.taken == false && (day.timestamp + 86400000 ) < actDate.getTime() && 
+              <Text>P</Text>
             }
         </TouchableOpacity>
 
@@ -365,39 +519,98 @@ export default function MainCalendar() {
             text={'Czy wziąłeś'}
             onConfirm={confirmTake}
           >
+            <View style={{
+              width: '100%',
+              paddingHorizontal: '2.5%',
+              flexDirection: 'row',
+              alignItems: 'center',
+            }}>
+              <Text style={{
+                fontSize: 18,
+                fontWeight: '700',
+                width: '50%'
+              }}>{item?.title}</Text>
               <View style={{
+                width: '50%',
+                borderRadius: 5,
+                paddingVertical: 5,
+                backgroundColor: '#FFE1E1',
                 alignItems: 'center',
-                justifyContent: 'center'
+                paddingHorizontal: 10
               }}>
                 <Text style={{
-                  fontSize: 18,
+                  color: colors.primary,
                   fontWeight: 'bold'
-                }}>{item ? item.title : 'None'}</Text>
+                }}>{item?.dose + ' ' + item?.doseUnit} </Text>
               </View>
+            </View>
+            <Text style={{
+              paddingHorizontal: '2.5%',
+            }}>{kitItem?.pillNumber} tab.</Text>
+
+            {item?.taken == false && (day.timestamp + 86400000 ) > actDate.getTime() && 
+            <View>
+            <Text style={{
+              fontSize: 16,
+              fontWeight: 'bold',
+              color: colors.grey_d,
+              marginTop: 20,
+              marginLeft: '2.5%'
+            }}>Odłóz</Text>
+            <View style={{
+              width: '100%',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              marginTop: 10
+            }}>
+              <TouchableOpacity 
+                onPress={() => onDelay(30)}
+                activeOpacity={0.2}
+                style={{
+                    width: '48%',
+                    paddingVertical: 10,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    backgroundColor: colors.grey_l,
+                    borderRadius: 10,
+                    borderWidth: 1,
+                    borderColor: colors.grey
+              }}>
+                  <Text style={{
+                      fontSize: 16,
+                      color: colors.text
+                  }}>+30 min</Text>
+              </TouchableOpacity>
+              <TouchableOpacity 
+                onPress={() => onDelay(60)}
+                activeOpacity={0.2}
+                style={{
+                    width: '48%',
+                    paddingVertical: 10,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    backgroundColor: colors.grey_l,
+                    borderRadius: 10,
+                    borderWidth: 1,
+                    borderColor: colors.grey
+              }}>
+                  <Text style={{
+                      fontSize: 16,
+                      color: colors.text
+                  }}>+1 godz</Text>
+              </TouchableOpacity>
+              </View>
+            </View>
+            }
+            
         </BottomSheet>
 
-        <BottomSheet 
-            visible={modalVisible2} 
-            setModalVisible={setModalVisible2}
-            text={'Edytuj'}
-            onConfirm={confirmTake}
-          >
-              <View style={{
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}>
-                <Text style={{
-                  fontSize: 18,
-                  fontWeight: 'bold'
-                }}>{item ? item.title : 'None'}</Text>
-              </View>
-        </BottomSheet>
 
         <BottomSheet 
             visible={modalVisible3} 
             setModalVisible={setModalVisible3}
             text={'Czy na pewno chcesz usunąć?'}
-            onConfirm={confirmTake}
+            onConfirm={confirmDelete}
           >
               <View style={{
                 alignItems: 'center',

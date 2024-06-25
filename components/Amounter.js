@@ -22,7 +22,13 @@ const Amounter = (props) => {
     }
 
   return (
-    <View style={{flexDirection: 'row'}}>
+    <View style={{
+        flexDirection: 'row',
+        borderColor: colors.grey,
+        borderWidth: 1,
+        borderRadius: 10,
+        
+    }}>
         <TouchableOpacity 
             onPress={() => goDown()}
             style={{
@@ -32,7 +38,7 @@ const Amounter = (props) => {
                 borderTopLeftRadius: 10,
                 backgroundColor: colors.grey_l,
                 justifyContent: 'center',
-                alignItems: 'center'
+                alignItems: 'center',
             }}
         >
             <Ionicons name={'remove-outline'} size={40} color={colors.text} />

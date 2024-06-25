@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef } from 'react';
-import {View, KeyboardAvoidingView, Alert, TouchableOpacity, Dimensions, ScrollView, Text, Animated, TextInput} from 'react-native';
+import {View, KeyboardAvoidingView, Alert, TouchableOpacity, Dimensions, ScrollView, Text, Animated, TextInput, Platform} from 'react-native';
 
 //Hooks
 import { useTheme } from '../theme/ThemeProvider';
@@ -18,6 +18,77 @@ import {Picker} from '@react-native-picker/picker';
 import { addToCalendar } from '../firebase/firebase-config';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
+
+
+// Expo
+import * as Device from 'expo-device';
+import * as Notifications from 'expo-notifications';
+import Constants from 'expo-constants';
+
+Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+        shouldShowAlert: true,
+        shouldPlaySound: true,
+        shouldSetBadge: true,
+    }),
+});
+
+async function scheduleNotification(date, title, body) {
+    
+    console.log("Not date: " + date.getDate() + "-" + (date.getMonth()+1) + "-" + date.getFullYear() + "   " + date.getHours() + ":" + date.getMinutes())
+
+    const notID = await Notifications.scheduleNotificationAsync({
+        content: {
+            title: title,
+            body: body,
+            sound: 'default',
+        },
+        trigger: {
+            hour: date.getHours(),
+            minute: date.getMinutes(),
+            day: date.getDate(),
+            month: date.getMonth()+1,
+            year: date.getFullYear(),
+            repeats: false, 
+        },
+    });
+
+    return notID
+}
+
+async function registerForPushNotificationsAsync() {
+    let token;
+
+    if (Platform.OS === 'android') {
+        Notifications.setNotificationChannelAsync('default', {
+        name: 'default',
+        importance: Notifications.AndroidImportance.MAX,
+        vibrationPattern: [0, 250, 250, 250],
+        lightColor: '#FF231F7C',
+        });
+    }
+
+    if (Device.isDevice) {
+        const { status: existingStatus } = await Notifications.getPermissionsAsync();
+        let finalStatus = existingStatus;
+        if (existingStatus !== 'granted') {
+            const { status } = await Notifications.requestPermissionsAsync();
+            finalStatus = status;
+        }
+        if (finalStatus !== 'granted') {
+            alert('Failed to get push token for push notification!');
+            return;
+        }
+        token = await Notifications.getExpoPushTokenAsync({
+            projectId: Constants.expoConfig.extra.eas.projectId,
+        });
+        console.log(token);
+    } else {
+        alert('Must use physical device for Push Notifications');
+    }
+
+    return token?.data;
+}
 
 
 export default function AddToCalendar({navigation}){
@@ -98,6 +169,29 @@ export default function AddToCalendar({navigation}){
         },
     ]
 
+    const doses = [
+        {
+            id: 1,
+            text: 'tabletka',
+        },
+        {
+            id: 2,
+            text: 'łyzeczka',
+        },
+        {
+            id: 3,
+            text: 'saszetka',
+        },
+        {
+            id: 4,
+            text: 'ampułka',
+        },
+        {
+            id: 5,
+            text: 'porcja'
+        }
+    ]
+
     const [ title, setTitle ] = useState('');
     
     const [ medString, setMedString ] = useState('Wybierz')
@@ -105,6 +199,15 @@ export default function AddToCalendar({navigation}){
     const [ freq, setFreq ] = useState(0);
     const [ freqString, setFreqString ] = useState('Codziennie')
     const [ prevFreq, setPrevFreq ] = useState('');
+
+    const [doseArray, setDoseArray] = useState([])
+
+    const [ dose, setDose ] = useState(1);
+    const [ prevDose, setPrevDose] = useState(1)
+
+    const [ doseUnit, setDoseUnit ] = useState('tabletka')
+    const [ prevDoseUnit, setPrevDoseUnit] = useState('')
+    const [ doseUnitString, setDoseUnitString] = useState('tabletka')
 
     const [ time, setTime ] = useState(new Date(Date.now()))
 
@@ -125,22 +228,58 @@ export default function AddToCalendar({navigation}){
     const [isDateEndPickerVisible, setDateEndPickerVisible] = useState(false);
     const [isCustomFreqPickerVisible, setCustomFreqPickerVisible] = useState(false);
     const [isCustomFreqPeriodPickerVisible, setCustomFreqPeriodPickerVisible] = useState(false);
+    const [isDosePickerVisible, setDosePickerVisible] = useState(false);
 
 
     const fontSize = 14;
+
+
+
+    {/* Push Notifications */}
+
+    const [expoPushToken, setExpoPushToken] = useState('');
+    const [notification, setNotification] = useState(false);
+    const notificationListener = useRef();
+    const responseListener = useRef();
+
+    useEffect(() => {
+        registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+
+        notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+            setNotification(notification);
+        });
+
+        responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+            console.log(response);
+        });
+
+        return () => {
+            Notifications.removeNotificationSubscription(notificationListener.current);
+            Notifications.removeNotificationSubscription(responseListener.current);
+        };
+    }, []);
+
+
 
     useEffect(() => {
         if(data.id){
             console.log("Nowe idd: " + data.id)
             setMedString(data.product.name)
         }
+        
     }, [isFocused])
+
+    useEffect(() => {
+        for(let i = 1; i < 5; i++){
+            setDoseArray(oldArray => [...oldArray, i]);
+        }
+    }, [])
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
             headerRight: () => (
                 <TouchableOpacity
-                    onPress={() => onCreateEvent()}
+                    onPress={() => data.id ? onCreateEvent() : emptyData()}
                     title="Info"
                     color="#fff"
                 >
@@ -166,17 +305,32 @@ export default function AddToCalendar({navigation}){
         });
     }, [title, time, freq, dateStart, dateEnd, customFreq, navigation]);
 
+    const emptyData = () => {
+        Alert.alert('Nie wybrano leku', 'Wybierz lek', [
+        {
+            text: 'OK',
+            onPress: () => {},
+            style: 'cancel',
+        }])
+    }
+
     const handleFreqConfirm = () => {
-        if ( freqString == 'Niestandardowe' && prevFreq != 'Niestandardowe'){
-            setTimeout(() => {
-                springIn();
-            }, 1000)
+        setFreq(prevFreq)
+        setFreqString(prevFreq)
+
+        if(prevFreq == 'Niestandardowe'){
+            springIn()
         }
-        if( prevFreq == 'Niestandardowe' && freqString != 'Niestandardowe'){
-            setTimeout(() => {
-                springOut();
-            }, 1000)
+        if(prevFreq != 'Niestandardowe' && springAnim !== 0 ){
+            springOut()
         }
+    }
+
+    const handleDoseConfirm = () => {
+        setDose(prevDose)
+        setDoseUnit(prevDoseUnit)
+        console.log(prevDoseUnit)
+        setDoseUnitString(prevDoseUnit)
     }
 
 
@@ -200,6 +354,8 @@ export default function AddToCalendar({navigation}){
     const handleDateStartConfirm = () => {
         let month = dateStart.getMonth()+1;
         setDateStartString(dateStart.getDate() + ' / ' + month + ' / ' + dateStart.getFullYear())
+        setDateEnd(dateStart)
+        setDateEndString(dateStart.getDate() + ' / ' + month + ' / ' + dateStart.getFullYear())
     };
 
     const onChangeDateEnd = (event, selectedDate) => {
@@ -215,29 +371,43 @@ export default function AddToCalendar({navigation}){
 
     const onCreateEvent = () => {
         console.log('Id: ' + data.id)
-        Alert.alert('New Event', 'Do you want to public this event?', [
+        Alert.alert('Nowe przypomnienie', 'Na pewno chcesz dodać przypomnienie ?', [
         {
-            text: 'Cancel',
+            text: 'Anuluj',
             onPress: () => {},
             style: 'cancel',
         },
         {
-            text: 'Yes',
-            onPress: () => {
+            text: 'Dodaj',
+            onPress: async () => {
                 
                 const dateS = dateStart;
                 const dateE = dateEnd;
 
-                dateS.setHours(2,0,0,0);
-                dateE.setHours(2,0,0,0);
+                dateS.setHours(2,0,0,0)
+                dateE.setHours(2,0,0,0)
 
                 const takenArray = [];
 
                 for(var i=dateS.getTime(); i <= dateE.getTime(); i+=((freq+1) * 86400000)){
+                    {/* Schedule notification */}
+
+                    const date = new Date(i);
+                    date.setHours(time.getHours())
+                    date.setMinutes(time.getMinutes());
+
+                    console.log(date)
+
+                    const notID = await scheduleNotification(date, title == '' ? medString : title, 'Pora wziąc lek! 💊')
+                    
+                    
                     takenArray.push({
                         id: i,
-                        taken: false
+                        taken: false,
+                        notID: notID
                     })
+
+
                 }
 
                 const event = {
@@ -257,9 +427,11 @@ export default function AddToCalendar({navigation}){
                     dateEndString: dateEnd.getFullYear() + '-' + (dateEnd.getMonth() < 10 ? '0' + (dateEnd.getMonth()+1) : (dateEnd.getMonth()+1)) + '-' + (dateEnd.getDate() < 10 ? '0' + dateEnd.getDate() : dateEnd.getDate()),
                     startTimestamp: dateS.getTime(),
                     endTimestamp: dateE.getTime(),
-                    itemId: data.id
+                    itemId: data.id ? data.id : null,
+                    dose: dose,
+                    doseUnit: doseUnitString,
                 }
-                addToCalendar(event);
+                addToCalendar(event, takenArray);
                 navigation.navigate('Kalendarz');
             }},
         ]);
@@ -294,7 +466,9 @@ export default function AddToCalendar({navigation}){
             style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: colors.background }}>
             <ScrollView 
                 showsVerticalScrollIndicator={false}
-                style={{width: width*0.9}}
+                style={{
+                    width: width*0.9,
+                }}
             >
                 <View style={{width: '100%', alignItems: 'center', flexDirection: 'row', justifyContent: 'center', marginTop: 60, marginBottom: 10}}>
                     <Text style={{
@@ -377,8 +551,106 @@ export default function AddToCalendar({navigation}){
                     
                 </TouchableOpacity>
 
+                {/* Dawka */}
+
                 <TouchableOpacity 
-                    onPress={() => setFreqPickerVisible(true)}
+                    onPress={() => {
+                        setDosePickerVisible(true)
+                        setPrevDose(dose)
+                        setPrevDoseUnit(doseUnit)
+                    }}
+                    style={{
+                        width: '100%', 
+                        height: 50, 
+                        flexDirection: 'row',
+                        backgroundColor: colors.grey_l,
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        borderColor: '#e8e8e8',
+                        borderWidth: 1,
+                        borderTopWidth: 0
+                        
+                    }}>
+                    <View
+                        style={{
+                            width: 40,
+                            paddingLeft: 10,
+                            justifyContent: 'center',
+                        }}
+                        >
+                            <Ionicons name={'refresh-outline'} size={20} color={colors.grey_d}/>
+                    </View>
+
+                    <Text style={{
+                        color: colors.text,
+                        fontSize: fontSize,
+                    }}>Dawka</Text>
+
+                    <View style={{
+                        flexDirection: 'row',
+                        position: 'absolute',
+                        right: 10,
+                        alignItems: 'center',
+                    }}>
+                        <Text style={{
+                            color: colors.grey_d,
+                            fontSize: fontSize
+                        }}>{ dose + ' ' + doseUnitString}</Text>
+
+                        <Ionicons name={'chevron-forward-outline'} size={20} color={colors.grey_d}/>
+
+                    </View>
+
+                    <BottomSheet 
+                        visible={isDosePickerVisible} 
+                        setModalVisible={setDosePickerVisible}
+                        text={'Podaj dawkę'}
+                        onConfirm={handleDoseConfirm}
+                    >
+                        <View style={{
+                            width: '100%',
+                            flexDirection: 'row',
+                            justifyContent: 'space-between'
+                        }}>
+                            <View style={{
+                                width: '50%'
+                            }}>
+                            <Picker
+                                selectedValue={prevDose}
+                                onValueChange={(itemValue, itemIndex) =>{
+                                    setPrevDose(itemValue)
+                                }
+                                }>
+                                    {doseArray.map((item) => (
+                                        <Picker.Item label={item.toString()} value={item} key={item} />
+                                    ))}
+                            </Picker>
+                            </View>
+                            <View style={{
+                                width: '50%'
+                            }}>
+                            <Picker
+                                selectedValue={prevDoseUnit}
+                                onValueChange={(itemValue, itemIndex) =>{
+                                    setPrevDoseUnit(itemValue)
+                                }
+                                }>
+                                    {doses.map((item) => (
+                                        <Picker.Item label={item.text.toString()} value={item.text} key={item.id} />
+                                    ))}
+                            </Picker>
+                            </View>
+                        </View>
+                        
+                    </BottomSheet>
+                </TouchableOpacity>
+
+
+                <TouchableOpacity 
+                    onPress={() => {
+                        setFreqPickerVisible(true)
+                        setPrevFreq(freq)
+                    }}
                     style={{
                         width: '100%', 
                         height: 50, 
@@ -428,11 +700,9 @@ export default function AddToCalendar({navigation}){
                         onConfirm={handleFreqConfirm}
                     >
                         <Picker
-                            selectedValue={freqString}
+                            selectedValue={prevFreq}
                             onValueChange={(itemValue, itemIndex) =>{
-                                setPrevFreq(freqString)
-                                setFreq(itemIndex)
-                                setFreqString(itemValue)
+                                setPrevFreq(itemValue)
                             }
                             }>
                                 {frequencies.map((item) => (
@@ -456,7 +726,7 @@ export default function AddToCalendar({navigation}){
                         fontSize: fontSize,
                         fontWeight: 'bold',
                         color: colors.text,
-                        marginTop: 20,
+                        marginTop: 5,
                     }}>Powtarza się co...</Text>
                     <View style={{
                         width: '100%',
@@ -670,6 +940,7 @@ export default function AddToCalendar({navigation}){
                             display="spinner"
                             onChange={onChangeDateStart}
                             textColor={colors.text}
+                            minimumDate={time}
                         />
                     </BottomSheet>
                 </TouchableOpacity>
@@ -687,7 +958,8 @@ export default function AddToCalendar({navigation}){
                         alignItems: 'center',
                         borderColor: '#e8e8e8',
                         borderWidth: 1,
-                        borderTopWidth: 0
+                        borderTopWidth: 0,
+                        marginBottom: 50
                     }}>
                     <View
                         style={{
@@ -731,6 +1003,7 @@ export default function AddToCalendar({navigation}){
                             display="spinner"
                             onChange={onChangeDateEnd}
                             textColor={colors.text}
+                            minimumDate={dateStart}
                         />
                     </BottomSheet>
                 </TouchableOpacity>

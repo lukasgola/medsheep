@@ -1,7 +1,7 @@
 import 'react-native-gesture-handler';
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useState } from 'react';
-import { View, Image, Text } from 'react-native';
+import { View, Image, Text, StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 
 
@@ -68,7 +68,7 @@ export default function App() {
     <NavigationContainer>
       <ThemeProvider>
         <CurrentUserProvider>
-          
+        <StatusBar/>
             {isUser == 2 ? 
               <BasketProvider>
                 <KitProvider>

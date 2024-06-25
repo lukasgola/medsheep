@@ -5,21 +5,25 @@ import { useKit } from '../providers/KitProvider';
 import { useTheme } from '../theme/ThemeProvider';
 import { useData } from '../providers/DataProvider';
 
+import Swipe from '../components/Swipe';
 import CartItem from '../components/CartItem';
 import BottomSheet from '../components/BottomSheet';
 import Amounter from '../components/Amounter';
-import Swipe from '../components/Swipe';
 
 //Firebase
 import { query, collection, getDocs, where, updateDoc  } from 'firebase/firestore';
-import { removeFromKit, db, auth } from '../firebase/firebase-config';
+import { removeFromKit, db, auth, getKit } from '../firebase/firebase-config';
+import { useIsFocused } from '@react-navigation/native';
 
 export default function Kit({navigation, route}) {
 
 
   const { kit, setKit, setNewKit } = useKit();
   const { colors } = useTheme();
-  const { data, setData } = useData();
+
+  const isFocused = useIsFocused();
+
+  const {data, setData} = useData();
 
   const [ modalVisible, setModalVisible ] = useState(false);
 
@@ -27,10 +31,31 @@ export default function Kit({navigation, route}) {
   const [ number, setNumber ] = useState(null);
   const [ price, setPrice ] = useState(null);
 
-  const [ test, setTest ] = useState(null);
+  const [ chosenItem, setChosenItem ] = useState(data.id != null);
 
-  //const [ kitMode, setKitMode ] = useState(route.params.kitMode ? route.params.kitMode : false)
-  const [ chooseMode, setChooseMode ] = useState(true)
+  const [ chooseMode, setChooseMode ] = useState(route.params?.chooseMode)
+
+
+  React.useLayoutEffect(() => {
+    if(chosenItem && chooseMode){
+        navigation.setOptions({
+          headerRight: () => 
+              <TouchableOpacity
+                  onPress={() => navigation.goBack()}
+                  title="Info"
+                  color="#fff"
+              >
+                  <Text style={{
+                  color: colors.primary,
+                  fontSize: 18,
+                  fontWeight: 'bold'
+                  }}>Ok</Text>
+              </TouchableOpacity>
+      });
+    }
+   
+  }, [chooseMode, chosenItem]);
+
 
   const goUp = (amount) => {
     setNumber(amount)
@@ -57,22 +82,20 @@ export default function Kit({navigation, route}) {
     },
   };
 
-  const onSettingsClick = ({item, index}) => {
-  if(chooseMode){
-    console.log(item)
-    setData({
-      id: item.id,
-      product: item.product
-    });
-  }
-  else{
-    setItem(item)
-    setNumber(item.number)
-    setPrice(item.price)
-    setTest(prevOpenedRow)
-    setModalVisible(true)
-  }
-
+  const onSettingsClick = (item) => {
+    if(chooseMode){
+      setData({
+        id: item.id,
+        product: item.product
+      });
+      setChosenItem(true)
+    } else {
+      setItem(item)
+      setNumber(item.pillNumber)
+      setPrice(item.price)
+      setModalVisible(true)
+    }
+    
   }
 
   const onDeleteClick = ({ item, index }) => {
@@ -81,17 +104,6 @@ export default function Kit({navigation, route}) {
     setNewKit([...a]);
     removeFromKit(item.id);
     LayoutAnimation.configureNext(layoutAnimConfig)
-  };
-
-  let row = [];
-  let prevOpenedRow;
-
-  const closeRow = (index) => {
-    if (prevOpenedRow && prevOpenedRow !== row[index]) {
-      prevOpenedRow.close();
-    }
-    
-    prevOpenedRow = row[index];
   };
 
 
@@ -106,7 +118,7 @@ export default function Kit({navigation, route}) {
 
         for(let i = 0; i < tempKit.length; i++){
             if(tempKit[i].id == doc.id){
-                tempKit[i].number = number;
+                tempKit[i].pillNumber = number;
                 tempKit[i].price = price;
             }
         }
@@ -114,7 +126,7 @@ export default function Kit({navigation, route}) {
         setNewKit(tempKit);
         
         updateDoc(doc.ref, {
-          number: number,
+          pillNumber: number,
           price: price
         });
           
@@ -124,20 +136,27 @@ export default function Kit({navigation, route}) {
       console.error("Error updating document: ", e);
     }
 
-    test.close();
-
   }
+
+  let row = [];
+  let prevOpenedRow;
+
+  const closeRow = (index) => {
+    if (prevOpenedRow && prevOpenedRow !== row[index]) {
+      prevOpenedRow.close();
+    }
+    
+    prevOpenedRow = row[index];
+  };
 
   const KitItem = ({item, index}) => {
     
     return(
       <Swipe
         index={index}
-        settingsClick={() => onSettingsClick({item, index})}
         trashClick={() => onDeleteClick({item, index})}
         closeRow={() => closeRow(index)}
         row={row}
-        chooseMode={chooseMode}
         style={{
           width: '90%',
           height: 65,
@@ -148,10 +167,18 @@ export default function Kit({navigation, route}) {
           marginLeft: '5%',
           flexDirection: 'row',
           paddingHorizontal: '3%',
+          borderWidth: 1,
           borderColor: data.product == item.product ? colors.primary : colors.grey
         }}
       >
+      <TouchableOpacity
+        onPress={() => onSettingsClick(item)}
+        style={{
+          flex: 1
+        }}
+      >
         <CartItem item={item.product} number={item.number} price={item.price} pillNumber={item.pillNumber} />
+      </TouchableOpacity>
       </Swipe>
     ) 
   }
@@ -193,7 +220,15 @@ export default function Kit({navigation, route}) {
           alignItems: 'center',
           justifyContent: 'center'
         }}>
-          <CartItem item={item.product} number={number} price={price} /> 
+          <View style={{
+            width: '100%',
+            paddingHorizontal: 15,
+            borderRadius: 10,
+            borderColor: colors.grey,
+            borderWidth: 1,
+          }}>
+            <CartItem item={item.product} pillNumber={number} price={price} /> 
+          </View>
           <View style={{
             paddingTop: 20
           }}>
@@ -203,7 +238,7 @@ export default function Kit({navigation, route}) {
                 goUp={goUp}
                 goDown={goDown}
                 onChangeText={onChangeText}
-                number={item.number}
+                number={item.pillNumber}
             />
           </View>
           

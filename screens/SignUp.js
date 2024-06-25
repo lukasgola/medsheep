@@ -18,7 +18,7 @@ export default function SignUp(){
 
     const {colors} = useTheme();
     const navigation = useNavigation();
-    const {control, handleSubmit, watch} = useForm();
+    const {control, trigger, clearErrors, setError, handleSubmit, watch} = useForm();
 
     const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
     
@@ -30,8 +30,16 @@ export default function SignUp(){
 
     const onRegister = async data => {
         setIsRegistering(true)
-        const {name, lastName, email, password} = data;  
-        createUser(name, lastName, email, password).then(() => setIsRegistering(false))
+        const {name, lastName, email, password} = data; 
+        try {
+            await createUser(name, lastName, email, password)
+        } catch {
+            setError('email', { type: 'manual', message: 'Email jest juz zajęty' });
+        } finally {
+            setIsRegistering(false)
+        }
+        
+        
     };
 
     const onTerms = () => {
@@ -68,6 +76,8 @@ export default function SignUp(){
                         size={12} 
                         color={colors.grey_l} 
                         icon={'lock-closed-outline'}
+                        trigger={trigger}
+                        clearErrors={clearErrors} // Pass clearErrors as a prop
                     />
                 </View>
                 <View style={{ width: '100%', height: 50, justifyContent: 'center', alignItems: 'center', marginTop: 20 }}>
@@ -80,6 +90,8 @@ export default function SignUp(){
                         size={12} 
                         color={colors.grey_l} 
                         icon={'lock-closed-outline'}
+                        trigger={trigger}
+                        clearErrors={clearErrors} // Pass clearErrors as a prop
                     />
                 </View>
                 <View style={{ width: '100%', height: 50, justifyContent: 'center', alignItems: 'center', marginTop: 20 }}>
@@ -95,6 +107,8 @@ export default function SignUp(){
                         color={colors.grey_l} 
                         icon={'mail-outline'}
                         keyboardType={'email-address'}
+                        trigger={trigger}
+                        clearErrors={clearErrors} // Pass clearErrors as a prop
                     />
                 </View>
                 <View style={{ width: '100%', height: 50, justifyContent: 'center', alignItems: 'center', marginTop: 20 }}>
@@ -113,6 +127,8 @@ export default function SignUp(){
                         size={12} 
                         color={colors.grey_l} 
                         icon={'lock-closed-outline'}
+                        trigger={trigger}
+                        clearErrors={clearErrors} // Pass clearErrors as a prop
                     />
                 </View>
                 <View style={{ width: '100%', height: 50, justifyContent: 'center', alignItems: 'center', marginTop: 20 }}>
@@ -127,6 +143,8 @@ export default function SignUp(){
                         size={12} 
                         color={colors.grey_l} 
                         icon={'lock-closed-outline'}
+                        trigger={trigger}
+                        clearErrors={clearErrors} // Pass clearErrors as a prop
                     />
                 </View>
 

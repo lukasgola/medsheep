@@ -19,7 +19,9 @@ const CustomInput = ({
   color,
   icon,
   keyboardType,
-  multiline
+  multiline,
+  trigger,
+  clearErrors
 }) => {
 
   const {colors} = useTheme();
@@ -57,7 +59,6 @@ const CustomInput = ({
               
 
               <TextInput
-
                 style={{
                   width: '90%',
                   height: '100%',
@@ -67,8 +68,14 @@ const CustomInput = ({
                 }}
                 value={value}
                 defaultValue={defaultValue}
-                onChangeText={onChange}
-                onBlur={onBlur}
+                onChangeText={(text) => {
+                  onChange(text);
+                  clearErrors(name); // Clear errors as the user types
+                }}
+                onBlur={(e) => {
+                  onBlur(e); // Call the original onBlur event
+                  trigger(name); // Trigger validation
+                }}
                 placeholder={placeholder}
                 placeholderTextColor={colors.grey_d}
                 secureTextEntry={secureTextEntry}
