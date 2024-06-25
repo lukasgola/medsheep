@@ -7,6 +7,7 @@ export const DATA = [
       price: 12.99,
       img: 'https://firebasestorage.googleapis.com/v0/b/medsheep-4763c.appspot.com/o/apap_noc.jpg?alt=media&token=ef8bd1a5-8003-4783-b0e9-dcaf27a6b6ba',
       amount: 30,
+      unit: 'tab',
       symptoms: [
           { id: 1, name: 'Ból głowy' },
           { id: 2, name: 'Ból gardła' },
@@ -23,6 +24,7 @@ export const DATA = [
       price: 23.99,
       img: 'https://firebasestorage.googleapis.com/v0/b/medsheep-4763c.appspot.com/o/rutino.png?alt=media&token=44911335-5fba-4972-82d4-36730d33e0d2',
       amount: 90,
+      unit: 'tab',
       symptoms: [
           { id: 1, name: 'Ból głowy' },
           { id: 2, name: 'Ból gardła' },
@@ -39,6 +41,7 @@ export const DATA = [
       price: 19.99,
       img: 'https://firebasestorage.googleapis.com/v0/b/medsheep-4763c.appspot.com/o/eopiryna.jpg?alt=media&token=c2515a5f-2424-4b9d-9bda-49fcd13b9cea',
       amount: 30,
+      unit: 'tab',
       symptoms: [
           { id: 1, name: 'Ból głowy' },
           { id: 2, name: 'Ból gardła' },
@@ -55,6 +58,7 @@ export const DATA = [
       price: 49.99,
       img: 'https://firebasestorage.googleapis.com/v0/b/medsheep-4763c.appspot.com/o/45058ab1-scale-350x350.jpg?alt=media&token=34bf92a9-985e-4e14-891a-d147e583a867',
       amount: 30,
+      unit: 'tab',
       symptoms: [
           { id: 1, name: 'Ból głowy' },
           { id: 2, name: 'Ból gardła' },
@@ -71,6 +75,7 @@ export const DATA = [
       price: 14.99,
       img: 'https://firebasestorage.googleapis.com/v0/b/medsheep-4763c.appspot.com/o/29799ca8-scale-350x350.jpg?alt=media&token=ed44ee3f-2715-4629-94d0-1bf2cc6e3c6f',
       amount: 50,
+      unit: 'tab',
       symptoms: [
           { id: 1, name: 'Ból głowy' },
           { id: 2, name: 'Ból mięśni' },
@@ -86,6 +91,7 @@ export const DATA = [
       price: 9.99,
       img: 'https://firebasestorage.googleapis.com/v0/b/medsheep-4763c.appspot.com/o/19bce8a5-scale-350x350.jpg?alt=media&token=7edb5505-e055-4304-9900-37b93c8184b6',
       amount: 30,
+      unit: 'tab',
       symptoms: [
           { id: 1, name: 'Ból głowy' },
           { id: 2, name: 'Gorączka' },
@@ -100,6 +106,7 @@ export const DATA = [
       price: 7.99,
       img: 'https://firebasestorage.googleapis.com/v0/b/medsheep-4763c.appspot.com/o/6a297938-scale-350x350.jpg?alt=media&token=76f98a3c-c247-4889-ac6b-a7b1f40266d3',
       amount: 20,
+      unit: 'tab',
       symptoms: [
           { id: 1, name: 'Zaparcia' }
       ]
@@ -112,6 +119,7 @@ export const DATA = [
       price: 29.99,
       img: 'https://firebasestorage.googleapis.com/v0/b/medsheep-4763c.appspot.com/o/5ebe24c9-scale-350x350.jpg?alt=media&token=bd314557-4c8a-4ae2-a343-a2ee6ebb78fe',
       amount: 100,
+      unit: 'ml',
       symptoms: [
           { id: 1, name: 'Ból mięśni' },
           { id: 2, name: 'Ból stawów' }
@@ -125,6 +133,7 @@ export const DATA = [
       price: 15.99,
       img: 'https://firebasestorage.googleapis.com/v0/b/medsheep-4763c.appspot.com/o/629c2ab3-scale-350x350.jpg?alt=media&token=34bbc864-be21-4fd5-b303-e3f9cc5c5e56',
       amount: 60,
+      unit: 'tab',
       symptoms: [
           { id: 1, name: 'Ból brzucha' },
           { id: 2, name: 'Skurcze mięśni' }
@@ -138,6 +147,7 @@ export const DATA = [
       price: 12.99,
       img: 'https://firebasestorage.googleapis.com/v0/b/medsheep-4763c.appspot.com/o/5f22223a-scale-600x600.jpg?alt=media&token=bd74b94d-5dad-4f02-8e12-aea35b13a23a',
       amount: 30,
+      unit: 'tab',
       symptoms: [
           { id: 1, name: 'Ból głowy' },
           { id: 2, name: 'Ból mięśni' },
@@ -153,6 +163,7 @@ export const DATA = [
       price: 19.99,
       img: 'https://firebasestorage.googleapis.com/v0/b/medsheep-4763c.appspot.com/o/e079e47d-scale-350x350.jpg?alt=media&token=c5f4b385-9b69-400b-a651-770626e3694a',
       amount: 20,
+      unit: 'tab',
       symptoms: [
           { id: 1, name: 'Ból gardła' },
           { id: 2, name: 'Kaszel' },
@@ -167,6 +178,7 @@ export const DATA = [
       price: 14.99,
       img: 'https://firebasestorage.googleapis.com/v0/b/medsheep-4763c.appspot.com/o/29386b71-scale-350x350.jpg?alt=media&token=cd00f760-6734-4793-8634-d7aea8670349',
       amount: 24,
+      unit: 'tab',
       symptoms: [
           { id: 1, name: 'Ból gardła' }
       ]
@@ -179,6 +191,7 @@ export const DATA = [
       price: 11.99,
       img: 'https://firebasestorage.googleapis.com/v0/b/medsheep-4763c.appspot.com/o/ibuprom-200-mg-10-tabletek.2.jpg?alt=media&token=3f8a3a0a-0d24-4a5e-aa75-9e008526af6b',
       amount: 40,
+      unit: 'tab',
       symptoms: [
           { id: 1, name: 'Ból głowy' },
           { id: 2, name: 'Ból mięśni' },
@@ -194,6 +207,7 @@ export const DATA = [
       price: 22.99,
       img: 'https://firebasestorage.googleapis.com/v0/b/medsheep-4763c.appspot.com/o/7989e713-scale-350x350.jpg?alt=media&token=592cfb76-8130-4635-9692-47037c4e8c82',
       amount: 10,
+      unit: 'tab',
       symptoms: [
           { id: 1, name: 'Ból gardła' },
           { id: 2, name: 'Katar' },
@@ -208,6 +222,7 @@ export const DATA = [
       price: 13.99,
       img: 'https://firebasestorage.googleapis.com/v0/b/medsheep-4763c.appspot.com/o/p-neo-angin-tabletki-do-ssania-24-szt.webp?alt=media&token=81fb9885-55b6-4faf-aebd-2cad35de3436',
       amount: 24,
+      unit: 'tab',
       symptoms: [
           { id: 1, name: 'Ból gardła' }
       ]
@@ -220,6 +235,7 @@ export const DATA = [
       price: 29.99,
       img: 'https://firebasestorage.googleapis.com/v0/b/medsheep-4763c.appspot.com/o/29ce86a2-scale-350x350.jpg?alt=media&token=2a421115-b49f-465e-be15-914bdb90be87',
       amount: 30,
+      unit: 'tab',
       symptoms: [
           { id: 1, name: 'Silny ból głowy' },
           { id: 2, name: 'Ból mięśni' },
@@ -234,6 +250,7 @@ export const DATA = [
       price: 8.99,
       img: 'https://firebasestorage.googleapis.com/v0/b/medsheep-4763c.appspot.com/o/f2983c59-scale-350x350.jpg?alt=media&token=02396029-2325-4d5f-88c8-21d51e95f237',
       amount: 40,
+      unit: 'tab',
       symptoms: [
           { id: 1, name: 'Wzdęcia' },
           { id: 2, name: 'Nadmierne gazy' }
@@ -247,6 +264,7 @@ export const DATA = [
       price: 18.99,
       img: 'https://firebasestorage.googleapis.com/v0/b/medsheep-4763c.appspot.com/o/bcd4964b-scale-350x350.jpg?alt=media&token=a531513c-463b-4a70-a8c1-fd50faf538d8',
       amount: 20,
+      unit: 'tab',
       symptoms: [
           { id: 1, name: 'Zgaga' },
           { id: 2, name: 'Niestrawność' }
@@ -260,6 +278,7 @@ export const DATA = [
       price: 15.99,
       img: 'https://firebasestorage.googleapis.com/v0/b/medsheep-4763c.appspot.com/o/a5e642c3-scale-350x350.jpg?alt=media&token=4d72db6e-5fc3-43b4-a515-3ef5ef3089f1',
       amount: 30,
+      unit: 'tab',
       symptoms: [
           { id: 1, name: 'Alergia' },
           { id: 2, name: 'Katar sienny' },
@@ -275,6 +294,7 @@ export const DATA = [
       price: 24.99,
       img: 'https://firebasestorage.googleapis.com/v0/b/medsheep-4763c.appspot.com/o/8411a722-scale-350x350.jpg?alt=media&token=0ae5c795-6222-4271-96d8-ec7113a73002',
       amount: 30,
+      unit: 'tab',
       symptoms: [
           { id: 1, name: 'Opryszczka wargowa' },
           { id: 2, name: 'Zakażenie wirusem opryszczki' }
