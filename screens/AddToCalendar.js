@@ -189,6 +189,10 @@ export default function AddToCalendar({navigation}){
         {
             id: 5,
             text: 'porcja'
+        },
+        {
+            id: 6,
+            text: 'ml'
         }
     ]
 

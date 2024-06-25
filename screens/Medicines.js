@@ -142,7 +142,7 @@ export default function Medicines({navigation}) {
             fontSize: 14,
             color: colors.grey_d,
             marginTop: 2
-          }}>{item.amount} tabletek</Text>
+          }}>{item.amount} {item.unit}</Text>
         </View>
         <TouchableOpacity style={{
           backgroundColor: colors.grey_l,
@@ -185,7 +185,7 @@ export default function Medicines({navigation}) {
             borderColor: colors.grey,
             borderWidth: 1,
           }}>
-            <CartItem item={selectedItem} pillNumber={number*selectedItem.amount} price={price} /> 
+            <CartItem item={selectedItem} pillNumber={number*selectedItem.amount}/> 
           </View>
           <View style={{
             paddingTop: 20

@@ -38,7 +38,7 @@ const CartItem = (props) => {
           <Text style={{
               fontSize: 14,
               color: colors.text,
-          }}>{props.pillNumber ? props.pillNumber + ' tab.' : '' }</Text>
+          }}>{props.pillNumber ? props.pillNumber + ' ' + props.item.unit + '.' : 0  + ' ' + props.item.unit + '.'}</Text>
         </View>
         
         

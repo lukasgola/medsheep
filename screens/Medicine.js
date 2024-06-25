@@ -70,7 +70,7 @@ export default function Medicine({route, navigation}) {
             text={'Dodaj do apteczki'}
             onConfirm={onAddToKit}
         >
-            <CartItem item={item} number={number} price={price} />
+            <CartItem item={item} pillNumber={number * item.amount}/>
         </BottomSheet>
         <TouchableOpacity 
             onPress={() => setModalVisible(true)}
@@ -131,7 +131,7 @@ export default function Medicine({route, navigation}) {
                 color: colors.grey_d,
                 fontSize: 16,
                 marginTop: 10,
-            }}>{item.amount} tabletek</Text>
+            }}>{item.amount} {item.unit}</Text>
 
 
             <KeyboardAvoidingView
