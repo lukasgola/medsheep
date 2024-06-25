@@ -7,6 +7,8 @@ import { useData } from '../providers/DataProvider';
 
 import { useIsFocused } from '@react-navigation/native';
 
+import { removeEvent } from '../firebase/firebase-config';
+
 import BottomSheet from '../components/BottomSheet';
 
 
@@ -15,7 +17,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import {Picker} from '@react-native-picker/picker';
 
 //Firebase
-import { addToCalendar, setDates } from '../firebase/firebase-config';
+import { addToCalendar, setDates, getNotID } from '../firebase/firebase-config';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -341,7 +343,7 @@ export default function AddToCalendar({route, navigation, item}){
                     color: colors.primary,
                     fontSize: 18,
                     fontWeight: 'bold'
-                    }}>Dodaj</Text>
+                    }}>{data.event ? 'Edytuj' : 'Dodaj'}</Text>
                 </TouchableOpacity>
             ),
             headerLeft: () => (
@@ -422,11 +424,28 @@ export default function AddToCalendar({route, navigation, item}){
         let month = dateEnd.getMonth()+1;
         setDateEndString(dateEnd.getDate() + ' / ' + month + ' / ' + dateEnd.getFullYear())
     };
+    
+
+    const confirmDelete = async (item) => {
+        notArray = await getNotID(item.id);
+
+        for (const notification of notArray) {
+            await Notifications.cancelScheduledNotificationAsync(notification);
+        }
+
+        await removeEvent(item.id)
+
+    }
 
 
     const onCreateEvent = () => {
         console.log('Id: ' + data.id)
         console.log("Freq: " + freq)
+
+        if(data.event){
+            console.log("event id: " + data.event.id)
+        }
+        
 
         Alert.alert('Nowe przypomnienie', 'Na pewno chcesz dodać przypomnienie?', [
         {
@@ -437,6 +456,10 @@ export default function AddToCalendar({route, navigation, item}){
         {
             text: 'Dodaj',
             onPress: async () => {
+
+                if(data.event){
+                    confirmDelete(data.event);
+                }
                 
                 const dateS = dateStart;
                 const dateE = dateEnd;

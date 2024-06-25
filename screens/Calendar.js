@@ -311,11 +311,9 @@ export default function MainCalendar({navigation}) {
   let prevOpenedRow;
 
   const onSettingsClick = ({item, index}) => {
-    setItem(item);
-    //console.log(item)
-
     const newItem = {
-      ...item.kitItem,
+      id: item.itemId,
+      product: item.kitItem.product,
       event: item
     }
     setData(newItem)
@@ -324,6 +322,7 @@ export default function MainCalendar({navigation}) {
 
   const onDeleteClick = ({item, index}) => {
     setItem(item);
+    console.log(item.id)
     setModalVisible3(true);
   }
 
