@@ -3,6 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Patient from '../../screens/Patient';
 import PersonalData from '../../screens/PersonalData';
 import Kit from '../../screens/Kit';
+import Avatar from '../../screens/Avatar';
 
 const Stack = createStackNavigator();
 
@@ -25,6 +26,7 @@ export default function PatientStack() {
       <Stack.Screen name="Pacjent" component={Patient} />
       <Stack.Screen name="Dane osobiste" component={PersonalData} />
       <Stack.Screen name="Apteczka" component={Kit} />
+      <Stack.Screen name="Avatar" component={Avatar} />
     </Stack.Navigator>
   );
 }

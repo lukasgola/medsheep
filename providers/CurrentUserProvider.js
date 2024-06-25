@@ -9,7 +9,7 @@ export const CurrentUserContext = React.createContext({
         email: 'none',
         name: 'none',
         lastName: 'none',
-        avatar: 'https://i.picsum.photos/id/520/200/300.jpg?hmac=wYOWhYQGp5efB1HNroao-yTysVtEt5osptkdHJIsc0g',
+        avatar: 'https://firebasestorage.googleapis.com/v0/b/medsheep-4763c.appspot.com/o/default-user.jpg?alt=media&token=1a67afad-307b-410b-a6dc-977527c0cdab',
         birthdate: 'none',
         height: 'none',
         weight: 'none',

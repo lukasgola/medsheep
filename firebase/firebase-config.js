@@ -9,6 +9,10 @@ import {
 import { deleteDoc, getFirestore } from "firebase/firestore";
 import { collection, setDoc, getDoc, getDocs, addDoc, doc, updateDoc, query, where, increment, writeBatch } from "firebase/firestore"; 
 
+//Storage
+import { getStorage, ref, getDownloadURL, uploadBytes, uploadBytesResumable, } from "firebase/storage";
+
+
 // Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: process.env.EXPO_PUBLIC_FIREBASE_API_KEY,
@@ -23,6 +27,7 @@ const firebaseConfig = {
 export const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getFirestore(app);
+export const storage = getStorage(app);
 
 
 export async function createUser(name, lastName, email, password) {
@@ -67,7 +72,7 @@ export async function adduser(uid, name, lastName, email, avatar){
         name: name,
         lastName: lastName,
         email: email,
-        avatar: avatar,
+        avatar: 'https://firebasestorage.googleapis.com/v0/b/medsheep-4763c.appspot.com/o/default-user.jpg?alt=media&token=1a67afad-307b-410b-a6dc-977527c0cdab',
         birthdate: null,
         height: null,
         weight: null,
@@ -366,4 +371,65 @@ export async function addToBasket(product, number, price, basket, setBasket, set
     }));
 
     return data;
+  }
+
+
+  export async function uploadImage(uid, avatar, type, progressCallback) {
+
+    const metadata = {};
+  
+    
+    const response = await fetch(avatar);
+    const blob = await response.blob();
+  
+    const directory = type == 'quickActions' ? 'quickActions/' : 'profilePictures/';
+  
+    // Upload file and metadata to the object 'images/mountains.jpg'
+    const storageRef = ref(storage, directory + Date.now());
+    const uploadTask = uploadBytesResumable(storageRef, blob, metadata);
+  
+    return new Promise((resolve, reject) => {
+      uploadTask.on('state_changed',
+      (snapshot) => {
+        // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        progressCallback(progress);
+        console.log('Upload is ' + progress + '% done');
+        switch (snapshot.state) {
+          case 'paused':
+            console.log('Upload is paused');
+            break;
+          case 'running':
+            console.log('Upload is running');
+            break;
+          default:
+            console.log(snapshot.state)
+            break;
+        }
+      }, 
+      (error) => {
+        // Handle errors and log them
+        reject(error)
+      },
+      async () => {
+        // Upload completed successfully, now we can get the download URL
+        const downloadURL = await getDownloadURL(uploadTask.snapshot.ref)
+        resolve({
+          downloadURL,
+          metadata: []
+        })
+      }
+    );
+    })
+  }
+
+  export async function updateAvatar(uid, avatar){
+    try {
+      // Set the "capital" field of the city 'DC'
+      await updateDoc(doc(db, "users", uid), {
+        avatar: avatar
+      });
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
   }
