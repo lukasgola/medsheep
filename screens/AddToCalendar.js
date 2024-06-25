@@ -307,7 +307,7 @@ export default function AddToCalendar({navigation}){
                 </TouchableOpacity>
               )
         });
-    }, [title, time, freq, dateStart, dateEnd, customFreq, navigation]);
+    }, [title, time, freq, dateStart, dateEnd, dose, doseUnit, customFreq, navigation, data]);
 
     const emptyData = () => {
         Alert.alert('Nie wybrano leku', 'Wybierz lek', [
@@ -331,9 +331,10 @@ export default function AddToCalendar({navigation}){
     }
 
     const handleDoseConfirm = () => {
+        console.log("PrevDose: " + prevDose)
+        console.log("PrevUnit: " + prevDoseUnit)
         setDose(prevDose)
         setDoseUnit(prevDoseUnit)
-        console.log(prevDoseUnit)
         setDoseUnitString(prevDoseUnit)
     }
 
@@ -375,7 +376,10 @@ export default function AddToCalendar({navigation}){
 
     const onCreateEvent = () => {
         console.log('Id: ' + data.id)
-        Alert.alert('Nowe przypomnienie', 'Na pewno chcesz dodać przypomnienie ?', [
+        console.log("Dose: " + dose)
+        console.log("Unit: " + doseUnitString)
+
+        Alert.alert('Nowe przypomnienie', 'Na pewno chcesz dodać przypomnienie?', [
         {
             text: 'Anuluj',
             onPress: () => {},

@@ -156,6 +156,7 @@ export default function Kit({navigation, route}) {
         index={index}
         trashClick={() => onDeleteClick({item, index})}
         closeRow={() => closeRow(index)}
+        onSettingsClick={() => onSettingsClick(item)}
         row={row}
         style={{
           width: '90%',
@@ -168,17 +169,10 @@ export default function Kit({navigation, route}) {
           flexDirection: 'row',
           paddingHorizontal: '3%',
           borderWidth: 1,
-          borderColor: data.product == item.product ? colors.primary : colors.grey
-        }}
-      >
-      <TouchableOpacity
-        onPress={() => onSettingsClick(item)}
-        style={{
-          flex: 1
+          borderColor: data.product == item.product && route.params?.chooseMode ? colors.primary : colors.grey
         }}
       >
         <CartItem item={item.product} number={item.number} price={item.price} pillNumber={item.pillNumber} />
-      </TouchableOpacity>
       </Swipe>
     ) 
   }

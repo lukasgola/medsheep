@@ -21,7 +21,7 @@ import CartItem from '../components/CartItem';
 
 
 //Firebase
-import { auth, db, getKitItem, getNotID, removeEvent, setTaken } from '../firebase/firebase-config';
+import { auth, db, getKit, getKitItem, getNotID, removeEvent, setTaken } from '../firebase/firebase-config';
 import { getDocs, collection, where, query } from "firebase/firestore";
 
 
@@ -211,7 +211,6 @@ export default function MainCalendar() {
       newKit.push(newKitItem)
       fetchedData.push(item); // Add the transformed item to the fetchedData array
     }
-    setNewKit([...newKit])
     return fetchedData;
   }
 
@@ -275,6 +274,8 @@ export default function MainCalendar() {
     updateItemValue(item.id, true);
     setTaken(item.id, day.timestamp, item.itemId);
     setTakenAmount(takenAmount + 1);
+    const data = getKit()
+    setNewKit([...data])
   }
 
   const confirmDelete = async () => {

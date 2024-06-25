@@ -44,7 +44,7 @@ const Swipe = (props) => {
             }]}
         >
           <Pressable 
-            onPress={() => props.settingsClick()}
+            onPress={() => props.onSettingsClick()}
             style={[{
               borderWidth: 1,
               borderColor: colors.grey

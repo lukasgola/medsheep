@@ -326,7 +326,7 @@ export async function addToBasket(product, number, price, basket, setBasket, set
 
       await updateDoc(q2, {
         pillNumber: increment(-1)
-    });
+      });
 
     } catch (e) {
       console.error("Error updating document: ", e);
