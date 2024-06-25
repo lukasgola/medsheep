@@ -45,7 +45,7 @@ export default function Medicine({route, navigation}) {
     }
 
     const onAddToKit = async () => {
-        addToKit(item, number, kit, setKit, setNewKit)
+        addToKit(item, number*item.amount, kit, setKit, setNewKit)
         //addToBasket(item, number, price, basket, setBasket, setNewBasket)
     }
 
