@@ -30,7 +30,16 @@ export const CurrentUserProvider = (props) => {
             const user = {
                 ...docSnap.data()
             }
-            setCurrentUser(user)
+            setCurrentUser({
+                name: user.name,
+                email: user.email,
+                avatar: user.avatar.downloadURL,
+                lastName: user.lastName,
+                birthdate: user.birthdate,
+                height: user.height,
+                weight: user.weight,
+                blood: user.blood
+            })
         } else {
         // doc.data() will be undefined in this case
         console.log("No such document!");

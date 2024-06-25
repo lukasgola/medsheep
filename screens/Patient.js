@@ -26,12 +26,6 @@ export default function Patient({navigation}) {
   const [ cumulation, setCumulation ] = useState(0);
 
 
-  useEffect(() => {
-
-    console.log(currentUser)
-
-  }, [])
-
   const OrderItem = ({item}) => {
     return(
       <View style={{
