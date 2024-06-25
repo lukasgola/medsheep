@@ -925,6 +925,7 @@ export default function AddToCalendar({navigation}){
                             display="spinner"
                             onChange={onChangeDateStart}
                             textColor={colors.text}
+                            minimumDate={time}
                         />
                     </BottomSheet>
                 </TouchableOpacity>
@@ -986,6 +987,7 @@ export default function AddToCalendar({navigation}){
                             display="spinner"
                             onChange={onChangeDateEnd}
                             textColor={colors.text}
+                            minimumDate={time}
                         />
                     </BottomSheet>
                 </TouchableOpacity>
