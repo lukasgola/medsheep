@@ -10,6 +10,7 @@ import { Calendar, LocaleConfig,} from 'react-native-calendars';
 //Providers
 import { useTheme } from '../theme/ThemeProvider';
 import { useKit } from '../providers/KitProvider';
+import { useData } from '../providers/DataProvider';
 
 //Hooks
 import { useIsFocused } from "@react-navigation/native";
@@ -121,12 +122,13 @@ async function registerForPushNotificationsAsync() {
 
 
 
-export default function MainCalendar() {
+export default function MainCalendar({navigation}) {
 
   const width = Dimensions.get('screen').width;
   const {colors} = useTheme();
   const isFocused = useIsFocused();
   const { kit, setKit, setNewKit } = useKit();
+  const { data, setData } = useData();
 
   const [ selected, setSelected ] = useState();
   const [ day, setDay ] = useState();
@@ -138,7 +140,6 @@ export default function MainCalendar() {
   const [kitItem, setKitItem] = useState();
 
   const [ modalVisible, setModalVisible ] = useState(false);
-  const [ modalVisible2, setModalVisible2 ] = useState(false);
   const [ modalVisible3, setModalVisible3 ] = useState(false);
 
   const ref = useRef(null);
@@ -311,7 +312,14 @@ export default function MainCalendar() {
 
   const onSettingsClick = ({item, index}) => {
     setItem(item);
-    setModalVisible2(true);
+    //console.log(item)
+
+    const newItem = {
+      ...item.kitItem,
+      event: item
+    }
+    setData(newItem)
+    navigation.navigate('modal')
   }
 
   const onDeleteClick = ({item, index}) => {

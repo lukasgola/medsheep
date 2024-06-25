@@ -15,7 +15,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import {Picker} from '@react-native-picker/picker';
 
 //Firebase
-import { addToCalendar } from '../firebase/firebase-config';
+import { addToCalendar, setDates } from '../firebase/firebase-config';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -91,7 +91,7 @@ async function registerForPushNotificationsAsync() {
 }
 
 
-export default function AddToCalendar({navigation}){
+export default function AddToCalendar({route, navigation, item}){
 
     const width = Dimensions.get('window').width;
 
@@ -279,6 +279,55 @@ export default function AddToCalendar({navigation}){
             setDoseArray(oldArray => [...oldArray, i]);
         }
     }, [])
+
+    useEffect(() => {
+        if(data.event){
+            //console.log(data.event)
+            setMedString(data.event.title)
+            
+            setDose(data.event.dose)
+            setDoseUnit(data.event.doseUnit)
+            setDoseUnitString(data.event.doseUnit)
+
+            setFreq(data.event.freq)
+            setFreqString(frequencies[data.event.freq].text)
+            
+            setTitle(data.event.title)
+
+            const dateS = new Date(data.event.startTimestamp)
+            const dateE = new Date(data.event.endTimestamp)
+
+            setDateStart(dateS)
+            setDateEnd(dateE)
+
+            setDateStartString(formatDate(dateS))
+            setDateEndString(formatDate(dateE))
+
+            setCustomFreq(data.event.customFreq)
+            setCustomFreqString(data.event.customFreqString)
+
+            setCustomPeriod(data.event.customPeriod)
+            setCustomPeriodString(data.event.customPeriodString)
+
+            const refTime = new Date(Date.now())
+            refTime.setHours(data.event.timeHour)
+            refTime.setMinutes(data.event.timeMinutes)
+
+            console.log(refTime)
+
+            setTime(refTime)
+            
+        }
+    }, [])
+
+
+    const formatDate = (date) => {
+        const day = date.getDate();
+        const month = date.getMonth() + 1; // Months are zero-indexed
+        const year = date.getFullYear();
+        return `${day} / ${month} / ${year}`;
+    };
+
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
