@@ -7,10 +7,6 @@ const CartItem = (props) => {
 
     const {colors} = useTheme();
 
-    useEffect(() => {
-      console.log(props.item.img)
-    }, [])
-
     return(
       <View style={{
         width: '100%',

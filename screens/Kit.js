@@ -12,13 +12,16 @@ import Amounter from '../components/Amounter';
 
 //Firebase
 import { query, collection, getDocs, where, updateDoc  } from 'firebase/firestore';
-import { removeFromKit, db, auth } from '../firebase/firebase-config';
+import { removeFromKit, db, auth, getKit } from '../firebase/firebase-config';
+import { useIsFocused } from '@react-navigation/native';
 
 export default function Kit({navigation, route}) {
 
 
   const { kit, setKit, setNewKit } = useKit();
   const { colors } = useTheme();
+
+  const isFocused = useIsFocused();
 
   const {data, setData} = useData();
 

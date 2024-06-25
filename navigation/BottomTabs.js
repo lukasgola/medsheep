@@ -95,7 +95,7 @@ export default function BottomTabs() {
           ),
         }}
       />
-      <Tab.Screen 
+      {/* <Tab.Screen 
         name="Notifications" 
         component={Notifications} 
         options={{
@@ -103,7 +103,7 @@ export default function BottomTabs() {
             <Item focused={focused} icon='notifications-outline' filled='person' title='Powiadomienia' />
           ),
         }}
-      />
+      /> */}
     </Tab.Navigator>
   );
 }

@@ -356,3 +356,17 @@ export async function addToBasket(product, number, price, basket, setBasket, set
           throw error;
       }
   }
+
+
+  export async function getKit() {
+    const querySnapshot = await getDocs(collection(db, "users", auth.currentUser.uid, "kit"));
+    querySnapshot.forEach((doc) => {
+        // doc.data() is never undefined for query doc snapshots
+        const data = {
+            ...doc.data(),
+            id: doc.id,
+        }
+
+        return data
+    });
+}

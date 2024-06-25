@@ -9,6 +9,7 @@ import { Calendar, LocaleConfig,} from 'react-native-calendars';
 
 //Providers
 import { useTheme } from '../theme/ThemeProvider';
+import { useKit } from '../providers/KitProvider';
 
 //Hooks
 import { useIsFocused } from "@react-navigation/native";
@@ -125,6 +126,7 @@ export default function MainCalendar() {
   const width = Dimensions.get('screen').width;
   const {colors} = useTheme();
   const isFocused = useIsFocused();
+  const { kit, setKit, setNewKit } = useKit();
 
   const [ selected, setSelected ] = useState();
   const [ day, setDay ] = useState();
@@ -189,19 +191,27 @@ export default function MainCalendar() {
 
   async function fetchDataWithKitItems(querySnapshot) {
     const fetchedData = [];
+    const newKit = []
   
     for (const doc of querySnapshot.docs) {
       const data = doc.data();
       const kitItem = await getKitItem(data.itemId); // Await the async function
+      
       const item = {
         ...data,
         id: doc.id,
         kitItem: kitItem,
         taken: false // Add the taken field with the default value of false
       };
+
+      const newKitItem = {
+        id: data.itemId,
+        ...kitItem
+      }
+      newKit.push(newKitItem)
       fetchedData.push(item); // Add the transformed item to the fetchedData array
     }
-  
+    setNewKit([...newKit])
     return fetchedData;
   }
 
@@ -275,6 +285,8 @@ export default function MainCalendar() {
     }
 
     await removeEvent(item.id)
+
+    getDayEvents(day.timestamp);
 
   }
 
@@ -410,7 +422,7 @@ export default function MainCalendar() {
     setDay(actDay);
     setSelected(actDay.dateString);
     getDayEvents(actDay.timestamp);
-  }, [isFocused, modalVisible3])
+  }, [isFocused])
 
   return (
     <SafeAreaView style={{
@@ -535,6 +547,9 @@ export default function MainCalendar() {
             <Text style={{
               paddingHorizontal: '2.5%',
             }}>{kitItem?.pillNumber} tab.</Text>
+
+            {item?.taken == false && (day.timestamp + 86400000 ) > actDate.getTime() && 
+            <View>
             <Text style={{
               fontSize: 16,
               fontWeight: 'bold',
@@ -584,7 +599,9 @@ export default function MainCalendar() {
                       color: colors.text
                   }}>+1 godz</Text>
               </TouchableOpacity>
+              </View>
             </View>
+            }
             
         </BottomSheet>
 
