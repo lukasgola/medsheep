@@ -72,7 +72,7 @@ export async function adduser(uid, name, lastName, email, avatar){
         name: name,
         lastName: lastName,
         email: email,
-        avatar: 'https://firebasestorage.googleapis.com/v0/b/medsheep-4763c.appspot.com/o/default-user.jpg?alt=media&token=1a67afad-307b-410b-a6dc-977527c0cdab',
+        avatar: { downloadURL: 'https://firebasestorage.googleapis.com/v0/b/medsheep-4763c.appspot.com/o/default-user.jpg?alt=media&token=1a67afad-307b-410b-a6dc-977527c0cdab'},
         birthdate: null,
         height: null,
         weight: null,

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {View, Dimensions, TouchableOpacity, ActivityIndicator, KeyboardAvoidingView, Text} from 'react-native';
+import {View, Dimensions, TouchableOpacity, ActivityIndicator, KeyboardAvoidingView, Text, Platform} from 'react-native';
 
 //Hooks
 import {useTheme} from '../theme/ThemeProvider';
