@@ -67,6 +67,7 @@ export default function Kit({navigation, route}) {
   }
 
   const onChangeText = (amount) => {
+      setNumber(amount)
       setPrice((item.product.price*(amount)).toFixed(2))
   }
 

@@ -49,6 +49,7 @@ export default function Medicines({navigation}) {
   }
 
   const onChangeText = (amount) => {
+    setNumber(amount)
       setPrice((selectedItem.price*(amount)).toFixed(2))
   }
 
