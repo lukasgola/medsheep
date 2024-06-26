@@ -90,11 +90,12 @@ export default function Avatar() {
   return (
     <KeyboardAvoidingView style={{ 
         flex: 1, 
-        justifyContent: 'center', 
+        //justifyContent: 'center', 
         alignItems: 'center',  
         backgroundColor: colors.container, 
         paddingHorizontal: 10,
-        gap: 50
+        gap: 50,
+        paddingTop: 100
     }}>
 
         <Text style={{
