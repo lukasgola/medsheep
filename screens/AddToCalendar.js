@@ -237,6 +237,8 @@ export default function AddToCalendar({route, navigation, item}){
     const [isCustomFreqPeriodPickerVisible, setCustomFreqPeriodPickerVisible] = useState(false);
     const [isDosePickerVisible, setDosePickerVisible] = useState(false);
 
+    const [ isTimePickerVisible ,setTimePickerVisible ] = useState(Platform.OS == 'android' ? false : true)
+
 
     const fontSize = 14;
 
@@ -401,26 +403,65 @@ export default function AddToCalendar({route, navigation, item}){
 
     const onChangeTime = (event, value) => {
         setTime(value);
+        if(Platform.OS == 'android'){
+            setTimePickerVisible(false)
+        }
+    };
+
+    const getTimeString = (date) => {
+        if (!(date instanceof Date)) {
+            throw new TypeError("The argument must be a Date object");
+        }
+        return date.toLocaleTimeString('en-US', {
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false
+        });
     };
 
     const onChangeDateStart = (event, selectedDate) => {
         const currentDate = selectedDate || dateStart;
         setDateStart(currentDate);
+        if(Platform.OS == 'android') {
+            handleDateStartConfirmAndroid(currentDate)
+            setDateStartPickerVisible(false)
+        }
+    };
+
+    const handleDateStartConfirmAndroid = (dateStart) => {
+        let month = dateStart.getMonth()+1;
+        setDateStartString(dateStart.getDate() + ' / ' + month + ' / ' + dateStart.getFullYear())
+        if(dateStart > dateEnd){
+            setDateEnd(dateStart)
+            setDateEndString(dateStart.getDate() + ' / ' + month + ' / ' + dateStart.getFullYear())
+        }
     };
 
     const handleDateStartConfirm = () => {
         let month = dateStart.getMonth()+1;
         setDateStartString(dateStart.getDate() + ' / ' + month + ' / ' + dateStart.getFullYear())
-        setDateEnd(dateStart)
-        setDateEndString(dateStart.getDate() + ' / ' + month + ' / ' + dateStart.getFullYear())
+        if(dateStart > dateEnd){
+            setDateEnd(dateStart)
+            setDateEndString(dateStart.getDate() + ' / ' + month + ' / ' + dateStart.getFullYear())
+        }
+
     };
 
     const onChangeDateEnd = (event, selectedDate) => {
         const currentDate = selectedDate || dateEnd;
         setDateEnd(currentDate);
+        if(Platform.OS == 'android') {
+            handleDateEndConfirmAndroid(currentDate)
+            setDateEndPickerVisible(false)
+        }
     };
 
     const handleDateEndConfirm = () => {
+        let month = dateEnd.getMonth()+1;
+        setDateEndString(dateEnd.getDate() + ' / ' + month + ' / ' + dateEnd.getFullYear())
+    };
+
+    const handleDateEndConfirmAndroid = (dateEnd) => {
         let month = dateEnd.getMonth()+1;
         setDateEndString(dateEnd.getDate() + ' / ' + month + ' / ' + dateEnd.getFullYear())
     };
@@ -569,20 +610,73 @@ export default function AddToCalendar({route, navigation, item}){
                     }}>Wypełnij szczegóły</Text>
                 </View>
 
+
+                {Platform.OS == 'android' &&
+                
+                <TouchableOpacity 
+                    onPress={() => setTimePickerVisible(true) }
+                    style={{
+                        width: '100%', 
+                        height: 50, 
+                        flexDirection: 'row',
+                        backgroundColor: colors.grey_l,
+                        borderTopLeftRadius: 10,
+                        borderTopRightRadius: 10,
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        borderColor: '#e8e8e8',
+                        borderWidth: 1,
+                        
+                }}>
+                    <View
+                        style={{
+                            width: 40,
+                            paddingLeft: 10,
+                            justifyContent: 'center',
+                        }}
+                        >
+                            <Ionicons name={'time-outline'} size={20} color={colors.grey_d}/>
+                    </View>
+
+                    <Text style={{
+                        color: colors.text,
+                        fontSize: fontSize,
+                    }}>Godzina</Text>
+
+                    <View style={{
+                        flexDirection: 'row',
+                        position: 'absolute',
+                        right: 10,
+                        alignItems: 'center',
+                    }}>
+                        <Text style={{
+                            color: colors.grey_d,
+                            fontSize: fontSize
+                        }}>{getTimeString(time)}</Text>
+
+                        <Ionicons name={'chevron-forward-outline'} size={20} color={colors.grey_d}/>
+
+                    </View>
+                    
+                </TouchableOpacity>
+                
+                }
+
             
                 
-
-                <DateTimePicker
-                    testID="dateTimePicker"
-                    value={time}
-                    mode={'time'}
-                    display="spinner"
-                    onChange={onChangeTime}
-                    textColor={colors.text}
-                    minuteInterval={1}
-                    accentColor={colors.primary}
-                    locale='es-ES'
-                />
+                {isTimePickerVisible &&
+                    <DateTimePicker
+                        testID="dateTimePicker"
+                        value={time}
+                        mode={'time'}
+                        display={Platform.OS == 'ios' ? "spinner" : 'default'}
+                        onChange={onChangeTime}
+                        textColor={colors.text}
+                        minuteInterval={1}
+                        accentColor={colors.primary}
+                        locale='es-ES'
+                    />
+                }
 
                 <TouchableOpacity 
                     onPress={() => navigation.navigate('Apteczka', {chooseMode: true})}
@@ -1007,23 +1101,39 @@ export default function AddToCalendar({route, navigation, item}){
 
                     </View>
 
-                    <BottomSheet 
-                        visible={isDateStartPickerVisible}
-                        setModalVisible={setDateStartPickerVisible}
-                        text={'Podaj początek'}
-                        onConfirm={handleDateStartConfirm}
-                    >
+                    {Platform.OS == 'ios' &&
+                        <BottomSheet 
+                            visible={isDateStartPickerVisible}
+                            setModalVisible={setDateStartPickerVisible}
+                            text={'Podaj początek'}
+                            onConfirm={handleDateStartConfirm}
+                        >
+                            <DateTimePicker
+                                testID="dateTimePicker"
+                                value={dateStart}
+                                mode={'date'}
+                                is24Hour={true}
+                                display={Platform.OS == 'ios' ? "spinner" : 'calendar'}
+                                onChange={onChangeDateStart}
+                                textColor={colors.text}
+                                minimumDate={time}
+                            />
+                        </BottomSheet>
+                    }
+                    {Platform.OS == 'android' && isDateStartPickerVisible &&
                         <DateTimePicker
                             testID="dateTimePicker"
                             value={dateStart}
                             mode={'date'}
                             is24Hour={true}
-                            display="spinner"
+                            display={Platform.OS == 'ios' ? "spinner" : 'calendar'}
                             onChange={onChangeDateStart}
                             textColor={colors.text}
                             minimumDate={time}
                         />
-                    </BottomSheet>
+                    }
+
+                    
                 </TouchableOpacity>
   
                 <TouchableOpacity 
@@ -1070,6 +1180,8 @@ export default function AddToCalendar({route, navigation, item}){
                         <Ionicons name={'chevron-forward-outline'} size={20} color={colors.grey_d}/>
 
                     </View>
+
+                    {Platform.OS == 'ios' &&
                     <BottomSheet 
                         visible={isDateEndPickerVisible} 
                         setModalVisible={setDateEndPickerVisible}
@@ -1081,12 +1193,25 @@ export default function AddToCalendar({route, navigation, item}){
                             value={dateEnd}
                             mode={'date'}
                             is24Hour={true}
-                            display="spinner"
+                            display={Platform.OS == 'ios' ? "spinner" : 'calendar'}
                             onChange={onChangeDateEnd}
                             textColor={colors.text}
                             minimumDate={dateStart}
                         />
                     </BottomSheet>
+                    }  
+                    {Platform.OS == 'android' && isDateEndPickerVisible &&
+                        <DateTimePicker
+                            testID="dateTimePicker"
+                            value={dateEnd}
+                            mode={'date'}
+                            is24Hour={true}
+                            display={Platform.OS == 'ios' ? "spinner" : 'calendar'}
+                            onChange={onChangeDateEnd}
+                            textColor={colors.text}
+                            minimumDate={dateStart}
+                        />
+                    }
                 </TouchableOpacity>
 
             </ScrollView>
