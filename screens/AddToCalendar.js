@@ -373,13 +373,14 @@ export default function AddToCalendar({route, navigation, item}){
     }
 
     const handleFreqConfirm = () => {
+        console.log(prevFreq)
         setFreq(prevFreq)
         setFreqString(prevFreqString)
 
-        if(prevFreq == 'Niestandardowe'){
+        if(prevFreq == 3){
             springIn()
         }
-        if(prevFreq != 'Niestandardowe' && springAnim !== 0 ){
+        if(prevFreq != 3 && springAnim !== 0 ){
             springOut()
         }
     }
@@ -394,10 +395,12 @@ export default function AddToCalendar({route, navigation, item}){
 
 
     const handleCustomFreqConfirm = () => {
+        console.log(customFreq)
         setCustomFreqString(customFreq)
     }
 
     const handleCustomPeriodConfirm = () => {
+        console.log(customPeriod)
         setCustomPeriodString(customPeriod)
     }
 
@@ -510,7 +513,20 @@ export default function AddToCalendar({route, navigation, item}){
 
                 const takenArray = [];
 
-                for(var i=dateS.getTime(); i <= dateE.getTime(); i+=((freq+1) * 86400000)){
+                let usedFreq = freq;
+                let usedPeriod = 0;
+
+                if(freq == 3){
+                    if(customPeriod == 'Dzień') usedPeriod = 1
+                    if(customPeriod == 'Tydzień') usedPeriod = 7
+                    if(customPeriod == 'Miesiac') usedPeriod = 31
+                    if(customPeriod == 'Rok') usedPeriod = 365
+
+                    usedFreq = customFreq * usedPeriod
+                    usedFreq -= 1
+                }
+
+                for(var i=dateS.getTime(); i <= dateE.getTime(); i+=((usedFreq+1) * 86400000)){
                     {/* Schedule notification */}
 
                     const date = new Date(i);
