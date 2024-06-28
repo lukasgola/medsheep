@@ -45,6 +45,9 @@ export default function PersonalData({navigation}){
     const onChangeDate = (event, selectedDate) => {
         const currentDate = selectedDate || date;
         setDate(currentDate);
+        if(Platform.OS == 'android') {
+            setDatePickerVisible(false)
+        }
     };
 
     const handleDateConfirm = () => {
@@ -162,12 +165,26 @@ export default function PersonalData({navigation}){
                     setVisible={setDatePickerVisible}
                     showValue={dateString}
                 />
-                <BottomSheet 
-                    visible={isDatePickerVisible} 
-                    setModalVisible={setDatePickerVisible}
-                    text={'Podaj date urodzenia'}
-                    onConfirm={handleDateConfirm}
-                >
+
+                {Platform.OS == 'ios' &&
+                    <BottomSheet 
+                        visible={isDatePickerVisible} 
+                        setModalVisible={setDatePickerVisible}
+                        text={'Podaj date urodzenia'}
+                        onConfirm={handleDateConfirm}
+                    >
+                        <DateTimePicker
+                            testID="dateTimePicker"
+                            value={date}
+                            mode={'date'}
+                            is24Hour={true}
+                            display="spinner"
+                            onChange={onChangeDate}
+                            textColor={colors.text}
+                        />
+                    </BottomSheet>
+                }
+                {Platform.OS == 'android' && isDatePickerVisible &&
                     <DateTimePicker
                         testID="dateTimePicker"
                         value={date}
@@ -177,7 +194,8 @@ export default function PersonalData({navigation}){
                         onChange={onChangeDate}
                         textColor={colors.text}
                     />
-                </BottomSheet>
+                }
+                
 
                 <InputPicker 
                     icon={'man-outline'} 
