@@ -58,8 +58,8 @@ export default function Initial({navigation}) {
     },
     {
       id: 1,
-      title: 'Zamawiaj leki',
-      desc: 'Zamawiaj leki prosto do domu',
+      title: 'Apteczka',
+      desc: 'Dodawaj leki do wirtualnej apteczki i miej wszystko pod kontrolą',
       img: require('../assets/order.png'),
     },
   ]

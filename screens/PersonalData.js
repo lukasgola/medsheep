@@ -47,7 +47,13 @@ export default function PersonalData({navigation}){
         setDate(currentDate);
         if(Platform.OS == 'android') {
             setDatePickerVisible(false)
+            handleDateConfirmAndroid(currentDate)
         }
+    };
+
+    const handleDateConfirmAndroid = (date) => {
+        let month = date.getMonth()+1;
+        setDateString(date.getDate() + ' / ' + month + ' / ' + date.getFullYear())
     };
 
     const handleDateConfirm = () => {
@@ -79,6 +85,7 @@ export default function PersonalData({navigation}){
         }))
         navigation.goBack();
     };
+
 
     
     const [metric, setMetric] = useState([]);

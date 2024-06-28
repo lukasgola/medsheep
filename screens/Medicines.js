@@ -1,7 +1,7 @@
 import 'react-native-reanimated'
 import 'react-native-gesture-handler'
 import { useLayoutEffect, useState } from 'react';
-import { Text, View, SafeAreaView, FlatList, TouchableOpacity, LayoutAnimation, Image } from 'react-native';
+import { Text, View, SafeAreaView, FlatList, TouchableOpacity, LayoutAnimation, Image, Platform } from 'react-native';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -17,6 +17,7 @@ import { useKit } from '../providers/KitProvider';
 import BottomSheet from '../components/BottomSheet';
 import Amounter from '../components/Amounter';
 import CartItem from '../components/CartItem';
+import SearchBar from '../components/SearchBar';
 
 
 import { DATA } from '../assets/data';
@@ -55,16 +56,19 @@ export default function Medicines({navigation}) {
 
 
   useLayoutEffect(() => {
-    navigation.setOptions({
-      headerSearchBarOptions: {
-        visible: true,
-        placeholder: 'Szukaj',
-        onChangeText: (event) => {
-          searchFilterFunction(event.nativeEvent.text);
-          LayoutAnimation.configureNext(layoutAnimConfig)
+    if(Platform.OS == 'ios'){
+      navigation.setOptions({
+        headerSearchBarOptions: {
+          visible: true,
+          placeholder: 'Szukaj',
+          onChangeText: (event) => {
+            searchFilterFunction(event.nativeEvent.text);
+            LayoutAnimation.configureNext(layoutAnimConfig)
+          },
         },
-      },
-    });
+      });
+    }
+    
   }, [navigation]);
 
   const layoutAnimConfig = {
@@ -80,18 +84,22 @@ export default function Medicines({navigation}) {
   };
 
   const searchFilterFunction = (text) => {
-    if(text){ 
+    // Trim and convert text to uppercase
+
+      const searchText = text.trim().toUpperCase();
+  
+      if (searchText.length > 0) {
         const newData = DATA.filter(item => {
-            const itemData = item.name ? item.name.toUpperCase() : ''.toUpperCase();
-            const textData = text.toUpperCase();
-            return itemData.indexOf(textData) > -1;
-        })
-        
+          const itemName = item.name ? item.name.toUpperCase() : '';
+          return itemName.includes(searchText);
+        });
         setFilteredData(newData);
-    } else {
+      } else {
         setFilteredData(DATA);
-    }
-  }
+      }
+    
+  };
+  
 
   const onItemChoice = (item) => {
     console.log(item)
