@@ -39,23 +39,48 @@ async function scheduleNotification(date, title, body) {
     
     console.log("Not date: " + date.getDate() + "-" + (date.getMonth()+1) + "-" + date.getFullYear() + "   " + date.getHours() + ":" + date.getMinutes())
 
-    const notID = await Notifications.scheduleNotificationAsync({
-        content: {
-            title: title,
-            body: body,
-            sound: 'default',
-        },
-        trigger: {
-            hour: date.getHours(),
-            minute: date.getMinutes(),
-            day: date.getDate(),
-            month: date.getMonth()+1,
-            year: date.getFullYear(),
-            repeats: false, 
-        },
-    });
+    if(Platform.OS == 'ios'){
+        const notID = await Notifications.scheduleNotificationAsync({
+            content: {
+                title: title,
+                body: body,
+                sound: 'default',
+            },
+            trigger: {
+                hour: date.getHours(),
+                minute: date.getMinutes(),
+                day: date.getDate(),
+                month: date.getMonth()+1,
+                year: date.getFullYear(),
+                repeats: false, 
+            },
+        });
+        return notID
+    }
 
-    return notID
+    else{
+        // Calculate the time interval in seconds
+        const currentDate = new Date();
+        const interval = (date.getTime() - currentDate.getTime()) / 1000;
+
+        if (interval <= 0) {
+            console.log("The scheduled date must be in the future.");
+            return;
+        }
+
+        const notID = await Notifications.scheduleNotificationAsync({
+            content: {
+                title: title,
+                body: body,
+                sound: 'default',
+            },
+            trigger: {
+                seconds: interval,
+                repeats: false,
+            },
+        });
+        return notID
+    }
 }
 
 async function registerForPushNotificationsAsync() {
