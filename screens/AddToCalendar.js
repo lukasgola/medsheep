@@ -357,6 +357,7 @@ export default function AddToCalendar({route, navigation, item}){
                   <Text style={{
                     color: colors.primary,
                     fontSize: 18,
+                    marginRight: 20,
                   }}>Anuluj</Text>
                 </TouchableOpacity>
               )
