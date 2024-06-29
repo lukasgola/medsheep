@@ -22,7 +22,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/medsheep.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.lukasgola.medsheep"
     },
     "web": {
       "favicon": "./assets/medsheep.png"
