@@ -36,8 +36,8 @@
     },
     "owner": "lukasgola",
     "plugins": [
-        "@react-native-firebase/app",
-        "@react-native-firebase/auth",
+      "@react-native-firebase/app",
+      "@react-native-firebase/auth",
       [
         "expo-notifications",
         {
@@ -45,7 +45,8 @@
           "color": "#ffffff",
           "defaultChannel": "default"
         }
-      ]
+      ],
+      "expo-build-properties"
     ]
   }
 }
