@@ -10,7 +10,16 @@
     "preview": {
       "distribution": "internal"
     },
-    "production": {}
+    "production": {
+      "env": {
+        "EXPO_PUBLIC_FIREBASE_API_KEY": "AIzaSyAZ2nhuS1xQZNe8Em0bGzeaLSAF1dTFWkI",
+        "EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN": "medsheep-4763c.firebaseapp.com",
+        "EXPO_PUBLIC_FIREBASE_PROJECT_ID": "medsheep-4763c",
+        "EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET": "medsheep-4763c.appspot.com",
+        "EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID": "1091257292834",
+        "EXPO_PUBLIC_FIREBASE_APP_ID": "1:1091257292834:web:0f8a7acb4c591a0bf0527b"
+      }
+    }
   },
   "submit": {
     "production": {}
