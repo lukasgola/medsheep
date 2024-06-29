@@ -11,6 +11,9 @@
       "android": {
         "buildType": "apk"
       },
+      "ios": {
+        "simulator": true
+      },
       "env": {
         "EXPO_PUBLIC_FIREBASE_API_KEY": "AIzaSyAZ2nhuS1xQZNe8Em0bGzeaLSAF1dTFWkI",
         "EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN": "medsheep-4763c.firebaseapp.com",
