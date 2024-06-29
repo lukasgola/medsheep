@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@react-native-community/datetimepicker": "8.0.1",
+    "@react-native-firebase/app": "^20.1.0",
     "@react-native-firebase/messaging": "^18.3.0",
     "@react-native-picker/picker": "2.7.5",
     "@react-navigation/bottom-tabs": "^6.5.8",
