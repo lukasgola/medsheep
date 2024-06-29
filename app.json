@@ -23,6 +23,7 @@
         "foregroundImage": "./assets/medsheep.png",
         "backgroundColor": "#ffffff"
       },
+      "googleServicesFile": "./google-services.json",
       "package": "com.lukasgola.medsheep"
     },
     "web": {
@@ -36,6 +37,10 @@
     "owner": "lukasgola",
     "plugins": [
       [
+        "@react-native-firebase/app",
+        "@react-native-firebase/auth",
+        "@react-native-firebase/storage",
+        "@react-native-firebase/firestore",
         "expo-notifications",
         {
           "icon": "./assets/medsheep.png",

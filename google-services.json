@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1091257292834",
+    "project_id": "medsheep-4763c",
+    "storage_bucket": "medsheep-4763c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1091257292834:android:45745d660ba2bfddf0527b",
+        "android_client_info": {
+          "package_name": "com.lukasgola.medsheep"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBh_jOX0HfpiJ7RNHZpF_iURKpyXyNvooQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
