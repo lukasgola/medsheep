@@ -25,9 +25,11 @@ export default function Patient({navigation}) {
 
   const [ cumulation, setCumulation ] = useState(0);
 
-  const [ date, setDate] = useState(new Date());
+  const actDate = new Date()
+  const [ date, setDate ] = useState(actDate);
 
   const formatDate = (date) => {
+    console.log(date)
     const day = date.getDate();
     const month = date.getMonth() + 1; // Months are zero-indexed
     const year = date.getFullYear();
@@ -39,7 +41,7 @@ export default function Patient({navigation}) {
       const date = new Date(currentUser.birthdate)
       setDate(date)
     }
-  }, [currentUser])
+  }, [])
 
 
   return (
@@ -85,7 +87,7 @@ export default function Patient({navigation}) {
                 color: colors.grey_d,
                 marginLeft: 10,
                 marginTop: 5
-              }}>{formatDate(date)}</Text>
+              }}>{ currentUser.birthdate == null ? 'Data urodzenia' : formatDate(date)}</Text>
             </View>
             
             <View style={{flexDirection: 'row', marginLeft: 20,}}>
@@ -95,7 +97,7 @@ export default function Patient({navigation}) {
                 color: colors.grey_d,
                 marginLeft: 10,
                 marginTop: 5
-              }}>{currentUser.height} cm</Text>
+              }}>{currentUser.height == null ? 'Wzrost' : currentUser.height + ' cm'} </Text>
             </View>
             <View style={{flexDirection: 'row', marginLeft: 20,}}>
               <Ionicons name={'barbell-outline'} size={16} color={colors.text} style={{marginTop: 4}} />
@@ -104,7 +106,7 @@ export default function Patient({navigation}) {
                 color: colors.grey_d,
                 marginLeft: 10,
                 marginTop: 5
-              }}>{currentUser.weight} kg</Text>
+              }}>{currentUser.weight == null ? 'Waga' : currentUser.weight + ' kg'}</Text>
             </View>
             <View style={{flexDirection: 'row', marginLeft: 20,}}>
               <Ionicons name={'water-outline'} size={16} color={colors.text} style={{marginTop: 4}} />
@@ -113,7 +115,7 @@ export default function Patient({navigation}) {
                 color: colors.grey_d,
                 marginLeft: 10,
                 marginTop: 5
-              }}>{currentUser.blood}</Text>
+              }}>{currentUser.blood == null ? 'Grupa krwi' : currentUser.blood}</Text>
             </View>
           </View>
         </TouchableOpacity>
