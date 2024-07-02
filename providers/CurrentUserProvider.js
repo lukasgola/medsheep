@@ -10,7 +10,7 @@ export const CurrentUserContext = React.createContext({
         name: 'none',
         lastName: 'none',
         avatar: 'https://firebasestorage.googleapis.com/v0/b/medsheep-4763c.appspot.com/o/default-user.jpg?alt=media&token=1a67afad-307b-410b-a6dc-977527c0cdab',
-        birthdate: 'none',
+        birthdate: null,
         height: 'none',
         weight: 'none',
         blood: 'none'
@@ -30,12 +30,17 @@ export const CurrentUserProvider = (props) => {
             const user = {
                 ...docSnap.data()
             }
+
+
+            const birthdate = user.birthdate.toDate();
+            console.log(birthdate.getTime())
+
             setCurrentUser({
                 name: user.name,
                 email: user.email,
                 avatar: user.avatar.downloadURL,
                 lastName: user.lastName,
-                birthdate: user.birthdate,
+                birthdate: birthdate.getTime(),
                 height: user.height,
                 weight: user.weight,
                 blood: user.blood

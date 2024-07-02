@@ -42,6 +42,13 @@ export default function PersonalData({navigation}){
     const [blood, setBlood] = useState('A Rh+');
     const [bloodString, setBloodString] = useState('Grupa krwi');
 
+    const formatDate = (date) => {
+        const day = date.getDate();
+        const month = date.getMonth() + 1; // Months are zero-indexed
+        const year = date.getFullYear();
+        return `${day} / ${month} / ${year}`;
+    };
+
     const onChangeDate = (event, selectedDate) => {
         const currentDate = selectedDate || date;
         setDate(currentDate);
@@ -75,10 +82,10 @@ export default function PersonalData({navigation}){
 
     const onConfirm = () => {
         setIsConfirming(true)
-        setPersonalData(auth.currentUser.uid, dateString, heightString, weightString, bloodString).then(() => setIsConfirming(false))
+        setPersonalData(auth.currentUser.uid, date.getTime(), heightString, weightString, bloodString).then(() => setIsConfirming(false))
         setCurrentUser(existingValues => ({
             ...existingValues,
-            birthdate: dateString,
+            birthdate: date.getTime(),
             height: height,
             weight: weight,
             blood: blood
@@ -93,7 +100,10 @@ export default function PersonalData({navigation}){
     useEffect(() => {
 
         if (currentUser.birthdate !== null){
-            setDateString(currentUser.birthdate)
+            const date = new Date(currentUser.birthdate)
+            setDate(date)
+            console.log(date)
+            setDateString(formatDate(date))
         }
         if (currentUser.height !== null){
             setHeight(currentUser.height)
@@ -188,6 +198,7 @@ export default function PersonalData({navigation}){
                             display="spinner"
                             onChange={onChangeDate}
                             textColor={colors.text}
+                            locale='pl-PL'
                         />
                     </BottomSheet>
                 }
@@ -200,6 +211,7 @@ export default function PersonalData({navigation}){
                         display="spinner"
                         onChange={onChangeDate}
                         textColor={colors.text}
+                        locale='pl-PL'
                     />
                 }
                 

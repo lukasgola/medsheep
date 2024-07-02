@@ -25,39 +25,22 @@ export default function Patient({navigation}) {
 
   const [ cumulation, setCumulation ] = useState(0);
 
+  const [ date, setDate] = useState(new Date());
 
-  const OrderItem = ({item}) => {
-    return(
-      <View style={{
-        width: '100%',
-        backgroundColor: colors.grey_l,
-        borderRadius: 10,
-        paddingVertical: 10,
-        marginTop: 10
-      }}>
-        <View style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          marginLeft: 10,
-          marginBottom: 5,
-        }}>
-          <View style={{
-            width: 6,
-            height: 6,
-            backgroundColor: colors.primary,
-            borderRadius: 3
-          }}></View>
-          <Text style={{
-            fontSize: 16,
-            color: colors.text,
-            fontWeight: 'bold',
-            marginLeft: 5
-          }}>12.06.2023</Text>
-        </View>
-        <CartItem />
-      </View>
-    )
-  }
+  const formatDate = (date) => {
+    const day = date.getDate();
+    const month = date.getMonth() + 1; // Months are zero-indexed
+    const year = date.getFullYear();
+    return `${day} / ${month} / ${year}`;
+  };
+
+  useEffect(() => {
+    if (currentUser.birthdate !== null){
+      const date = new Date(currentUser.birthdate)
+      setDate(date)
+    }
+  }, [currentUser])
+
 
   return (
     <ScrollView style={{
@@ -102,7 +85,7 @@ export default function Patient({navigation}) {
                 color: colors.grey_d,
                 marginLeft: 10,
                 marginTop: 5
-              }}>{currentUser.birthdate}</Text>
+              }}>{formatDate(date)}</Text>
             </View>
             
             <View style={{flexDirection: 'row', marginLeft: 20,}}>
