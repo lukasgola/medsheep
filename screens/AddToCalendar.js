@@ -545,7 +545,7 @@ export default function AddToCalendar({route, navigation, item}){
                 if(freq == 3){
                     if(customPeriod == 'Dzień') usedPeriod = 1
                     if(customPeriod == 'Tydzień') usedPeriod = 7
-                    if(customPeriod == 'Miesiac') usedPeriod = 31
+                    if(customPeriod == 'Miesiąc') usedPeriod = 31
                     if(customPeriod == 'Rok') usedPeriod = 365
 
                     usedFreq = customFreq * usedPeriod
