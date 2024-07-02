@@ -27,9 +27,9 @@ export default function Patient({navigation}) {
 
   const actDate = new Date()
   const [ date, setDate ] = useState(actDate);
+  const [ dateString, setDateString ] = useState('')
 
   const formatDate = (date) => {
-    console.log(date)
     const day = date.getDate();
     const month = date.getMonth() + 1; // Months are zero-indexed
     const year = date.getFullYear();
@@ -38,10 +38,11 @@ export default function Patient({navigation}) {
 
   useEffect(() => {
     if (currentUser.birthdate !== null){
-      const date = new Date(currentUser.birthdate)
-      setDate(date)
+      const d = new Date(currentUser.birthdate)
+      setDate(d)
+      setDateString(formatDate(d))
     }
-  }, [])
+  }, [currentUser])
 
 
   return (
@@ -87,7 +88,7 @@ export default function Patient({navigation}) {
                 color: colors.grey_d,
                 marginLeft: 10,
                 marginTop: 5
-              }}>{ currentUser.birthdate == null ? 'Data urodzenia' : formatDate(date)}</Text>
+              }}>{ currentUser.birthdate == null ? 'Data urodzenia' : dateString}</Text>
             </View>
             
             <View style={{flexDirection: 'row', marginLeft: 20,}}>
