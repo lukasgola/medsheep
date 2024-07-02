@@ -32,15 +32,12 @@ export const CurrentUserProvider = (props) => {
             }
 
 
-            const birthdate = user.birthdate.toDate();
-            console.log(birthdate.getTime())
-
             setCurrentUser({
                 name: user.name,
                 email: user.email,
                 avatar: user.avatar.downloadURL,
                 lastName: user.lastName,
-                birthdate: birthdate.getTime(),
+                birthdate: user.birthdate,
                 height: user.height,
                 weight: user.weight,
                 blood: user.blood
