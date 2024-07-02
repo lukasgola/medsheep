@@ -140,11 +140,11 @@ export default function SignIn({navigation}){
                     <Text style={{color: colors.grey_d}}>Nie masz konta?</Text>
                     <Text style={{color: colors.primary}}>  Zarejestruj się!</Text>
                 </TouchableOpacity>
-                <TouchableOpacity 
+                {/* <TouchableOpacity 
                     onPress={onForgotPassword}
                     style={{ width: '100%', height: 50, justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
                     <Text style={{color: colors.grey_d}}>Zapomniałeś hasła?</Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
             </View>
         </KeyboardAvoidingView>
     )
