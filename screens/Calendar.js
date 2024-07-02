@@ -510,7 +510,7 @@ export default function MainCalendar({navigation}) {
               }}>
                 <Text style={{
                   color: colors.grey_d
-                }}>Nie ma żadnych leków</Text>
+                }}>Nie ma żadnych przypomnień</Text>
               </View>
             }
           />

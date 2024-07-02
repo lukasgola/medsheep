@@ -716,7 +716,7 @@ export default function AddToCalendar({route, navigation, item}){
                         textColor={colors.text}
                         minuteInterval={1}
                         accentColor={colors.primary}
-                        locale='es-ES'
+                        locale='pl-PL'
                     />
                 }
 
@@ -1159,6 +1159,7 @@ export default function AddToCalendar({route, navigation, item}){
                                 onChange={onChangeDateStart}
                                 textColor={colors.text}
                                 minimumDate={time}
+                                locale='pl-PL'
                             />
                         </BottomSheet>
                     }
@@ -1172,6 +1173,7 @@ export default function AddToCalendar({route, navigation, item}){
                             onChange={onChangeDateStart}
                             textColor={colors.text}
                             minimumDate={time}
+                            locale='pl-PL'
                         />
                     }
 
@@ -1239,6 +1241,7 @@ export default function AddToCalendar({route, navigation, item}){
                             onChange={onChangeDateEnd}
                             textColor={colors.text}
                             minimumDate={dateStart}
+                            locale='pl-PL'
                         />
                     </BottomSheet>
                     }  
@@ -1252,6 +1255,7 @@ export default function AddToCalendar({route, navigation, item}){
                             onChange={onChangeDateEnd}
                             textColor={colors.text}
                             minimumDate={dateStart}
+                            locale='pl-PL'
                         />
                     }
                 </TouchableOpacity>
